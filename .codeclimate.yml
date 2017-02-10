@@ -1,0 +1,19 @@
+---
+engines:
+  duplication:
+    enabled: false
+    config:
+      languages:
+      - javascript
+  eslint:
+    enabled: true
+  scss-lint:
+    enabled: true
+ratings:
+  paths:
+  - "**.js"
+  - "**.jsx"
+  - "**.scss"
+exclude_paths:
+- config/
+- node_modules/
