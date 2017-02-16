@@ -1,0 +1,21 @@
+{
+  "development": {
+    "username": "jackie",
+    "password": null,
+    "database": "hatidev",
+    "host": "127.0.0.1",
+    "port": "2020",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "jackie",
+    "password": null,
+    "database": "hatitest",
+    "host": "127.0.0.1",
+    "port": "2020",
+    "dialect": "postgres"
+  },
+  "production": {
+    "database": "DATABASE_URL"
+  }
+}
