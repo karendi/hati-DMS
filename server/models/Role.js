@@ -1,11 +1,17 @@
-'use strict';
-module.exports = function(sequelize, DataTypes) {
-  var Role = sequelize.define('Role', {
-    title: DataTypes.STRING
+module.exports = (sequelize, DataTypes) => {
+  const Role = sequelize.define('Role', {
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true
+    }
   }, {
     classMethods: {
-      associate: function(models) {
-        // associations can be defined here
+      associate: (models) => {
+        User.hasMany(models.User, {
+          foreignKey: 'roleId',
+          as: 'users'
+        });
       }
     }
   });
