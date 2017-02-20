@@ -1,4 +1,4 @@
-import Bcrypt from 'bcryptjs';
+import Bcrypt from 'bcrypt-nodejs';
 const salt = Bcrypt.genSaltSync(10);
 
 module.exports = (sequelize, DataTypes) => {
