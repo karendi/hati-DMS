@@ -9,8 +9,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     access: {
-      // read/write
-      // public/private
+      type: Sequelize.STRING,
+      defaultValue: 'public',
+      allowNull: false
     },
     image: {
       type: DataTypes.STRING,
