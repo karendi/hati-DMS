@@ -20,7 +20,7 @@ const userPersonalDetails = (user) => {
 
 class UserController {
   static createNewUser(req, res) {
-    db.Users
+    db.User
       .create({
         fName: req.body.fName,
         lName: req.body.lName,
@@ -50,7 +50,7 @@ class UserController {
   },
 
   static loginUser(req, res) {
-    db.Users
+    db.User
       .findOne({
         where: {
           email: req.body.email
@@ -79,7 +79,7 @@ class UserController {
   },
 
   static findUserById(req, res) {
-    db.Users
+    db.User
       .findById(req.params.id)
       .then((user) => {
         if (user) {
@@ -95,7 +95,7 @@ class UserController {
   },
 
   static listAllUsers(req, res) {
-    db.Users
+    db.User
       .findAll({
         userDetails: [
           'fName',
@@ -118,7 +118,7 @@ class UserController {
   },
 
   static updateUser(req, res) {
-    db.Users
+    db.User
       .findById(req.params.id)
       .then((result) => {
         if (result) {
@@ -146,7 +146,7 @@ class UserController {
   },
 
   static deleteUser(req, res) {
-    db.Users
+    db.User
       .findById(req.params.id)
       .then((user) => {
         if (user) {
@@ -165,7 +165,7 @@ class UserController {
   },
 
   static listUserDocuments(req, res) {
-    db.Users
+    db.User
       .findAll({ where: { id: req.params.id }, include: [{ model: db.Document }] })
       .then((user) => {
         if (!user) {
