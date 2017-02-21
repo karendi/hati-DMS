@@ -28,6 +28,17 @@ const authentication = {
           next();
         } else { return res.status(403).send({ message: 'Permission denied, admin only' }); }
       });
+  },
+
+  logout(req, res, next) {
+    const token = req.headers.token || req.headers['x-access-token'];
+    const decoded = req.decodedToken;
+    if (token && decoded) {
+      delete req.headers.token;
+      delete req.headers['x-access-token'];
+      delete req.decodedToken;
+      next();
+    }
   }
 }
 
