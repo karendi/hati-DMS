@@ -18,38 +18,37 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isEmail: true,
         msg: 'Must be a valid email address'
-      },
-      username: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-        validate: {
-          len: {
-            args: 3,
-            msg: "Username must be atleast 3 characters long"
-          }
-        }
-      },
-      password_hash: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      password: {
-        type: Sequelize.VIRTUAL,
-        allowNull: false,
-        validate: {
-          len: {
-          args: [6, 200],
-          msg: 'Password should be atleast 6 characters long'
-          }
-        },
-        set: (value) => {
-          hashedPassword = Bcrypt.hashSync(value, salt);
-          this.setDataValue('password', value);
-          this.setDataValue('salt', salt);
-          this.setDataValue('password_hash', hashedPassword);
-        },
       }
+    }
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        len: {
+          args: 3,
+          msg: "Username must be atleast 3 characters long"
+        }
+      }
+    },
+    password: {
+      type: Sequelize.VIRTUAL,
+      allowNull: false,
+      validate: {
+        len: {
+        args: [6, 200],
+        msg: 'Password should be atleast 6 characters long'
+        }
+      }
+    },
+    createdAt: {
+      type: DataTypes.NOW,
+      allowNull: false
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: 'createdAt',
+      allowNull: false
     }
   }, {
     classMethods: {
@@ -63,12 +62,20 @@ module.exports = (sequelize, DataTypes) => {
         });
       }
     },
+    instanceMethods: {
+      generateHashedPassword() {
+        this.password = Bcrypt.hashSync(this.password, salt);
+      },
+      validatePassword(password) {
+        return Bcrypt.compareSync(password, this.password);
+      }
+    },
     hooks: {
       beforeCreate(user) {
-        user.password = Bcrypt.hashSync(user.password);
+        user.generateHashedPassword();
       },
       beforeUpdate(user) {
-        user.password = Bcrypt.hashSync(user.password);
+        user.generateHashedPassword();
       }
     }
   });
