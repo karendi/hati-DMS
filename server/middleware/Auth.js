@@ -3,8 +3,8 @@ import db from '../models';
 
 const secret = process.env.SECRET || 'wearethepirateswhodontdoanything';
 
-const authentication = {
-  verifyUser(req, res, next) {
+class Authentication {
+  static verifyUser(req, res, next) {
     const token = req.body.token || req.query.token || req.headers['x-access-token'];
     if (token) {
       jwt.verify(token, secret, (err, decoded) => {
@@ -20,7 +20,7 @@ const authentication = {
     }
   },
 
-  verifyAdmin(req, res, next) {
+  static verifyAdmin(req, res, next) {
     db.Role
       .findById(req.decodedToken.roleId)
       .then((role) => {
@@ -30,7 +30,7 @@ const authentication = {
       });
   },
 
-  logout(req, res, next) {
+  static logout(req, res, next) {
     const token = req.headers.token || req.headers['x-access-token'];
     const decoded = req.decodedToken;
     if (token && decoded) {
@@ -42,4 +42,4 @@ const authentication = {
   }
 }
 
-export default authentication;
+export default Authentication;

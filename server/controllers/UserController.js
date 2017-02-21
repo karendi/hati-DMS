@@ -18,8 +18,8 @@ const userPersonalDetails = (user) => {
   return userDetails;
 };
 
-const UserController {
-  createNewUser(req, res) {
+class UserController {
+  static createNewUser(req, res) {
     db.Users
       .create({
         fName: req.body.fName,
@@ -49,7 +49,7 @@ const UserController {
       });
   },
 
-  login(req, res) {
+  static loginUser(req, res) {
     db.Users
       .findOne({
         where: {
@@ -78,7 +78,7 @@ const UserController {
       });
   },
 
-  findUserById(req, res) {
+  static findUserById(req, res) {
     db.Users
       .findById(req.params.id)
       .then((user) => {
@@ -94,7 +94,7 @@ const UserController {
       });
   },
 
-  listAllUsers(req, res) {
+  static listAllUsers(req, res) {
     db.Users
       .findAll({
         userDetails: [
@@ -117,7 +117,7 @@ const UserController {
       });
   },
 
-  updateUser(req, res) {
+  static updateUser(req, res) {
     db.Users
       .findById(req.params.id)
       .then((result) => {
@@ -145,7 +145,7 @@ const UserController {
       });
   },
 
-  deleteUser(req, res) {
+  static deleteUser(req, res) {
     db.Users
       .findById(req.params.id)
       .then((user) => {
@@ -164,7 +164,7 @@ const UserController {
       });
   },
 
-  listUserDocuments(req, res) {
+  static listUserDocuments(req, res) {
     db.Users
       .findAll({ where: { id: req.params.id }, include: [{ model: db.Document }] })
       .then((user) => {
@@ -175,7 +175,7 @@ const UserController {
       });
   },
 
-  logout(req, res) {
+  static logoutUser(req, res) {
     res.status(200).send({
       message: 'You were logged out successfully'
     });
