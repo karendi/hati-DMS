@@ -4,24 +4,19 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
-    body: {
+    content: {
       type: DataTypes.TEXT,
       allowNull: false
     },
     access: {
       type: Sequelize.STRING,
       defaultValue: 'public',
+      validate: {
+        isIn: [['public', 'private', 'role']]
+      },
       allowNull: false
-    },
-    image: {
-      type: DataTypes.STRING,
-      allowNull: true
     },
     author: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    role: {
       type: DataTypes.STRING,
       allowNull: false
     },
@@ -33,6 +28,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       defaultValue: 'createdAt',
       allowNull: false
+    },
+    roleId: {
+      type: DataTypes.STRING
     }
   }, {
     classMethods: {
