@@ -1,7 +1,7 @@
 import db from '../models';
 
 class RoleController {
-  createRole(req, res) {
+  static createRole(req, res) {
     const roleInfo = {};
     if (req.body.id) {
       roleInfo = { title: req.body.title, id: req.body.id };
@@ -16,7 +16,7 @@ class RoleController {
       });
   },
 
-  updateRole(req, res) {
+  static updateRole(req, res) {
     db.Role
       .findById(req.params.id)
       .then((role) => {
@@ -32,7 +32,7 @@ class RoleController {
       });
   },
 
-  deleteRole(req, res) {
+  static deleteRole(req, res) {
     db.Role
       .findById(req.params.id)
       .then((role) => {
@@ -46,7 +46,7 @@ class RoleController {
       });
   },
 
-  listAllRoles(req, res) {
+  static listAllRoles(req, res) {
     db.Role
       .findAll()
       .then((allRoles) => {
@@ -56,7 +56,7 @@ class RoleController {
       });
   },
 
-  getSpecificRole(req, res) {
+  static getSpecificRole(req, res) {
     db.Role
       .findById(req.params.id)
       .then((role) => {
