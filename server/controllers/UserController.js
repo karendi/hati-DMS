@@ -10,10 +10,7 @@ const userPersonalDetails = (user) => {
     lName: user.lName,
     email: user.email,
     username: user.username,
-    password: user.password,
-    roleId: user.roleId,
-    createdAt: user.createdAt,
-    updatedAt: user.updatedAt
+    password: user.password
   };
   return userDetails;
 };
@@ -26,8 +23,7 @@ class UserController {
         lName: req.body.lName,
         email: req.body.email,
         username: req.body.username,
-        password: req.body.password,
-        roleId: req.body.roleId
+        password: req.body.password
       })
       .then((user) => {
         const payload = {
@@ -102,9 +98,7 @@ class UserController {
           'lName',
           'email',
           'username',
-          'roleId',
-          'createdAt',
-          'updatedAt'
+          'roleId'
         ]
       })
       .then((allUsers) => {
