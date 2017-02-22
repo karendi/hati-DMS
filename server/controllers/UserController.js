@@ -34,8 +34,8 @@ class UserController {
           userId: user.id,
           roleId: user.roleId || defaultRoleId
         };
-        const token = jwt.sign(payload, secret, { expiresIn: '2 days' });
-        user = userPersonalDetails()user;
+        const token = jwt.sign(payload, secret, { expiresIn: '24h' });
+        user = userPersonalDetails(user);
         return res.status(201).send({
           message: 'User was successfully created',
           token,
@@ -47,7 +47,7 @@ class UserController {
           message: err.message
         })
       });
-  },
+  }
 
   static loginUser(req, res) {
     db.User
@@ -62,8 +62,8 @@ class UserController {
             userId: user.id,
             roleId: user.roleId
           };
-          const token = jwt.sign(payload, secret, { expiresIn: '2 days' });
-          user = userPersonalDetails()user;
+          const token = jwt.sign(payload, secret, { expiresIn: '24h' });
+          user = userPersonalDetails(user);
           return res.status(200).send({
             message: 'You were successfully logged in',
             token,
@@ -76,7 +76,7 @@ class UserController {
           message: `There was a problem while logging in ${err.message}`,
         });
       });
-  },
+  }
 
   static findUserById(req, res) {
     db.User
@@ -92,7 +92,7 @@ class UserController {
           message: `User ${req.params.id} was not found`
         });
       });
-  },
+  }
 
   static listAllUsers(req, res) {
     db.User
@@ -107,15 +107,17 @@ class UserController {
           'updatedAt'
         ]
       })
-      .then((allUsers) {
-        res.status(200).send({ message: allUsers });
+      .then((allUsers) => {
+        if (allUsers) {
+          res.status(200).send({ message: allUsers });
+        }
       })
       .catch((err) => {
         res.status(404).send({
           message: 'There was a problem getting all users'
         });
-      });
-  },
+      })
+  }
 
   static updateUser(req, res) {
     db.User
@@ -143,7 +145,7 @@ class UserController {
           });
         }
       });
-  },
+  }
 
   static deleteUser(req, res) {
     db.User
@@ -162,7 +164,7 @@ class UserController {
           });
         }
       });
-  },
+  }
 
   static listUserDocuments(req, res) {
     db.User
@@ -173,7 +175,7 @@ class UserController {
         }
         res.status(200).send({ message: user });
       });
-  },
+  }
 
   static logoutUser(req, res) {
     res.status(200).send({
