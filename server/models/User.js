@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         isEmail: true,
         msg: 'Must be a valid email address'
       }
-    }
+    },
     username: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     password: {
-      type: Sequelize.VIRTUAL,
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         len: {
@@ -41,24 +41,18 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    createdAt: {
-      type: DataTypes.NOW,
-      allowNull: false
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      defaultValue: 'createdAt',
-      allowNull: false
+    roleId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 2
     }
   }, {
     classMethods: {
-      associate (models) => {
-        User.hasMany(models.Document, {
-          foreignKey: 'userId',
-          as: 'documents'
-        });
+      associate: (models) => {
+        User.hasMany(models.Document, { foreignKey: 'userId' });
         User.belongsTo(models.Role, {
-          foreignKey: 'roleId'
+          foreignKey: 'roleId',
+          onDelete: 'CASCADE'
         });
       }
     },
