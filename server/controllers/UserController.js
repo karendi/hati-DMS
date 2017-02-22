@@ -2,40 +2,21 @@ import jwt from 'jsonwebtoken';
 import db from '../models';
 
 const secret = process.env.SECRET || 'wearethepirateswhodontdoanything';
-const defaultRoleId = 2;
-
-const userPersonalDetails = (user) => {
-  const userDetails = {
-    fName: user.fName,
-    lName: user.lName,
-    email: user.email,
-    username: user.username,
-    password: user.password
-  };
-  return userDetails;
-};
 
 class UserController {
   static createNewUser(req, res) {
     db.User
-      .create({
-        fName: req.body.fName,
-        lName: req.body.lName,
-        email: req.body.email,
-        username: req.body.username,
-        password: req.body.password
-      })
+      .create(req.body)
       .then((user) => {
         const payload = {
           userId: user.id,
-          roleId: user.roleId || defaultRoleId
+          roleId: user.roleId
         };
         const token = jwt.sign(payload, secret, { expiresIn: '24h' });
-        user = userPersonalDetails(user);
         return res.status(201).send({
           message: 'User was successfully created',
           token,
-          user
+          data: user
         });
       })
       .catch((err) => {
@@ -59,11 +40,10 @@ class UserController {
             roleId: user.roleId
           };
           const token = jwt.sign(payload, secret, { expiresIn: '24h' });
-          user = userPersonalDetails(user);
           return res.status(200).send({
             message: 'You were successfully logged in',
             token,
-            user
+            expiresIn: '24h'
           });
         }
       })
@@ -75,12 +55,27 @@ class UserController {
   }
 
   static findUserById(req, res) {
+    const userDetails = {
+      user: ['id', 'fName', 'lName', 'email', 'username'],
+      role: ['id', 'title']
+    };
+    const query = {
+      where: {
+        id: req.params.id
+      },
+      attributes: userDetails.user,
+      include: [
+        {
+          model: Db.Roles,
+          attributes: userDetails.role
+        }
+      ]
+    };
     db.User
-      .findById(req.params.id)
+      .findOne(query)
       .then((user) => {
         if (user) {
-          user = userPersonalDetails(user);
-          return res.status(200).send({ message: user });
+          return res.status(200).send({ message: 'User found!', data: user });
         }
       })
       .catch((err) => {
@@ -91,19 +86,27 @@ class UserController {
   }
 
   static listAllUsers(req, res) {
+    const userDetails = {
+      user: ['id', 'fName', 'lName', 'email', 'username'],
+      role: ['id', 'title']
+    };
+    const query = {
+      attributes: userDetails.user,
+      include: [
+        {
+          model: Db.Roles,
+          attributes: userDetails.role
+        }
+      ]
+    };
     db.User
-      .findAll({
-        userDetails: [
-          'fName',
-          'lName',
-          'email',
-          'username',
-          'roleId'
-        ]
-      })
+      .findAll(query)
       .then((allUsers) => {
         if (allUsers) {
-          res.status(200).send({ message: allUsers });
+          res.status(200).send({
+            message: "Listing available",
+            data: allUsers
+          });
         }
       })
       .catch((err) => {
@@ -130,8 +133,10 @@ class UserController {
             password: req.body.password || result.password
           })
           .then((updatedProfile) => {
-            updatedProfile = userPersonalDetails(updatedProfile);
-            res.status(200).send({ message: updatedProfile });
+            res.status(200).send({
+              message: 'Information updated successfully',
+              data: updatedProfile
+            });
           });
         } else {
           res.status(404).send({
