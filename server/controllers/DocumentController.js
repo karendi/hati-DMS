@@ -63,7 +63,7 @@ class DocumentController {
       });
   },
 
-  static deteleDocument(req, res) {
+  static deleteDocument(req, res) {
     db.Document
       .findById(req.params.id)
       .then((doc) => {
