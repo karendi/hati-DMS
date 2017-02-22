@@ -2,7 +2,7 @@ import express from 'express';
 import UserController from '../controllers/UserController';
 import Authentication from '../middleware/Authentication';
 
-const userRouter = express.Router;
+const userRouter = express.Router();
 
 userRouter.route('/')
   .get(Authentication.verifyUser, Authentication.verifyAdmin, UserController.listAllUsers)
