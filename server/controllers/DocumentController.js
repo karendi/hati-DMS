@@ -5,8 +5,7 @@ const documentDetails = (doc) => {
     title: doc.title,
     content: doc.content,
     access: doc.access,
-    author: doc.author,
-    ownerId: doc.ownerId,
+    userId: doc.userId,
     createdAt: doc.createdAt,
     updatedAt: doc.updatedAt
   };
@@ -20,8 +19,7 @@ class DocumentController {
         title: req.body.title,
         content: req.body.content,
         access: req.body.access || 'public',
-        author: req.body.author || req.User.username,
-        ownerId: req.decodedToken.userId,
+        userId: req.decodedToken.userId,
         ownerRoleId: req.decodedToken.roleId
       })
        .then((document) => {
@@ -35,7 +33,7 @@ class DocumentController {
            message: 'There was an error while creating the document', err
          });
      });
-  },
+  }
 
   static updateDocument(req, res) {
     db.Document
@@ -44,12 +42,11 @@ class DocumentController {
         if (!doc) {
           return res.status(404).send({ message: 'The document was not found' });
         }
-        if (doc.ownerId === req.decodedToken.userId) {
+        if (doc.userId === req.decodedToken.userId) {
           doc.update({
             title: req.body.title || doc.title,
             content: req.body.content || doc.content,
-            access: req.body.access || doc.access,
-            author: req.body.author || doc.author
+            access: req.body.access || doc.access
           })
           .then((updatedDoc) => {
             updatedDoc = docAttributes(updatedDoc);
@@ -61,7 +58,7 @@ class DocumentController {
           res.status(401).send({ message: 'Permission denied' });
         }
       });
-  },
+  }
 
   static deleteDocument(req, res) {
     db.Document
@@ -70,7 +67,7 @@ class DocumentController {
         if (!doc) {
           return res.status(404).send({ message: 'The document was not found' });
         }
-        if (doc.ownerId === req.decodedToken.userId) {
+        if (doc.userId === req.decodedToken.userId) {
           doc.destroy()
           .then(() => {
             res.status(200).send({
@@ -83,7 +80,7 @@ class DocumentController {
           });
         }
       });
-  },
+  }
 
   static listAllDocuments(req, res) {
     let query;
@@ -94,7 +91,7 @@ class DocumentController {
         where: {
           $or: [
             { access: 'public' },
-            { ownerId: req.decodedToken.userId },
+            { userId: req.decodedToken.userId },
             {
               $and: [
                 { access: 'role' },
@@ -110,8 +107,7 @@ class DocumentController {
       'title',
       'content',
       'access',
-      'author'
-      'ownerId',
+      'userId',
       'createdAt',
       'updatedAt'
     ];
@@ -124,7 +120,7 @@ class DocumentController {
       .then((docs) => {
         res.status(200).send({ message: docs });
       });
-  },
+  }
 
   static getSpecificDocument(req, res) {
     db.Document
@@ -133,7 +129,7 @@ class DocumentController {
         if (!doc) {
           return res.status(404).send({ message: 'The document was not found' });
         }
-        if (doc.access === 'public' || doc.ownerId === req.decodedToken.userId) {
+        if (doc.access === 'public' || doc.userId === req.decodedToken.userId) {
           doc = docAttributes(doc);
           return res.status(200).send({ message: doc });
         }
@@ -143,7 +139,7 @@ class DocumentController {
         }
         res.status(401).send({ message: 'Permission denied' });
       });
-  },
+  }
 
   static searchDocument(req, res) {
 
