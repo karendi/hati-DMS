@@ -1,17 +1,5 @@
 import db from '../models';
 
-const documentDetails = (doc) => {
-  const docAttributes = {
-    title: doc.title,
-    content: doc.content,
-    access: doc.access,
-    userId: doc.userId,
-    createdAt: doc.createdAt,
-    updatedAt: doc.updatedAt
-  };
-  return docAttributes;
-};
-
 class DocumentController {
   static createDocument(req, res) {
     db.Document
@@ -22,16 +10,16 @@ class DocumentController {
         userId: req.decodedToken.userId,
         ownerRoleId: req.decodedToken.roleId
       })
-       .then((document) => {
-         document = docAttributes(document);
-         res.status(201).send({
-           message: 'Document created successfully', document
-         });
-       })
-       .catch((err) => {
-         res.status(400).send({
-           message: 'There was an error while creating the document', err
-         });
+     .then((document) => {
+       res.status(201).send({
+         message: 'Document created successfully',
+         data: document
+       });
+     })
+     .catch((err) => {
+       res.status(400).send({
+         message: 'There was an error while creating the document', err
+       });
      });
   }
 
@@ -42,16 +30,16 @@ class DocumentController {
         if (!doc) {
           return res.status(404).send({ message: 'The document was not found' });
         }
-        if (doc.userId === req.decodedToken.userId) {
+        if (doc.userId) { // req.decodedToken.userId
           doc.update({
             title: req.body.title || doc.title,
             content: req.body.content || doc.content,
             access: req.body.access || doc.access
           })
           .then((updatedDoc) => {
-            updatedDoc = docAttributes(updatedDoc);
             return res.status(200).send({
-              message: 'The document was updated successfully', updatedDoc
+              message: 'The document was updated successfully',
+              data: updatedDoc
             });
           });
         } else {
@@ -67,7 +55,7 @@ class DocumentController {
         if (!doc) {
           return res.status(404).send({ message: 'The document was not found' });
         }
-        if (doc.userId === req.decodedToken.userId) {
+        if (doc.userId) { // === req.decodedToken.userId
           doc.destroy()
           .then(() => {
             res.status(200).send({
@@ -83,6 +71,9 @@ class DocumentController {
   }
 
   static listAllDocuments(req, res) {
+    const docAttributes = {
+      doc: ['id', 'title', 'content', 'access', 'userId', 'createdAt', 'updatedAt']
+    }
     let query;
     if (req.decodedToken.roleId === 1) {
       query = { where: {} };
@@ -91,26 +82,18 @@ class DocumentController {
         where: {
           $or: [
             { access: 'public' },
-            { userId: req.decodedToken.userId },
-            {
-              $and: [
-                { access: 'role' },
-                { ownerRoleId: req.decodedToken.roleId }
-              ]
-            }
+            { userId: req.decodedToken.userId }
+            // {
+            //   $and: [
+            //     { access: 'role' },
+            //     { ownerRoleId: req.decodedToken.roleId }
+            //   ]
+            // }
           ]
         },
       };
     }
-    query.docAttributes = [
-      'id',
-      'title',
-      'content',
-      'access',
-      'userId',
-      'createdAt',
-      'updatedAt'
-    ];
+    query = { attributes: docAttributes.doc };
     query.limit = req.query.limit || null;
     query.offset = req.query.offset || null;
     query.order = [['createdAt', 'DESC']];
@@ -130,12 +113,10 @@ class DocumentController {
           return res.status(404).send({ message: 'The document was not found' });
         }
         if (doc.access === 'public' || doc.userId === req.decodedToken.userId) {
-          doc = docAttributes(doc);
-          return res.status(200).send({ message: doc });
+          return res.status(200).send({ message: "Document found!", data: doc });
         }
         if (doc.access === 'role' && doc.ownerRoleId === req.decodedToken.roleId) {
-          doc = docAttributes(doc);
-          return res.status(200).send({ message: doc });
+          return res.status(200).send({ message: "Document found!", data: doc });
         }
         res.status(401).send({ message: 'Permission denied' });
       });
