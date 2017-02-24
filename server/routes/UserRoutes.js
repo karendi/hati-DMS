@@ -12,7 +12,7 @@ userRouter.route('/login')
   .post(UserController.loginUser);
 
 userRouter.route('/logout')
-  .post(Authentication.verifyUser, Authentication.logout, UserController.logoutUser);
+  .post(Authentication.verifyUser, UserController.logoutUser);
 
 userRouter.route('/:id')
   .get(Authentication.verifyUser, UserController.findUserById)
