@@ -2,7 +2,7 @@
   "name": "hati-dms",
   "version": "1.0.0",
   "description": " A Full Stack Document Management System",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "nodemon server.js --exec babel-node --presets es2015"
   },
