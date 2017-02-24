@@ -1,9 +1,7 @@
 import dotenv from 'dotenv';
 import app from './server/routes/index';
 
-dotenv.config({
-  silent: true
-});
+dotenv.config({ silent: true });
 
 const port = process.env.PORT || 8080;
 
