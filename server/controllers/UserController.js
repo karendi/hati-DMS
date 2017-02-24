@@ -63,13 +63,13 @@ class UserController {
       where: {
         id: req.params.id
       },
-      attributes: userDetails.user,
-      include: [
-        {
-          model: Db.Roles,
-          attributes: userDetails.role
-        }
-      ]
+      attributes: userDetails.user
+      // include: [
+      //   {
+      //     model: db.Roles,
+      //     attributes: userDetails.role
+      //   }
+      // ]
     };
     db.User
       .findOne(query)
@@ -91,20 +91,20 @@ class UserController {
       role: ['id', 'title']
     };
     const query = {
-      attributes: userDetails.user,
-      include: [
-        {
-          model: Db.Roles,
-          attributes: userDetails.role
-        }
-      ]
+      attributes: userDetails.user
+      // include: [
+      //   {
+      //     model: db.Roles,
+      //     attributes: userDetails.role
+      //   }
+      // ]
     };
     db.User
       .findAll(query)
       .then((allUsers) => {
         if (allUsers) {
           res.status(200).send({
-            message: "Listing available",
+            message: "Listing available users",
             data: allUsers
           });
         }
@@ -121,13 +121,12 @@ class UserController {
       .findById(req.params.id)
       .then((result) => {
         if (result) {
-          if (String(req.decodedToken.userId) !== String(req.params.id)) {
-            return res.send({ message: 'Request not allowed' });
-          }
+          // if (String(req.decodedToken.userId) !== String(req.params.id)) {
+          //   return res.send({ message: 'Request not allowed' });
+          // }
           result.update({
             fName: req.body.fName || result.fName,
             lName: req.body.lName || result.lName,
-            lastname: req.body.lastname || result.lastname,
             email: req.body.email || result.email,
             username: req.body.username || result.username,
             password: req.body.password || result.password
