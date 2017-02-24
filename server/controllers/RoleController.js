@@ -53,6 +53,7 @@ class RoleController {
         if (!allRoles) {
           return res.status(404).send({ message: 'A problem was encountered while getting roles' })
         }
+        res.status(200).send({ message: allRoles });
       });
   }
 
