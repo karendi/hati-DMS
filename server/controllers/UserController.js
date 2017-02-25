@@ -63,13 +63,13 @@ class UserController {
       where: {
         id: req.params.id
       },
-      attributes: userDetails.user
-      // include: [
-      //   {
-      //     model: db.Roles,
-      //     attributes: userDetails.role
-      //   }
-      // ]
+      attributes: userDetails.user,
+      include: [
+        {
+          model: db.Role,
+          attributes: userDetails.role
+        }
+      ]
     };
     db.User
       .findOne(query)
@@ -91,13 +91,13 @@ class UserController {
       role: ['id', 'title']
     };
     const query = {
-      attributes: userDetails.user
-      // include: [
-      //   {
-      //     model: db.Roles,
-      //     attributes: userDetails.role
-      //   }
-      // ]
+      attributes: userDetails.user,
+      include: [
+        {
+          model: db.Role,
+          attributes: userDetails.role
+        }
+      ]
     };
     db.User
       .findAll(query)
@@ -119,17 +119,17 @@ class UserController {
   static updateUser(req, res) {
     db.User
       .findById(req.params.id)
-      .then((result) => {
-        if (result) {
-          // if (String(req.decodedToken.userId) !== String(req.params.id)) {
-          //   return res.send({ message: 'Request not allowed' });
-          // }
-          result.update({
-            fName: req.body.fName || result.fName,
-            lName: req.body.lName || result.lName,
-            email: req.body.email || result.email,
-            username: req.body.username || result.username,
-            password: req.body.password || result.password
+      .then((user) => {
+        if (user) {
+          if (toString(req.decodedToken.userId) !== toString(req.params.id)) {
+            return res.send({ message: 'Request not allowed' });
+          }
+          user.update({
+            fName: req.body.fName || user.fName,
+            lName: req.body.lName || user.lName,
+            email: req.body.email || user.email,
+            username: req.body.username || user.username,
+            password: req.body.password || user.password
           })
           .then((updatedProfile) => {
             res.status(200).send({
@@ -150,6 +150,9 @@ class UserController {
       .findById(req.params.id)
       .then((user) => {
         if (user) {
+          if (toString(req.decodedToken.userId) !== toString(req.params.id)) {
+            return res.send({ message: 'Request not allowed' });
+          }
           user.destroy()
           .then(() => {
             res.status(200).send({

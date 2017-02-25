@@ -8,7 +8,7 @@ class DocumentController {
         content: req.body.content,
         access: req.body.access || 'public',
         userId: req.decodedToken.userId,
-        ownerRoleId: req.decodedToken.roleId
+        userRoleId: req.decodedToken.roleId
       })
      .then((document) => {
        res.status(201).send({
@@ -30,7 +30,7 @@ class DocumentController {
         if (!doc) {
           return res.status(404).send({ message: 'The document was not found' });
         }
-        if (doc.userId) { // req.decodedToken.userId
+        if (parseInt(doc.userId, 10) === req.decodedToken.userId) {
           doc.update({
             title: req.body.title || doc.title,
             content: req.body.content || doc.content,
@@ -55,7 +55,7 @@ class DocumentController {
         if (!doc) {
           return res.status(404).send({ message: 'The document was not found' });
         }
-        if (doc.userId) { // === req.decodedToken.userId
+        if (parseInt(doc.userId, 10) === req.decodedToken.userId) {
           doc.destroy()
           .then(() => {
             res.status(200).send({
@@ -72,7 +72,8 @@ class DocumentController {
 
   static listAllDocuments(req, res) {
     const docAttributes = {
-      doc: ['id', 'title', 'content', 'access', 'userId', 'createdAt', 'updatedAt']
+      doc: ['id', 'title', 'content', 'access', 'userId', 'createdAt', 'updatedAt'],
+      user: ['id', 'username']
     }
     let query;
     if (req.decodedToken.roleId === 1) {
@@ -82,13 +83,13 @@ class DocumentController {
         where: {
           $or: [
             { access: 'public' },
-            { userId: req.decodedToken.userId }
-            // {
-            //   $and: [
-            //     { access: 'role' },
-            //     { ownerRoleId: req.decodedToken.roleId }
-            //   ]
-            // }
+            { userId: req.decodedToken.userId },
+            {
+              $and: [
+                { access: 'role' },
+                { userRoleId: req.decodedToken.roleId }
+              ]
+            }
           ]
         },
       };
@@ -115,7 +116,7 @@ class DocumentController {
         if (doc.access === 'public' || doc.userId === req.decodedToken.userId) {
           return res.status(200).send({ message: "Document found!", data: doc });
         }
-        if (doc.access === 'role' && doc.ownerRoleId === req.decodedToken.roleId) {
+        if (doc.access === 'role' && doc.userRoleId === req.decodedToken.roleId) {
           return res.status(200).send({ message: "Document found!", data: doc });
         }
         res.status(401).send({ message: 'Permission denied' });
@@ -123,7 +124,39 @@ class DocumentController {
   }
 
   static searchDocument(req, res) {
-
+    if (!req.query.query) {
+      return res.send({ message: 'Search cannot be empty' });
+    }
+    const query = {
+      where: {
+        $and: [
+          {
+            $or: [
+              { access: 'public' },
+              { ownerId: req.decodedToken.userId },
+              { $and: [
+                { access: 'role' },
+                { ownerRoleId: req.decodedToken.roleId }
+              ] }
+            ]
+          },
+          {
+            $or: [
+              { title: { like: `%${req.query.query}%` } },
+              { content: { like: `%${req.query.query}%` } }
+            ]
+          }
+        ]
+      },
+      limit: req.query.limit || null,
+      offset: req.query.offset || null,
+      order: [['createdAt', 'DESC']]
+    };
+    db.Document
+      .findAll(query)
+      .then((queriedDoc) => {
+        res.status(200).send({ message: queriedDoc });
+      });
   }
 }
 
