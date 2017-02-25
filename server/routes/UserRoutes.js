@@ -20,6 +20,6 @@ userRouter.route('/:id')
   .delete(Authentication.verifyUser, Authentication.verifyAdmin, UserController.deleteUser);
 
 userRouter.route('/:id/documents')
-  .get(Authentication.verifyUser, UserController.listUserDocuments);
+  .get(Authentication.verifyUser, Authentication.logout, UserController.listUserDocuments);
 
 export default userRouter;
