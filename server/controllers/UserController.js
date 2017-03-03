@@ -168,8 +168,12 @@ class UserController {
   }
 
   static listUserDocuments(req, res) {
+    const userDetails = {
+      user: ['id', 'fName', 'lName', 'email', 'username'],
+      doc: ['id', 'title', 'content']
+    };
     db.User
-      .findAll({ where: { id: req.params.id }, include: [{ model: db.Document }] })
+      .findAll({ where: { id: req.params.id }, include: [{ model: db.Document, attributes: userDetails.doc }] })
       .then((user) => {
         if (!user) {
           return res.status(404).send({ message: 'User was not found' });
