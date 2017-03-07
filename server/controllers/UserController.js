@@ -1,7 +1,10 @@
+import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import db from '../models';
 
-const secret = process.env.SECRET || 'wearethepirateswhodontdoanything';
+dotenv.config({ silent: true });
+
+const secret = process.env.SECRET;
 
 class UserController {
   static createNewUser(req, res) {
