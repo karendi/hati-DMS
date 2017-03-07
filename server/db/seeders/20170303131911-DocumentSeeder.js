@@ -109,8 +109,8 @@ module.exports = {
                  occupied and we were good to go. And yes the high dude ended up being
                  the driver. O_o His driving was alright though.',
         access: 'public',
-        // userId: 5,
-        userRoleId:,
+        userId: 5,
+        userRoleId: 2,
         createdAt: new Date(),
         updatedAt: new Date()
       }

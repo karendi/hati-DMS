@@ -1,3 +1,6 @@
+import Bcrypt from 'bcrypt-nodejs';
+const salt = Bcrypt.genSaltSync(10);
+
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('User', [
@@ -6,7 +9,7 @@ module.exports = {
         lName: 'Mwenyewe',
         email: 'admin@example.com',
         username: 'admin',
-        password: '123456',
+        password: Bcrypt.hashSync('123456', salt),
         roleId: 1,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -16,7 +19,7 @@ module.exports = {
         lName: 'Doe',
         email: 'jane@example.com',
         username: 'janedoe',
-        password: 'iwillnotrememberthis',
+        password: Bcrypt.hashSync('iwillnotrememberthis', salt),
         roleId: 2,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -26,7 +29,7 @@ module.exports = {
         lName: 'Doe',
         email: 'john@example.com',
         username: 'johndoe',
-        password: 'whymewhy',
+        password: Bcrypt.hashSync('whymewhy', salt),
         roleId: 2,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -36,7 +39,7 @@ module.exports = {
         lName: 'Muchemi',
         email: 'dylan@example.com',
         username: 'dmuchemi',
-        password: 'coffeeisfuel',
+        password: Bcrypt.hashSync('coffeeisbae', salt),
         roleId: 2,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -46,11 +49,11 @@ module.exports = {
         lName: 'Msee',
         email: 'yule@example.com',
         username: 'yulemsee',
-        password: 'incorrect',
+        password: Bcrypt.hashSync('incorrect', salt),
         roleId: 2,
         createdAt: new Date(),
         updatedAt: new Date()
-      },
+      }
     ], {});
   },
 
