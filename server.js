@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import app from './server/routes/index';
+import app from './server/routes/Index';
 
 dotenv.config({ silent: true });
 
