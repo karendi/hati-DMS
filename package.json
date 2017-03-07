@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js --exec babel-node --presets es2015",
-    "test": "mocha --timeout 10000"
+    "test": "./node_modules/.bin/mocha --require babel-register --reporter spec ./server/tests/*.spec.js --timeout 10000"
   },
   "repository": {
     "type": "git",
@@ -33,6 +33,7 @@
     "chai-http": "^3.0.0",
     "dotenv": "^4.0.0",
     "express": "^4.14.1",
+    "faker": "^4.1.0",
     "jquery": "^3.1.1",
     "jsonwebtoken": "^7.3.0",
     "morgan": "^1.8.1",
