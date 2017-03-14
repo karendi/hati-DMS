@@ -12,6 +12,16 @@ const legitUsers = [
     updatedAt: new Date()
   },
   {
+    fName: 'Dylan',
+    lName: 'Muchemi',
+    email: 'dylan@example.com',
+    username: 'dmuchemi',
+    password: 'coffeeisbae',
+    roleId: 2,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  },
+  {
     fName: 'Jane',
     lName: 'Doe',
     email: 'jane@example.com',
@@ -27,16 +37,6 @@ const legitUsers = [
     email: 'john@example.com',
     username: 'johndoe',
     password: 'whymewhy',
-    roleId: 2,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    fName: 'Dylan',
-    lName: 'Muchemi',
-    email: 'dylan@example.com',
-    username: 'dmuchemi',
-    password: 'coffeeisbae',
     roleId: 2,
     createdAt: new Date(),
     updatedAt: new Date()
@@ -86,7 +86,7 @@ const invalidUsers = [
   }
 ];
 
-export default {
+export {
   legitUsers,
   invalidUsers
 };
