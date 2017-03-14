@@ -1,13 +1,16 @@
 const legitRoles = [
   {
-    id: 1,
     title: 'admin',
     createdAt: new Date(),
     updatedAt: new Date()
   },
   {
-    id: 2,
     title: 'user',
+    createdAt: new Date(),
+    updatedAt: new Date()
+  },
+  {
+    title: 'ninja',
     createdAt: new Date(),
     updatedAt: new Date()
   }
@@ -15,20 +18,13 @@ const legitRoles = [
 
 const invalidRoles = [
   {
-    id: 2,
-    title: 'admin',
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    id: 2,
     title: '',
     createdAt: new Date(),
     updatedAt: new Date()
   }
 ];
 
-export default {
+export {
   legitRoles,
   invalidRoles
 };
