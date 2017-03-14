@@ -1,9 +1,6 @@
-import dotenv from 'dotenv';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../routes/Index';
-
-dotenv.config({ silent: true });
 
 process.env.NODE_ENV = 'test';
 
