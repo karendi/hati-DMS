@@ -102,7 +102,7 @@ class DocumentController {
     db.Document
       .findAll(query)
       .then((docs) => {
-        res.status(200).send({ message: docs });
+        res.status(200).send({ message: 'Listing all documents', docs });
       });
   }
 
