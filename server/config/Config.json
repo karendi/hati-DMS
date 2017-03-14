@@ -1,16 +1,16 @@
 {
   "development": {
-    "username": "",
-    "password": "",
-    "database": process.env.DATABASE_DEV_URL,
+    "username": "jackie",
+    "password": null,
+    "database": "hatidev",
     "host": "127.0.0.1",
     "port": "5432",
     "dialect": "postgres"
   },
   "test": {
-    "username": "",
-    "password": "",
-    "database": process.env.DATABASE_TEST_URL,
+    "username": "jackie",
+    "password": null,
+    "database": "hatitest",
     "host": "127.0.0.1",
     "port": "5432",
     "dialect": "postgres"
