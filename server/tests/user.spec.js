@@ -21,7 +21,7 @@ chai.use(chaiHttp);
  */
 
 describe('User API Spec', () => {
-  
+
   let adminUserToken;
   let regUserToken;
   before((done) => {
@@ -44,8 +44,6 @@ describe('User API Spec', () => {
         regUserToken = response.body.token;
         done();
       });
-      console.log(adminUserToken);
-      console.log(regUserToken);
   });
 
    describe('Users Information' , () => {
