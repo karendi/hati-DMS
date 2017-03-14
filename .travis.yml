@@ -7,9 +7,9 @@ notifications:
   slack: andela:kIVwwrSGn5fYVXxtkjD53dav
 
 before_install:
-  - export CHROME_BIN=/usr/bin/google-chrome
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+  - npm install -g codeclimate-test-reporter
+  - psql -c 'drop database if exists hatidev;' -U jackie
+  - psql -c 'create database hatidev;' -U jackie
 
 services:
   - postgresql
