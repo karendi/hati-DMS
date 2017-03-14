@@ -8,14 +8,15 @@
     "dialect": "postgres"
   },
   "test": {
-    "username": "jackie",
-    "password": null,
+    "username": "",
+    "password": "",
     "database": "hatitest",
     "host": "127.0.0.1",
     "port": "5432",
     "dialect": "postgres"
   },
   "production": {
-    "database": "DATABASE_URL"
+    "database": "DATABASE_URL",
+    "dialect": "postgres"
   }
 }
