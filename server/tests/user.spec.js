@@ -25,6 +25,7 @@ describe('User API Spec', () => {
   let adminUserToken;
   let regUserToken;
   before((done) => {
+
     chai.request(app)
     .post('/users/login')
       .send({
@@ -33,21 +34,21 @@ describe('User API Spec', () => {
       })
       .end((error, response) => {
         adminUserToken = response.body.token;
+      });
+
+    chai.request(app)
+    .post('/users/login')
+      .send({
+        email: users[1].email,
+        password: users[1].password
+      })
+      .end((error, response) => {
+        regUserToken = response.body.token;
         done();
       });
-    // chai.request(app)
-    // .post('/users/login')
-    //   .send({
-    //     email: users[1].email,
-    //     password: users[1].password
-    //   })
-    //   .end((error, response) => {
-    //     regUserToken = response.body.token;
-    //     done();
-    //   });
   });
 
-   describe('Admin access to users information' , () => {
+   describe('Users Information' , () => {
 
      it('GET /users => should get the admin list of all users', (done) => {
        chai.request(app)
@@ -60,20 +61,6 @@ describe('User API Spec', () => {
         });
      });
    });
-
-  //  describe('Users Information' , () => {
-   //
-  //    it('GET /users => should get the admin list of all users', (done) => {
-  //      chai.request(app)
-  //       .get('/users')
-  //       .set('authorization', adminUserToken)
-  //       .end((err, res) => {
-  //         res.should.have.status(200);
-  //         res.body.message.should.equal('Listing available users');
-  //         done();
-  //       });
-  //    });
-  //  });
 
 
 
