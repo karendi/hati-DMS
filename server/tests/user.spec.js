@@ -32,7 +32,7 @@ describe('User API Spec', () => {
         password: users[0].password
       })
       .end((error, response) => {
-        adminUserToken = response.body.token || response.query.token || response.headers.authorization || response.headers['x-access-token'];
+        adminUserToken = response.body.token;
       });
     chai.request(app)
     .post('/users/login')
@@ -41,7 +41,7 @@ describe('User API Spec', () => {
         password: users[1].password
       })
       .end((error, response) => {
-        regUserToken = response.body.token || response.query.token || response.headers.authorization || response.headers['x-access-token'];
+        regUserToken = response.body.token;
         done();
       });
   });
