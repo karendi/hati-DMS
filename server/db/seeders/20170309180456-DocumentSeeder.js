@@ -1,10 +1,10 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('Document', [
+    return queryInterface.bulkInsert('Documents', [
       {
         id: 1,
         title: 'Grab a Book Already! - Snippet',
-        content:'I have a confession to make, I have not always been a bookworm.
+        content:`I have a confession to make, I have not always been a bookworm.
                  I know a good number of people who will have a hard time believing
                  that. I loved to read as a child and downed any novel, often borrowed,
                  that came my way easily. This wore off early in my teenage years
@@ -25,7 +25,7 @@ module.exports = {
                  read this, I have learnt a costly lesson since, really. 🙂 ) This is a
                  familiar story for a lot of Kenyans today. We grow up, get into a crazy
                  system, find our spot, fit in and do all we can to survive and come
-                 out on the other side.',
+                 out on the other side.`,
         access: 'public',
         userId: 1,
         userRoleId: 1,
@@ -45,7 +45,7 @@ module.exports = {
       {
         id: 3,
         title: 'Boy and His Banana. - Snippet',
-        content: 'I was in a matatu headed home a couple of weeks ago. I sat next
+        content: `I was in a matatu headed home a couple of weeks ago. I sat next
                  to a lady with her son. On our way, they started eating sweet bananas
                  and as we all know, sweet bananas, as any other type of bananas,
                  come with peels.
@@ -63,7 +63,7 @@ module.exports = {
                  for the entire bunch.
 
                  Feeling albeit guilty that peel number one was separated from the
-                 rest of his siblings, I held on all the way home where I disposed it of.',
+                 rest of his siblings, I held on all the way home where I disposed it of.`,
         access: 'public',
         userId: 3,
         userRoleId: 2,
@@ -83,7 +83,7 @@ module.exports = {
       {
         id: 5,
         title: 'Do not Miss the Bus. - Snippet',
-        content: 'Something very interesting happened today. I was to head to Thika
+        content: `Something very interesting happened today. I was to head to Thika
                  after Church so as soon as Service was done I dashed out, headed
                  to town and made my way to the Thika stage.
 
@@ -107,7 +107,7 @@ module.exports = {
                  O_o As all this took place someone took our fare (I assumed he was not
                  the driver since he was kite high). Eventually the remaining seat got
                  occupied and we were good to go. And yes the high dude ended up being
-                 the driver. O_o His driving was alright though.',
+                 the driver. O_o His driving was alright though.`,
         access: 'public',
         userId: 5,
         userRoleId: 2,
@@ -118,6 +118,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('Document', null, {});
+    return queryInterface.bulkDelete('Documents', null, {});
   }
 };
