@@ -1,27 +1,19 @@
-sudo: required
-dist: trusty
 language: node_js
-cache: false
 node_js:
 - "stable"
-
+cache: false
 notifications:
   email: false
   slack: andela:kIVwwrSGn5fYVXxtkjD53dav
-
 before_install:
   - npm install -g codeclimate-test-reporter
   - psql -c 'drop database if exists hatidev;' -U postgres
   - psql -c 'create database hatidev;' -U postgres
-
 services:
   - postgresql
-
 script:
   - npm test
-
 after_success:
   - CODECLIMATE_REPO_TOKEN=3c6f1e453ce3229cc9a494a8721d0e07086aa8c8e295bf09b7319d3f9ea4a60d
-
 addons:
   postgresql: "9.3"
