@@ -9,7 +9,7 @@ notifications:
 before_install:
   - psql -c 'drop database if exists hatitest;' -U postgres
   - psql -c 'create database hatitest;' -U postgres
-  - NODE_ENV=test npm run migrate
+  - NODE_ENV=test
 
 services:
   - postgresql
