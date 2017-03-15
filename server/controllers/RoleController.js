@@ -1,4 +1,4 @@
-import db from '../models';
+import db from '../models/Index.js';
 
 class RoleController {
   static createRole(req, res) {

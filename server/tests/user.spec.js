@@ -21,10 +21,11 @@ chai.use(chaiHttp);
  */
 
 describe('User API Spec', () => {
-  
+
   let adminUserToken;
   let regUserToken;
   before((done) => {
+
     chai.request(app)
     .post('/users/login')
       .send({
@@ -34,6 +35,7 @@ describe('User API Spec', () => {
       .end((error, response) => {
         adminUserToken = response.body.token;
       });
+
     chai.request(app)
     .post('/users/login')
       .send({
@@ -44,11 +46,10 @@ describe('User API Spec', () => {
         regUserToken = response.body.token;
         done();
       });
-      console.log(adminUserToken);
-      console.log(regUserToken);
   });
 
    describe('Users Information' , () => {
+
      it('GET /users => should get the admin list of all users', (done) => {
        chai.request(app)
         .get('/users')
