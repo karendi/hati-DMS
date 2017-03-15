@@ -14,6 +14,6 @@ services:
 script:
   - npm test
 after_success:
-  - CODECLIMATE_REPO_TOKEN=3c6f1e453ce3229cc9a494a8721d0e07086aa8c8e295bf09b7319d3f9ea4a60d
+  - npm run coveralls
 addons:
   postgresql: "9.3"
