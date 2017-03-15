@@ -8,25 +8,52 @@ const secret = process.env.SECRET;
 
 class UserController {
   static createNewUser(req, res) {
+    const fName = req.body.fName;
+    const lName = req.body.lName;
+    const email = req.body.email;
+    const username = req.body.username;
+    const password = req.body.password;
+    if (!fName || !lName || !email || !username || !password) {
+      return res.status(400).send({
+        message: 'Fill the required fields',
+      })
+    }
     db.User
-      .create(req.body)
-      .then((user) => {
-        const payload = {
-          userId: user.id,
-          roleId: user.roleId
-        };
-        const token = jwt.sign(payload, secret, { expiresIn: '24h' });
-        return res.status(201).send({
-          message: 'User was successfully created',
-          token,
-          data: user
+      .findOne({
+        where: {
+          $or: {
+            email, username
+          }
+        }
+      })
+      .then((result) => {
+        if (result) {
+          return res.status(409).send({
+            success: false,
+            message: 'Email or username already exists'
+          });
+        }
+      return db.User
+        .create(req.body)
+        .then((user) => {
+          const payload = {
+            userId: user.id,
+            roleId: user.roleId
+          };
+          const token = jwt.sign(payload, secret, { expiresIn: '24h' });
+          return res.status(201).send({
+            message: 'User was successfully created',
+            token,
+            data: user
+          });
+        })
+        .catch((err) => {
+          res.status(400).send({
+            message: 'There was a problem creating the user',
+            err
+          })
         });
       })
-      .catch((err) => {
-        res.status(400).send({
-          message: err.message
-        })
-      });
   }
 
   static loginUser(req, res) {
@@ -37,6 +64,16 @@ class UserController {
         }
       })
       .then((user) => {
+        if (!user) {
+          return res.status(403).send({
+            message: 'No user was found',
+          });
+        }
+        if (!user.validatePassword(req.body.password)) {
+          return res.status(401).send({
+            message: 'Invalid password',
+          });
+        }
         if (user && user.validatePassword(req.body.password)) {
           const payload = {
             userId: user.id,
@@ -52,7 +89,7 @@ class UserController {
       })
       .catch((err) => {
         res.status(401).send({
-          message: `There was a problem while logging in ${err.message}`,
+          message: 'Invalid login credentials',
         });
       });
   }
@@ -77,6 +114,11 @@ class UserController {
     db.User
       .findOne(query)
       .then((user) => {
+        if (!user) {
+          return res.status(404).send ({
+            message: 'The user was not found'
+          })
+        }
         if (user) {
           return res.status(200).send({ message: 'User found!', data: user });
         }
@@ -136,7 +178,7 @@ class UserController {
           })
           .then((updatedProfile) => {
             res.status(200).send({
-              message: 'Information updated successfully',
+              message: 'User updated successfully',
               data: updatedProfile
             });
           });
