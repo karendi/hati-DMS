@@ -5,7 +5,7 @@ import Authentication from '../middleware/Authentication';
 const userRouter = express.Router();
 
 userRouter.route('/')
-  .get(Authentication.verifyUser, Authentication.verifyAdmin, UserController.listAllUsers)
+  .get(Authentication.verifyUser, UserController.listAllUsers)
   .post(UserController.createNewUser);
 
 userRouter.route('/login')
@@ -20,6 +20,6 @@ userRouter.route('/:id')
   .delete(Authentication.verifyUser, Authentication.verifyAdmin, UserController.deleteUser);
 
 userRouter.route('/:id/documents')
-  .get(Authentication.verifyUser, Authentication.logout, UserController.listUserDocuments);
+  .get(Authentication.verifyUser, UserController.listUserDocuments);
 
 export default userRouter;
