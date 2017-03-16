@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import documentRouter from './DocumentRoutes';
 import roleRouter from './RoleRoutes';
 import userRouter from './UserRoutes';
+import searchRouter from './SearchRoutes';
 
 const app = express();
 
@@ -19,5 +20,6 @@ app.get('/', (req, res) => {
 app.use('/users', userRouter);
 app.use('/documents', documentRouter);
 app.use('/roles', roleRouter);
+app.use('/search', searchRouter);
 
 export default app;
