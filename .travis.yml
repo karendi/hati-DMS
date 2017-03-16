@@ -1,0 +1,19 @@
+language: node_js
+node_js:
+- "stable"
+cache: false
+notifications:
+  email: false
+  slack: andela:kIVwwrSGn5fYVXxtkjD53dav
+before_install:
+  - npm install -g codeclimate-test-reporter
+  - psql -c 'drop database if exists hatidev;' -U postgres
+  - psql -c 'create database hatidev;' -U postgres
+services:
+  - postgresql
+script:
+  - npm test
+after_success:
+  - npm run coveralls
+addons:
+  postgresql: "9.3"

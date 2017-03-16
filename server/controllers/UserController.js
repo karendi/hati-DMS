@@ -1,28 +1,53 @@
 import jwt from 'jsonwebtoken';
-import db from '../models';
+import db from '../models/Index.js';
 
-const secret = process.env.SECRET || 'wearethepirateswhodontdoanything';
+const secret = process.env.SECRET;
 
 class UserController {
   static createNewUser(req, res) {
+    const fName = req.body.fName;
+    const lName = req.body.lName;
+    const email = req.body.email;
+    const username = req.body.username;
+    const password = req.body.password;
+    if (!fName || !lName || !email || !username || !password)
+      return res.status(400).send({
+        message: 'Fill the required fields',
+      });
     db.User
-      .create(req.body)
-      .then((user) => {
-        const payload = {
-          userId: user.id,
-          roleId: user.roleId
-        };
-        const token = jwt.sign(payload, secret, { expiresIn: '24h' });
-        return res.status(201).send({
-          message: 'User was successfully created',
-          token,
-          data: user
-        });
+      .findOne({
+        where: {
+          $or: {
+            email, username
+          }
+        }
       })
-      .catch((err) => {
-        res.status(400).send({
-          message: err.message
+      .then((result) => {
+        if (result)
+          return res.status(409).send({
+            success: false,
+            message: 'Email or username already exists'
+          });
+      return db.User
+        .create(req.body)
+        .then((user) => {
+          const payload = {
+            userId: user.id,
+            roleId: user.roleId
+          };
+          const token = jwt.sign(payload, secret, { expiresIn: '24h' });
+          return res.status(201).send({
+            message: 'User was successfully created',
+            token,
+            data: user
+          });
         })
+        .catch((err) => {
+          res.status(400).send({
+            message: 'There was a problem creating the user',
+            err
+          });
+        });
       });
   }
 
@@ -34,6 +59,14 @@ class UserController {
         }
       })
       .then((user) => {
+        if (!user)
+          return res.status(403).send({
+            message: 'No user was found',
+          });
+        if (!user.validatePassword(req.body.password))
+          return res.status(401).send({
+            message: 'Invalid password',
+          });
         if (user && user.validatePassword(req.body.password)) {
           const payload = {
             userId: user.id,
@@ -49,7 +82,8 @@ class UserController {
       })
       .catch((err) => {
         res.status(401).send({
-          message: `There was a problem while logging in ${err.message}`,
+          message: 'Invalid login credentials',
+          err
         });
       });
   }
@@ -74,13 +108,17 @@ class UserController {
     db.User
       .findOne(query)
       .then((user) => {
-        if (user) {
+        if (!user)
+          return res.status(404).send({
+            message: 'The user was not found'
+          });
+        if (user)
           return res.status(200).send({ message: 'User found!', data: user });
-        }
       })
       .catch((err) => {
         res.status(404).send({
-          message: `User ${req.params.id} was not found`
+          message: `User ${req.params.id} was not found`,
+          err
         });
       });
   }
@@ -102,18 +140,18 @@ class UserController {
     db.User
       .findAll(query)
       .then((allUsers) => {
-        if (allUsers) {
+        if (allUsers)
           res.status(200).send({
             message: "Listing available users",
             data: allUsers
           });
-        }
       })
       .catch((err) => {
         res.status(404).send({
-          message: 'There was a problem getting all users'
+          message: 'There was a problem getting all users',
+          err
         });
-      })
+      });
   }
 
   static updateUser(req, res) {
@@ -121,9 +159,8 @@ class UserController {
       .findById(req.params.id)
       .then((user) => {
         if (user) {
-          if (toString(req.decodedToken.userId) !== toString(req.params.id)) {
+          if (toString(req.decodedToken.userId) !== toString(req.params.id))
             return res.send({ message: 'Request not allowed' });
-          }
           user.update({
             fName: req.body.fName || user.fName,
             lName: req.body.lName || user.lName,
@@ -133,7 +170,7 @@ class UserController {
           })
           .then((updatedProfile) => {
             res.status(200).send({
-              message: 'Information updated successfully',
+              message: 'User updated successfully',
               data: updatedProfile
             });
           });
@@ -150,9 +187,8 @@ class UserController {
       .findById(req.params.id)
       .then((user) => {
         if (user) {
-          if (toString(req.decodedToken.userId) !== toString(req.params.id)) {
+          if (toString(req.decodedToken.userId) !== toString(req.params.id))
             return res.send({ message: 'Request not allowed' });
-          }
           user.destroy()
           .then(() => {
             res.status(200).send({
@@ -168,12 +204,20 @@ class UserController {
   }
 
   static listUserDocuments(req, res) {
+    const userDetails = {
+      user: ['id', 'fName', 'lName', 'email', 'username'],
+      doc: ['id', 'title', 'content']
+    };
     db.User
-      .findAll({ where: { id: req.params.id }, include: [{ model: db.Document }] })
+      .findAll({
+        where: { id: req.params.id },
+        include: [{
+          model: db.Document, attributes: userDetails.doc
+        }]
+      })
       .then((user) => {
-        if (!user) {
+        if (!user)
           return res.status(404).send({ message: 'User was not found' });
-        }
         res.status(200).send({ message: user });
       });
   }

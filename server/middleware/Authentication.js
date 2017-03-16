@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
-import db from '../models';
+import db from '../models/Index.js';
 
 dotenv.config({ silent: true });
 
@@ -9,9 +9,8 @@ const secret = process.env.SECRET || 'wearethepirateswhodontdoanything';
 class Authentication {
   static verifyUser(req, res, next) {
     const token = req.body.token || req.query.token || req.headers.authorization || req.headers['x-access-token'];
-    if (!token) {
+    if (!token)
       return res.status(401).send({ message: 'Verification failed' });
-    }
     jwt.verify(token, secret, (err, decoded) => {
       if (err) {
         res.status(401).send({ message: 'Invalid token' });
@@ -19,7 +18,7 @@ class Authentication {
         req.decodedToken = decoded;
         next();
       }
-      });
+    });
   }
 
   static verifyAdmin(req, res, next) {
@@ -36,6 +35,8 @@ class Authentication {
 
   static logout(req, res, next) {
     const token = req.headers.token || req.headers.authorization || req.headers['x-access-token'];
+    if (!token)
+      return res.status(401).send({ message: 'You must be logged in' });
     const decoded = req.decodedToken;
     if (token && decoded) {
       delete req.headers.token;
