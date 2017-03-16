@@ -1,0 +1,24 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": null,
+    "database": "hatidev",
+    "host": "127.0.0.1",
+    "port": "5432",
+    "dialect": "postgres",
+    "logging": false
+  },
+  "test": {
+    "username": "postgres",
+    "password": null,
+    "database": "hatitest",
+    "host": "127.0.0.1",
+    "port": "5432",
+    "dialect": "postgres",
+    "logging": false
+  },
+  "production": {
+    "database": "DATABASE_URL",
+    "dialect": "postgres"
+  }
+}
