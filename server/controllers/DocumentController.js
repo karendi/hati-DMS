@@ -105,12 +105,12 @@ class DocumentController {
       };
     }
     query = { attributes: docAttributes.doc };
-    const limit = req.query.limit || null;
-    const offset = req.query.offset || null;
+    query.limit = req.query.limit || null;
+    query.offset = req.query.offset || null;
     query.order = [['createdAt', 'DESC']];
 
     db.Document
-      .findAll({query, limit, offset})
+      .findAll({ query, limit: query.limit, offset: query.offset })
       .then((docs) => {
         res.status(200).send({ message: 'Listing all documents', data: docs });
       });
