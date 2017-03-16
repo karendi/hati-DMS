@@ -3,8 +3,6 @@ import chaiHttp from 'chai-http';
 import app from '../routes/Index';
 import seeds from '../db/seeds/Index';
 
-process.env.NODE_ENV = 'test';
-
 const should = chai.should();
 const users = seeds.legitUsers;
 
