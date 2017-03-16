@@ -222,6 +222,32 @@ class UserController {
       });
   }
 
+  static searchUser(req, res) {
+    db.User
+      .findAll({
+        where: {
+          username: { $iLike: `%${req.query.q}%` }
+        }
+      })
+      .then((user) => {
+        if (!user)
+          return res.status(404).send({
+            message: 'The user was not found'
+          });
+        if (user)
+          return res.status(200).send({ 
+            message: 'User found!',
+            data: user
+          });
+      })
+      .catch((err) => {
+        res.status(404).send({
+          message: 'There was a problem getting all users',
+          err
+        });
+      });
+  }
+
   static logoutUser(req, res) {
     res.status(200).send({
       message: 'You were logged out successfully'
