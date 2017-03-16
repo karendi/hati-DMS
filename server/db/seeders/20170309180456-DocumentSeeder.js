@@ -2,7 +2,6 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('Documents', [
       {
-        id: 1,
         title: 'Grab a Book Already! - Snippet',
         content:`I have a confession to make, I have not always been a bookworm.
                  I know a good number of people who will have a hard time believing
@@ -33,7 +32,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 2,
         title: 'Secret Agent',
         content: 'Undercover content. Scratch to reveal. :p',
         access: 'private',
@@ -43,7 +41,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 3,
         title: 'Boy and His Banana. - Snippet',
         content: `I was in a matatu headed home a couple of weeks ago. I sat next
                  to a lady with her son. On our way, they started eating sweet bananas
@@ -71,7 +68,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 4,
         title: 'Another One, Another One!',
         content: 'Yo! Another private document!',
         access: 'private',
@@ -81,7 +77,6 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        id: 5,
         title: 'Do not Miss the Bus. - Snippet',
         content: `Something very interesting happened today. I was to head to Thika
                  after Church so as soon as Service was done I dashed out, headed
