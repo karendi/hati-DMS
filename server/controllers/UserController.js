@@ -128,7 +128,8 @@ class UserController {
       user: ['id', 'fName', 'lName', 'email', 'username'],
       role: ['id', 'title']
     };
-    const query = {
+    let query;
+    query = {
       attributes: userDetails.user,
       include: [
         {
@@ -137,12 +138,16 @@ class UserController {
         }
       ]
     };
+    query = { attributes: userDetails.user };
+    query.limit = req.query.limit || null;
+    query.offset = req.query.offset || null;
+    query.order = [['createdAt', 'DESC']];
     db.User
-      .findAll(query)
+      .findAll({ query, limit: query.limit, offset: query.offset })
       .then((allUsers) => {
         if (allUsers)
           res.status(200).send({
-            message: "Listing available users",
+            message: 'Listing available users',
             data: allUsers
           });
       })
