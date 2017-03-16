@@ -93,24 +93,24 @@ class DocumentController {
                 $notIn: ['private']
               }
             },
-            { userId: req.decodedToken.userId }
-            // {
-            //   $and: [
-            //     { access: 'role' },
-            //     { userRoleId: req.decodedToken.roleId }
-            //   ]
-            // }
+            { userId: req.decodedToken.userId },
+            {
+              $and: [
+                { access: 'role' },
+                { userRoleId: req.decodedToken.roleId }
+              ]
+            }
           ]
         },
       };
     }
     query = { attributes: docAttributes.doc };
-    query.limit = req.query.limit || null;
-    query.offset = req.query.offset || null;
+    const limit = req.query.limit || null;
+    const offset = req.query.offset || null;
     query.order = [['createdAt', 'DESC']];
 
     db.Document
-      .findAll(query)
+      .findAll({query, limit, offset})
       .then((docs) => {
         res.status(200).send({ message: 'Listing all documents', data: docs });
       });
@@ -131,37 +131,49 @@ class DocumentController {
   }
 
   static searchDocument(req, res) {
-    if (!req.query.query)
+    if (!req.query.q)
       return res.send({ message: 'Search cannot be empty' });
+    // const query = {
+    //   where: {
+    //     $and: [
+    //       {
+    //         $or: [
+    //           { access: 'public' },
+    //           { userId: req.decodedToken.userId },
+    //           { $and: [
+    //             { access: 'role' },
+    //             { userRoleId: req.decodedToken.roleId }
+    //           ] }
+    //         ]
+    //       },
+    //       {
+    //         $or: [
+    //           { title: { $iLike: `%${req.query.q}%` } },
+    //           { content: { $iLike: `%${req.query.q}%` } }
+    //         ]
+    //       }
+    //     ]
+    //   },
+    //   limit: req.query.limit || null,
+    //   offset: req.query.offset || null,
+    //   order: [['createdAt', 'DESC']]
+    // };
+
     const query = {
       where: {
-        $and: [
-          {
-            $or: [
-              { access: 'public' },
-              { ownerId: req.decodedToken.userId },
-              { $and: [
-                { access: 'role' },
-                { ownerRoleId: req.decodedToken.roleId }
-              ] }
-            ]
-          },
-          {
-            $or: [
-              { title: { like: `%${req.query.query}%` } },
-              { content: { like: `%${req.query.query}%` } }
-            ]
-          }
+        $or: [
+        // { access: 'public' },
+        { title: { $iLike: `%${req.query.q}%` } },
+        { content: { $iLike: `%${req.query.q}%` } },
+        { access: { $in: ['public'] } }
+        // { userId: req.decodedToken.userId }
         ]
-      },
-      limit: req.query.limit || null,
-      offset: req.query.offset || null,
-      order: [['createdAt', 'DESC']]
+      }
     };
     db.Document
       .findAll(query)
       .then((queriedDoc) => {
-        res.status(200).send({ message: queriedDoc });
+        res.status(200).send({ message: 'Search results', data: queriedDoc });
       });
   }
 }
