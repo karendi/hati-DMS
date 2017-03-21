@@ -13,6 +13,7 @@ services:
 script:
   - npm test
 after_success:
+  - npm install codacy-coverage
   - npm run coveralls
 addons:
   postgresql: "9.3"
