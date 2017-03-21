@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import app from '../routes/Index';
-import seeds from '../db/seeds/Index';
+import app from '../routes/index';
+import seeds from '../db/seeds/index';
 
 const should = chai.should();
 const users = seeds.legitUsers;
@@ -13,7 +13,7 @@ describe('Role API Spec', () => {
   let regUserToken;
   before((done) => {
     chai.request(app)
-      .post('/users/login')
+      .post('/api/users/login')
       .send({
         email: users[0].email,
         password: users[0].password
@@ -22,7 +22,7 @@ describe('Role API Spec', () => {
         adminUserToken = response.body.token;
       });
     chai.request(app)
-      .post('/users/login')
+      .post('/api/users/login')
       .send({
         email: users[1].email,
         password: users[1].password
@@ -36,7 +36,7 @@ describe('Role API Spec', () => {
   describe('Role Creation', () => {
     it('should allow an admin to create roles', (done) => {
       chai.request(app)
-        .post('/roles')
+        .post('/api/roles')
         .set('authorization', adminUserToken)
         .send({
           title: 'sensei'
@@ -50,7 +50,7 @@ describe('Role API Spec', () => {
     });
     it('should not allow a regular user to create roles', (done) => {
       chai.request(app)
-        .post('/roles')
+        .post('/api/roles')
         .set('authorization', regUserToken)
         .send({
           title: 'nothappening'
@@ -63,7 +63,7 @@ describe('Role API Spec', () => {
     });
     it('should not create a role is title wasn\'t given', (done) => {
       chai.request(app)
-        .post('/roles')
+        .post('/api/roles')
         .set('authorization', adminUserToken)
         .send({
           title: ''
@@ -76,7 +76,7 @@ describe('Role API Spec', () => {
     });
     it('should not create duplicate role titles', (done) => {
       chai.request(app)
-        .post('/roles')
+        .post('/api/roles')
         .set('authorization', adminUserToken)
         .send({
           title: 'user'
@@ -92,7 +92,7 @@ describe('Role API Spec', () => {
   describe('Get Roles', () => {
     it('should allow an admin to view all roles', (done) => {
       chai.request(app)
-        .get('/roles')
+        .get('/api/roles')
         .set('authorization', adminUserToken)
         .end((err, res) => {
           res.should.have.status(200);
@@ -103,7 +103,7 @@ describe('Role API Spec', () => {
     });
     it('should not let a regular user view roles', (done) => {
       chai.request(app)
-        .get('/roles')
+        .get('/api/roles')
         .set('authorization', regUserToken)
         .end((err, res) => {
           res.should.have.status(403);
@@ -113,7 +113,7 @@ describe('Role API Spec', () => {
     });
     it('should allow an admin to view a specific role', (done) => {
       chai.request(app)
-        .get('/roles/3')
+        .get('/api/roles/3')
         .set('authorization', adminUserToken)
         .end((err, res) => {
           res.should.have.status(200);
@@ -124,7 +124,7 @@ describe('Role API Spec', () => {
     });
     it('should not let a regular user view a specific role', (done) => {
       chai.request(app)
-        .get('/roles/3')
+        .get('/api/roles/3')
         .set('authorization', regUserToken)
         .end((err, res) => {
           res.should.have.status(403);
@@ -134,7 +134,7 @@ describe('Role API Spec', () => {
     });
     it('should return a message if role was not found', (done) => {
       chai.request(app)
-      .get('/roles/345673')
+      .get('/api/roles/345673')
       .set('authorization', adminUserToken)
       .end((err, res) => {
         res.should.have.status(404);
@@ -147,7 +147,7 @@ describe('Role API Spec', () => {
   describe('Update Roles', () => {
     it('should allow the admin to update a role', (done) => {
       chai.request(app)
-      .put('/roles/3')
+      .put('/api/roles/3')
         .set('authorization', adminUserToken)
         .send({
           title: 'shifu'
@@ -160,7 +160,7 @@ describe('Role API Spec', () => {
     });
     it('should not allow a regular user to update a role', (done) => {
       chai.request(app)
-      .put('/roles/3')
+      .put('/api/roles/3')
         .set('authorization', regUserToken)
         .send({
           title: 'woi'
@@ -173,7 +173,7 @@ describe('Role API Spec', () => {
     });
     it('should not update a role that does not exist', (done) => {
       chai.request(app)
-      .put('/roles/33345256')
+      .put('/api/roles/33345256')
         .set('authorization', adminUserToken)
         .send({
           title: 'notgonnahappen'
@@ -186,7 +186,7 @@ describe('Role API Spec', () => {
     });
     it('should not update a role if title is not given', (done) => {
       chai.request(app)
-      .put('/roles/3')
+      .put('/api/roles/3')
         .set('authorization', adminUserToken)
         .send({
           title: ''
@@ -202,7 +202,7 @@ describe('Role API Spec', () => {
   describe('Delete Role', () => {
     it('should allow an admin to delete roles', (done) => {
       chai.request(app)
-      .delete('/roles/3')
+      .delete('/api/roles/3')
         .set('authorization', adminUserToken)
         .end((err, res) => {
           res.should.have.status(200);
@@ -212,7 +212,7 @@ describe('Role API Spec', () => {
     });
     it('should prevent a regular user from deleting roles', (done) => {
       chai.request(app)
-      .delete('/roles/2')
+      .delete('/api/roles/2')
         .set('authorization', regUserToken)
         .end((err, res) => {
           res.should.have.status(403);
@@ -222,7 +222,7 @@ describe('Role API Spec', () => {
     });
     it('should not delete non-existent roles', (done) => {
       chai.request(app)
-      .delete('/roles/2336')
+      .delete('/api/roles/2336')
         .set('authorization', adminUserToken)
         .end((err, res) => {
           res.should.have.status(400);
