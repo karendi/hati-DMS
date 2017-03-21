@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import db from '../models/index';
+import db from '../models/Index.js';
 
 const secret = process.env.SECRET;
 
