@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import app from '../routes/Index';
-import seeds from '../db/seeds/Index';
+import app from '../routes/Index.js';
+import seeds from '../db/seeds/Index.js';
 
 process.env.NODE_ENV = 'test';
 
@@ -15,7 +15,7 @@ describe('Document API Spec', () => {
   let regUserToken;
   before((done) => {
     chai.request(app)
-    .post('/users/login')
+    .post('/api/users/login')
       .send({
         email: users[0].email,
         password: users[0].password
@@ -24,7 +24,7 @@ describe('Document API Spec', () => {
         adminUserToken = response.body.token;
       });
     chai.request(app)
-    .post('/users/login')
+    .post('/api/users/login')
       .send({
         email: users[1].email,
         password: users[1].password
@@ -38,7 +38,7 @@ describe('Document API Spec', () => {
   describe('Create Documents', () => {
     it('should allow a user to create a document', (done) => {
       chai.request(app)
-        .post('/documents')
+        .post('/api/documents')
         .set('authorization', regUserToken)
         .send(docs[0])
         .end((err, res) => {
@@ -49,7 +49,7 @@ describe('Document API Spec', () => {
     });
     it('should prevent a non-logged in user from creating documents', (done) => {
       chai.request(app)
-        .post('/documents')
+        .post('/api/documents')
         .send(docs[0])
         .end((err, res) => {
           res.should.have.status(401);
@@ -59,7 +59,7 @@ describe('Document API Spec', () => {
     });
     it('should ensure the title field is not blank', (done) => {
       chai.request(app)
-        .post('/documents')
+        .post('/api/documents')
         .set('authorization', adminUserToken)
         .send({
           title: '',
@@ -73,7 +73,7 @@ describe('Document API Spec', () => {
     });
     it('should ensure the content field is not blank', (done) => {
       chai.request(app)
-        .post('/documents')
+        .post('/api/documents')
         .set('authorization', adminUserToken)
         .send({
           title: docs[2].title,
@@ -90,7 +90,7 @@ describe('Document API Spec', () => {
   describe('Update Documents', () => {
     it('should allow the owner of the document to update it', (done) => {
       chai.request(app)
-        .put('/documents/6')
+        .put('/api/documents/6')
         .set('authorization', regUserToken)
         .send({
           title: 'Grab Some Books Already!',
@@ -105,7 +105,7 @@ describe('Document API Spec', () => {
     });
     it('should not allow updating if both title and content fields are blank', (done) => {
       chai.request(app)
-        .put('/documents/6')
+        .put('/api/documents/6')
         .set('authorization', regUserToken)
         .send({
           title: '',
@@ -122,7 +122,7 @@ describe('Document API Spec', () => {
   describe('Delete Documents', () => {
     it('should allow the document owner to delete their document', (done) => {
       chai.request(app)
-        .delete('/documents/6')
+        .delete('/api/documents/6')
         .set('authorization', regUserToken)
         .end((err, res) => {
           res.should.have.status(200);
@@ -132,7 +132,7 @@ describe('Document API Spec', () => {
     });
     it('should not allow non-logged in users to delete documents', (done) => {
       chai.request(app)
-        .delete('/documents/5')
+        .delete('/api/documents/5')
         .end((err, res) => {
           res.should.have.status(401);
           res.body.message.should.equal('Verification failed');
@@ -144,7 +144,7 @@ describe('Document API Spec', () => {
   describe('View Documents', () => {
     it('should allow a user to list all available documents', (done) => {
       chai.request(app)
-        .get('/documents')
+        .get('/api/documents')
         .set('authorization', regUserToken)
         .end((err, res) => {
           res.should.have.status(200);
@@ -154,7 +154,7 @@ describe('Document API Spec', () => {
     });
     // it('should only list public documents', (done) => {
     //   chai.request(app)
-    //     .get('/documents')
+    //     .get('/api/documents')
     //     .set('authorization', regUserToken)
     //     .end((err, res) => {
     //       res.should.have.status(200);

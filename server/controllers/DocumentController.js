@@ -1,11 +1,30 @@
 import db from '../models/Index.js';
 
+/**
+ * Document Controller
+ *
+ * Creates the DocumentController
+ * @class
+ */
 class DocumentController {
+  /**
+   * createDocument
+   *
+   * Creates a new document
+   * @param {object} req The request object
+   * @param {object} res The response object
+   * @returns {void}
+   */
   static createDocument(req, res) {
-    if (!req.body.title)
+    if (!req.body.title && !req.body.content) {
+      return res.status(400).send({ message: 'Required fields cannot be blank' });
+    }
+    if (!req.body.title) {
       return res.status(400).send({ message: 'Title field cannot be blank' });
-    if (!req.body.content)
+    }
+    if (!req.body.content) {
       return res.status(400).send({ message: 'Content field cannot be blank' });
+    }
     db.Document
       .create({
         title: req.body.title,
@@ -27,16 +46,26 @@ class DocumentController {
      });
   }
 
+  /**
+   * updateDocument
+   *
+   * Updates an existing document
+   * @param {object} req The request object
+   * @param {object} res The response object
+   * @returns {void}
+   */
   static updateDocument(req, res) {
     db.Document
       .findById(req.params.id)
       .then((doc) => {
-        if (!doc)
+        if (!doc) {
           return res.status(404).send({ message: 'The document was not found' });
-        if (!req.body.title && !req.body.content)
+        }
+        if (!req.body.title && !req.body.content) {
           return res.status(406).send({
             message: 'No update detected'
           });
+        }
         if (parseInt(doc.userId, 10) === req.decodedToken.userId) {
           doc.update({
             title: req.body.title || doc.title,
@@ -44,7 +73,7 @@ class DocumentController {
             access: req.body.access || doc.access
           })
           .then((updatedDoc) => {
-            return res.status(200).send({
+            res.status(200).send({
               message: 'The document was updated successfully',
               data: updatedDoc
             });
@@ -55,12 +84,21 @@ class DocumentController {
       });
   }
 
+  /**
+   * deleteDocument
+   *
+   * Deletes a specific document
+   * @param {object} req The request object
+   * @param {object} res The response object
+   * @returns {void}
+   */
   static deleteDocument(req, res) {
     db.Document
       .findById(req.params.id)
       .then((doc) => {
-        if (!doc)
+        if (!doc) {
           return res.status(404).send({ message: 'The document was not found' });
+        }
         if (parseInt(doc.userId, 10) === req.decodedToken.userId) {
           doc.destroy()
           .then(() => {
@@ -76,6 +114,14 @@ class DocumentController {
       });
   }
 
+  /**
+   * listAllDocuments
+   *
+   * Lists public documents
+   * @param {object} req The request object
+   * @param {object} res The response object
+   * @returns {void}
+   */
   static listAllDocuments(req, res) {
     const docAttributes = {
       doc: ['id', 'title', 'content', 'access', 'userId', 'createdAt', 'updatedAt'],
@@ -87,52 +133,59 @@ class DocumentController {
     } else {
       query = {
         where: {
-          $or: [
-            {
-              access: {
-                $notIn: ['private']
-              }
-            },
-            { userId: req.decodedToken.userId },
-            {
-              $and: [
-                { access: 'role' },
-                { userRoleId: req.decodedToken.roleId }
-              ]
-            }
-          ]
-        },
+          access: 'public'
+        }
       };
     }
-    query = { attributes: docAttributes.doc };
+
+    query.attributes = docAttributes.doc;
     query.limit = req.query.limit || null;
     query.offset = req.query.offset || null;
     query.order = [['createdAt', 'DESC']];
-
     db.Document
-      .findAll({ query, limit: query.limit, offset: query.offset })
+      .findAll({ where: query.where, limit: query.limit, offset: query.offset })
       .then((docs) => {
         res.status(200).send({ message: 'Listing all documents', data: docs });
       });
   }
 
+  /**
+   * getSpecificDocument
+   *
+   * Gets a specific document
+   * @param {object} req The request object
+   * @param {object} res The response object
+   * @returns {void}
+   */
   static getSpecificDocument(req, res) {
     db.Document
       .findById(req.params.id)
       .then((doc) => {
-        if (!doc)
+        if (!doc) {
           return res.status(404).send({ message: 'The document was not found' });
-        if (doc.access === 'public' || doc.userId === req.decodedToken.userId)
+        }
+        if (doc.access === 'public' || doc.userId === req.decodedToken.userId) {
           return res.status(200).send({ message: 'Document found!', data: doc });
-        if (doc.access === 'role' && doc.userRoleId === req.decodedToken.roleId)
+        }
+        if (doc.access === 'role' && doc.userRoleId === req.decodedToken.roleId) {
           return res.status(200).send({ message: 'Document found!', data: doc });
+        }
         res.status(401).send({ message: 'Permission denied' });
       });
   }
 
+  /**
+   * searchDocument
+   *
+   * Searches documents
+   * @param {object} req The request object
+   * @param {object} res The response object
+   * @returns {void}
+   */
   static searchDocument(req, res) {
-    if (!req.query.q)
+    if (!req.query.q) {
       return res.send({ message: 'Search cannot be empty' });
+    }
     // const query = {
     //   where: {
     //     $and: [

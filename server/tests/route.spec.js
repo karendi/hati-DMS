@@ -1,11 +1,10 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import app from '../routes/Index';
+import app from '../routes/Index.js';
 
 process.env.NODE_ENV = 'test';
 
 const should = chai.should();
-
 chai.use(chaiHttp);
 
 describe('/GET Index Route', () => {
