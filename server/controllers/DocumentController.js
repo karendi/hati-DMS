@@ -1,4 +1,4 @@
-import db from '../models/Index.js';
+import db from '../models';
 
 /**
  * Document Controller
