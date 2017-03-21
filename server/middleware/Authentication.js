@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
-import db from '../models/index';
+import db from '../models/Index.js';
 
 dotenv.config({ silent: true });
 
