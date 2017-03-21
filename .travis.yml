@@ -13,9 +13,6 @@ services:
 script:
   - npm test
 after_success:
-  - npm install -g codeclimate-test-reporter
-  - codeclimate-test-reporter < coverage/lcov.info
+  - npm run coverage
 addons:
-  code_climate:
-    repo_token: 3c6f1e453ce3229cc9a494a8721d0e07086aa8c8e295bf09b7319d3f9ea4a60d
   postgresql: "9.3"
