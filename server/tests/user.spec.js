@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import app from '../routes/Index';
-import seeds from '../db/seeds/Index';
+import app from '../routes/Index.js';
+import seeds from '../db/seeds/Index.js';
 
 const should = chai.should();
 const users = seeds.legitUsers;
@@ -14,7 +14,7 @@ describe('User API Spec', () => {
   let regUserToken;
   before((done) => {
     chai.request(app)
-    .post('/users/login')
+    .post('/api/users/login')
       .send({
         email: users[0].email,
         password: users[0].password
@@ -23,7 +23,7 @@ describe('User API Spec', () => {
         adminUserToken = response.body.token;
       });
     chai.request(app)
-    .post('/users/login')
+    .post('/api/users/login')
       .send({
         email: users[1].email,
         password: users[1].password
@@ -37,7 +37,7 @@ describe('User API Spec', () => {
   describe('User Authentication', () => {
     it('should signup users successfully and set a token', (done) => {
       chai.request(app)
-        .post('/users')
+        .post('/api/users')
         .send({
           fName: 'See',
           lName: 'Meeee',
@@ -55,7 +55,7 @@ describe('User API Spec', () => {
     });
     it('should not signup users if required fields are missing', (done) => {
       chai.request(app)
-        .post('/users')
+        .post('/api/users')
         .send(invalidUser[1])
         .end((err, res) => {
           res.should.have.status(400);
@@ -65,7 +65,7 @@ describe('User API Spec', () => {
     });
     it('should not sign up a user with an already existing email or username', (done) => {
       chai.request(app)
-        .post('/users')
+        .post('/api/users')
         .send(users[2])
         .end((err, res) => {
           res.should.have.status(409);
@@ -75,7 +75,7 @@ describe('User API Spec', () => {
     });
     it('should return a token on signin', (done) => {
       chai.request(app)
-        .post('/users/login')
+        .post('/api/users/login')
         .send({
           email: users[2].email,
           password: users[2].password
@@ -89,7 +89,7 @@ describe('User API Spec', () => {
     });
     it('should not sign in a user if required fields are missing', (done) => {
       chai.request(app)
-        .post('/users/login')
+        .post('/api/users/login')
         .send({
           email: users[2].email
         })
@@ -101,7 +101,7 @@ describe('User API Spec', () => {
     });
     it('should not sign in a non-registered user', (done) => {
       chai.request(app)
-        .post('/users/login')
+        .post('/api/users/login')
         .send({
           email: 'notthere@example.com',
           password: 'hastalavista'
@@ -114,14 +114,14 @@ describe('User API Spec', () => {
     });
     it('should not sign in a user if password is invalid', (done) => {
       chai.request(app)
-        .post('/users/login')
+        .post('/api/users/login')
         .send({
           email: users[2].email,
           password: 'ninitena'
         })
         .end((err, res) => {
           res.should.have.status(401);
-          res.body.message.should.equal('Invalid password');
+          res.body.message.should.equal('Invalid login credentials');
           done();
         });
     });
@@ -130,7 +130,7 @@ describe('User API Spec', () => {
   describe('Get Users', () => {
     it('should get a list of all users', (done) => {
       chai.request(app)
-        .get('/users')
+        .get('/api/users')
         .set('authorization', regUserToken)
         .end((err, res) => {
           res.should.have.status(200);
@@ -140,7 +140,7 @@ describe('User API Spec', () => {
     });
     it('should require a token before listing available users', (done) => {
       chai.request(app)
-        .get('/users')
+        .get('/api/users')
         .end((err, res) => {
           res.should.have.status(401);
           res.body.message.should.equal('Verification failed');
@@ -149,7 +149,7 @@ describe('User API Spec', () => {
     });
     it('should not allow access to the list of users if the token is invalid', (done) => {
       chai.request(app)
-        .get('/users')
+        .get('/api/users')
         .set('authorization', 'hdfhf743u43brf97dhewhurvgy382hch')
         .end((err, res) => {
           res.should.have.status(401);
@@ -159,7 +159,7 @@ describe('User API Spec', () => {
     });
     it('should search for a user by id', (done) => {
       chai.request(app)
-        .get('/users/4')
+        .get('/api/users/4')
         .set('authorization', regUserToken)
         .end((err, res) => {
           res.should.have.status(200);
@@ -170,7 +170,7 @@ describe('User API Spec', () => {
     });
     it('should return an error message if the user was not found', (done) => {
       chai.request(app)
-        .get('/users/4098')
+        .get('/api/users/4098')
         .set('authorization', regUserToken)
         .end((err, res) => {
           res.should.have.status(404);
@@ -189,7 +189,7 @@ describe('User API Spec', () => {
   describe('User Updating', () => {
     it('should allow a user to update their data', (done) => {
       chai.request(app)
-        .put('/users/2')
+        .put('/api/users/4')
         .set('authorization', regUserToken)
         .send({
           email: 'jk@example.com'
@@ -206,7 +206,7 @@ describe('User API Spec', () => {
   describe('User Deletion', () => {
     it('should allow an admin to delete a user\'s account', (done) => {
       chai.request(app)
-        .delete('/users/5')
+        .delete('/api/users/5')
         .set('authorization', adminUserToken)
         .end((err, res) => {
           res.should.have.status(200);
@@ -219,7 +219,7 @@ describe('User API Spec', () => {
   describe('User Logout', () => {
     it('should log a user out', (done) => {
       chai.request(app)
-        .post('/users/logout')
+        .post('/api/users/logout')
         .set('authorization', regUserToken)
         .end((err, res) => {
           res.should.have.status(200);
@@ -229,7 +229,7 @@ describe('User API Spec', () => {
     });
     it('should require a user to have a valid token to be logged out', (done) => {
       chai.request(app)
-        .post('/users/logout')
+        .post('/api/users/logout')
         .end((err, res) => {
           res.should.have.status(401);
           res.body.message.should.equal('Verification failed');

@@ -4,7 +4,7 @@ import db from '../models/Index.js';
 
 dotenv.config({ silent: true });
 
-const secret = process.env.SECRET || 'wearethepirateswhodontdoanything';
+const secret = process.env.SECRET;
 
 class Authentication {
   static verifyUser(req, res, next) {

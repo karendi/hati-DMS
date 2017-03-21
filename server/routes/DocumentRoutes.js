@@ -8,8 +8,6 @@ documentRouter.route('/')
   .get(Authentication.verifyUser, DocumentController.listAllDocuments)
   .post(Authentication.verifyUser, DocumentController.createDocument);
 
-documentRouter.get('/search', Authentication.verifyUser, DocumentController.searchDocument);
-
 documentRouter.route('/:id')
   .get(Authentication.verifyUser, DocumentController.getSpecificDocument)
   .put(Authentication.verifyUser, DocumentController.updateDocument)

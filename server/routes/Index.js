@@ -17,9 +17,9 @@ app.get('/', (req, res) => {
   res.status(200).send({ message: 'Welcome to Hati!' });
 });
 
-app.use('/users', userRouter);
-app.use('/documents', documentRouter);
-app.use('/roles', roleRouter);
-app.use('/search', searchRouter);
+app.use('/api/users', userRouter);
+app.use('/api/documents', documentRouter);
+app.use('/api/roles', roleRouter);
+app.use('/api/search', searchRouter);
 
 export default app;
