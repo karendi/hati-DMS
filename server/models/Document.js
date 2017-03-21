@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Document = sequelize.define('Document', {
     userId: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
       allowNull: false
     },
     title: {
@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     userRoleId: {
-      type: DataTypes.STRING
+      type: DataTypes.INTEGER
     }
   }, {
     classMethods: {
