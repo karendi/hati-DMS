@@ -5,10 +5,7 @@ cache: false
 notifications:
   email: false
   slack: andela:kIVwwrSGn5fYVXxtkjD53dav
-before_script:
- - npm install -g codeclimate-test-reporter
 before_install:
-  - npm install -g codeclimate-test-reporter
   - psql -c 'drop database if exists hatidev;' -U postgres
   - psql -c 'create database hatidev;' -U postgres
 services:
@@ -16,6 +13,7 @@ services:
 script:
   - npm test
 after_success:
+  - npm install -g codeclimate-test-reporter
   - codeclimate-test-reporter < coverage/lcov.info
 addons:
   code_climate:
