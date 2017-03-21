@@ -1,10 +1,10 @@
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
-import db from '../models/Index.js';
+import db from '../models/index';
 
 dotenv.config({ silent: true });
 
-const secret = process.env.SECRET || 'wearethepirateswhodontdoanything';
+const secret = process.env.SECRET;
 
 class Authentication {
   static verifyUser(req, res, next) {
