@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import app from '../routes/index';
-import seeds from '../db/seeds/index';
+import app from '../routes/index.js';
+import seeds from '../db/seeds/index.js';
 
 const should = chai.should();
 const users = seeds.legitUsers;

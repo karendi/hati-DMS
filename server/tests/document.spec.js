@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import app from '../routes/index';
-import seeds from '../db/seeds/index';
+import app from '../routes/index.js';
+import seeds from '../db/seeds/index.js';
 
 process.env.NODE_ENV = 'test';
 
