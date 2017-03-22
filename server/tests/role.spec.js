@@ -1,7 +1,7 @@
-import chai from 'chai';
-import chaiHttp from 'chai-http';
-import app from '../routes/Index.js';
-import seeds from '../db/seeds/Index.js';
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const app = require('../routes/Index.js');
+const seeds = require('../db/seeds/Index.js');
 
 const should = chai.should();
 const users = seeds.legitUsers;

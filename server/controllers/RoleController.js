@@ -1,4 +1,4 @@
-import db from '../models/Index.js';
+const db = require('../models/Index.js');
 
 /**
  * Role Controller
@@ -137,4 +137,4 @@ class RoleController {
   }
 }
 
-export default RoleController;
+module.exports = RoleController;

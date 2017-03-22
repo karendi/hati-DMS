@@ -1,4 +1,4 @@
-import faker from 'faker';
+const faker = require('faker');
 
 const legitDocs = [
   {
@@ -141,7 +141,7 @@ const invalidDocs = [
   }
 ];
 
-export {
+module.exports = {
   legitDocs,
   invalidDocs
 };

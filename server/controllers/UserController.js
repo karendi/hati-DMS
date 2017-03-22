@@ -1,5 +1,5 @@
-import jwt from 'jsonwebtoken';
-import db from '../models/Index.js';
+const jwt = require('jsonwebtoken');
+const db = require('../models/Index.js');
 
 const secret = process.env.SECRET;
 
@@ -350,4 +350,4 @@ class UserController {
   }
 }
 
-export default UserController;
+module.exports = UserController;

@@ -1,7 +1,7 @@
-import express from 'express';
-import DocumentController from '../controllers/DocumentController';
-import UserController from '../controllers/UserController';
-import Authentication from '../middleware/Authentication';
+const express = require('express');
+const DocumentController = require('../controllers/DocumentController');
+const UserController = require('../controllers/UserController');
+const Authentication = require('../middleware/Authentication');
 
 const searchRouter = express.Router();
 
@@ -11,4 +11,4 @@ searchRouter.route('/users')
 searchRouter.route('/documents')
   .get(Authentication.verifyUser, DocumentController.searchDocument);
 
-export default searchRouter;
+module.exports = searchRouter;

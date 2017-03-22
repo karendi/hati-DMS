@@ -24,7 +24,7 @@ const invalidRoles = [
   }
 ];
 
-export {
+module.exports = {
   legitRoles,
   invalidRoles
 };
