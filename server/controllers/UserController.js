@@ -173,8 +173,7 @@ class UserController {
       user: ['id', 'fName', 'lName', 'email', 'username'],
       role: ['id', 'title']
     };
-    let query;
-    query = {
+    const query = {
       attributes: userDetails.user,
       include: [
         {
@@ -293,7 +292,7 @@ class UserController {
       })
       .then((user) => {
         if (!user) {
-          return res.status(404).send({ message: 'User was not found' });
+          res.status(404).send({ message: 'User was not found' });
         } else {
           res.status(200).send({ message: 'Documents Found', data: user[0].Documents });
         }

@@ -147,7 +147,8 @@ class DocumentController {
       .then((docs) => {
         if (req.decodedToken.roleId === 1) {
           res.status(200).send({ message: 'Listing all documents', data: docs });
-        } else { res.status(200).send({ message: 'Listing public documents', data: docs });
+        } else {
+          res.status(200).send({ message: 'Listing public documents', data: docs });
         }
       });
   }
