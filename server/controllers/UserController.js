@@ -264,7 +264,7 @@ class UserController {
             });
           });
         } else {
-          res.status(404).send({
+          res.status(403).send({
             message: 'User was not found'
           });
         }
@@ -282,11 +282,11 @@ class UserController {
   static listUserDocuments(req, res) {
     const userDetails = {
       user: ['id', 'fName', 'lName', 'email', 'username'],
-      doc: ['id', 'title', 'content']
+      doc: ['id', 'title', 'content', 'userId']
     };
     db.User
       .findAll({
-        where: { id: parseInt(req.params.id, 10) },
+        where: { id: req.params.id },
         include: [{
           model: db.Document, attributes: userDetails.doc
         }]
@@ -294,8 +294,9 @@ class UserController {
       .then((user) => {
         if (!user) {
           return res.status(404).send({ message: 'User was not found' });
+        } else {
+          res.status(200).send({ message: 'Documents Found', data: user[0].Documents });
         }
-        res.status(200).send({ message: user });
       });
   }
 
