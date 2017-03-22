@@ -1,4 +1,5 @@
 const Bcrypt = require('bcrypt-nodejs');
+
 const salt = Bcrypt.genSaltSync(10);
 
 module.exports = (sequelize, DataTypes) => {
@@ -23,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         len: {
           args: 3,
-          msg: "Username must be atleast 3 characters long"
+          msg: 'Username must be atleast 3 characters long'
         }
       }
     },
@@ -32,8 +33,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         len: {
-        args: [6, 200],
-        msg: 'Password should be atleast 6 characters long'
+          args: [6, 200],
+          msg: 'Password should be atleast 6 characters long'
         }
       }
     },
