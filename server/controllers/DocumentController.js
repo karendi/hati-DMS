@@ -145,7 +145,10 @@ class DocumentController {
     db.Document
       .findAll({ where: query.where, limit: query.limit, offset: query.offset })
       .then((docs) => {
-        res.status(200).send({ message: 'Listing all documents', data: docs });
+        if (req.decodedToken.roleId === 1) {
+          res.status(200).send({ message: 'Listing all documents', data: docs });
+        } else { res.status(200).send({ message: 'Listing public documents', data: docs });
+        }
       });
   }
 
@@ -226,7 +229,11 @@ class DocumentController {
     db.Document
       .findAll(query)
       .then((queriedDoc) => {
-        res.status(200).send({ message: 'Search results', data: queriedDoc });
+        if (req.decodedToken.roleId === 1) {
+          res.status(200).send({ message: 'Search results from all documents', data: queriedDoc });
+        } else {
+          res.status(200).send({ message: 'Search results from public documents', data: queriedDoc });
+        }
       });
   }
 }
