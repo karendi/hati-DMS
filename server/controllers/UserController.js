@@ -173,8 +173,7 @@ class UserController {
       user: ['id', 'fName', 'lName', 'email', 'username'],
       role: ['id', 'title']
     };
-    let query;
-    query = {
+    const query = {
       attributes: userDetails.user,
       include: [
         {
@@ -264,7 +263,7 @@ class UserController {
             });
           });
         } else {
-          res.status(404).send({
+          res.status(403).send({
             message: 'User was not found'
           });
         }
@@ -282,20 +281,21 @@ class UserController {
   static listUserDocuments(req, res) {
     const userDetails = {
       user: ['id', 'fName', 'lName', 'email', 'username'],
-      doc: ['id', 'title', 'content']
+      doc: ['id', 'title', 'content', 'userId']
     };
     db.User
       .findAll({
-        where: { id: parseInt(req.params.id, 10) },
+        where: { id: req.params.id },
         include: [{
           model: db.Document, attributes: userDetails.doc
         }]
       })
       .then((user) => {
         if (!user) {
-          return res.status(404).send({ message: 'User was not found' });
+          res.status(404).send({ message: 'User was not found' });
+        } else {
+          res.status(200).send({ message: 'Documents Found', data: user[0].Documents });
         }
-        res.status(200).send({ message: user });
       });
   }
 
@@ -323,13 +323,13 @@ class UserController {
         if (user) {
           return res.status(200).send({
             message: 'User found!',
-            data: user
+            data: [user[0].fName, user[0].lName, user[0].username]
           });
         }
       })
       .catch((err) => {
         res.status(404).send({
-          message: 'There was a problem getting all users',
+          message: 'There was a problem getting user',
           err
         });
       });

@@ -55,30 +55,6 @@ class Authentication {
         }
       });
   }
-
-  /**
-   * logout
-   *
-   * Ensures only a verified user can log out
-   * @param {object} req The request object
-   * @param {object} res The response object
-   * @param {Next} next The next function
-   * @returns {void}
-   */
-  static logout(req, res, next) {
-    const token = req.headers.token || req.headers.authorization || req.headers['x-access-token'];
-    if (!token) {
-      return res.status(401).send({ message: 'You must be logged in' });
-    }
-    const decoded = req.decodedToken;
-    if (token && decoded) {
-      delete req.headers.token;
-      delete req.headers.authorization;
-      delete req.headers['x-access-token'];
-      delete req.decodedToken;
-      next();
-    }
-  }
 }
 
 module.exports = Authentication;
