@@ -324,13 +324,13 @@ class UserController {
         if (user) {
           return res.status(200).send({
             message: 'User found!',
-            data: user
+            data: [user[0].fName, user[0].lName, user[0].username]
           });
         }
       })
       .catch((err) => {
         res.status(404).send({
-          message: 'There was a problem getting all users',
+          message: 'There was a problem getting user',
           err
         });
       });
