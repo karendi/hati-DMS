@@ -1,10 +1,10 @@
-import express from 'express';
-import logger from 'morgan';
-import bodyParser from 'body-parser';
-import documentRouter from './DocumentRoutes';
-import roleRouter from './RoleRoutes';
-import userRouter from './UserRoutes';
-import searchRouter from './SearchRoutes';
+const express = require('express');
+const logger = require('morgan');
+const bodyParser = require('body-parser');
+const documentRouter = require('./DocumentRoutes');
+const roleRouter = require('./RoleRoutes');
+const userRouter = require('./UserRoutes');
+const searchRouter = require('./SearchRoutes');
 
 const app = express();
 
@@ -22,4 +22,4 @@ app.use('/api/documents', documentRouter);
 app.use('/api/roles', roleRouter);
 app.use('/api/search', searchRouter);
 
-export default app;
+module.exports = app;

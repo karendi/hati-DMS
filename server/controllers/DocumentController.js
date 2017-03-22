@@ -1,4 +1,4 @@
-import db from '../models/Index.js';
+const db = require('../models/Index.js');
 
 /**
  * Document Controller
@@ -231,4 +231,4 @@ class DocumentController {
   }
 }
 
-export default DocumentController;
+module.exports = DocumentController;
