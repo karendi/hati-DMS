@@ -231,9 +231,15 @@ class DocumentController {
       .findAll(query)
       .then((queriedDoc) => {
         if (req.decodedToken.roleId === 1) {
-          res.status(200).send({ message: 'Search results from all documents', data: queriedDoc });
+          res.status(200).send({
+            message: 'Search results from all documents',
+            data: queriedDoc
+          });
         } else {
-          res.status(200).send({ message: 'Search results from public documents', data: queriedDoc });
+          res.status(200).send({
+            message: 'Search results from public documents',
+            data: queriedDoc
+          });
         }
       });
   }
