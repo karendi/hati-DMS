@@ -110,10 +110,10 @@ class RoleController {
     db.Role
       .findAll()
       .then((allRoles) => {
-        if (!allRoles) {
-          return res.status(404).send({ message: 'A problem was encountered while getting roles' });
-        }
         res.status(200).send({ message: 'Listing available roles', data: allRoles });
+      })
+      .catch((err) => {
+        res.status(404).send({ message: 'A problem was encountered while getting roles', err });
       });
   }
 
