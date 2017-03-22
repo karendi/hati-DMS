@@ -1,6 +1,6 @@
 /* eslint no-console: 0 */
 require('dotenv').config({ silent: true });
-const app = require('./server/routes/index');
+const app = require('./server/routes/Index.js');
 
 const port = process.env.PORT || 8080;
 
