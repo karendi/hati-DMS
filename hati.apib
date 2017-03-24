@@ -1,0 +1,195 @@
+FORMAT: 1A
+
+# Hati
+
+Hati is a document management API that allows for consumption by different client-side frameworks.
+
+
+## Endpoints:
+
+| Roles      | Users               | Documents      | Search         |
+| :-------   | :----------------   | :------------- | :----------    |
+|Create role |Create user          |Create document |Search user     |
+|List roles  |List users           |List documents  |Search document |
+|Get role    |Login user           |Get document    |                |
+|Update role |Get user             |Update document |                |
+|Delete role |Update user          |Delete document |                |
+|            |Delete user          |                |                |
+|            |Get user's documents |                |                |
+|            |Logout user          |                |                |
+
+
+----
+
+## Roles [`/api/roles`]
+
+| Method     | Endpoint       | Description    |
+| :-------   | :---------     | :------------- |
+|POST        |/api/roles      |Create role     |
+|GET         |/api/roles      |List roles      |
+|GET         |/api/roles/:id  |Get role        |
+|PUT         |/api/roles/:id  |Update role     |
+|DELETE      |/api/roles/:id  |Delete role     |
+
+
+
+##### Create Role [POST] `/api/roles`
++ Requires authorization and admin access
++ Request
+
+        {
+          "title": "shifu"
+        }
+
++ Response 200 (application/json)
+
+        {
+          "message": "The role was created successfully",
+          "role": {
+            "id": 5,
+            "title": "shifu",
+            "updatedAt": "2017-03-23T08:25:58.538Z",
+            "createdAt": "2017-03-23T08:25:58.538Z"
+          }
+        }
+
+
+
+##### List Roles [GET] `/api/roles`
++ Requires authorization and admin access
++ Response 200 (application/json)
+
+        {
+          "message": "Listing available roles",
+          "data": [
+            {
+              "id": 1,
+              "title": "admin",
+              "createdAt": "2017-03-21T09:03:23.679Z",
+              "updatedAt": "2017-03-21T09:03:23.679Z"
+            },
+            {
+              "id": 2,
+              "title": "user",
+              "createdAt": "2017-03-21T09:03:23.679Z",
+              "updatedAt": "2017-03-21T09:03:23.679Z"
+            },
+            {
+              "id": 5,
+              "title": "shifu",
+              "createdAt": "2017-03-23T07:18:56.896Z",
+              "updatedAt": "2017-03-23T07:18:56.896Z"
+            }
+          ]
+        }
+
+
+##### Get Role [GET] `/api/roles/:id`
++ Requires authorization and admin access
++ Response 200 (application/json)
+
+        {
+          "message": "Role found!",
+          "data": {
+            "id": 5,
+            "title": "shifu",
+            "createdAt": "2017-03-23T07:18:56.896Z",
+            "updatedAt": "2017-03-23T07:18:56.896Z"
+          }
+        }
+
+##### Update Role [PUT] `/api/roles/:id`
++ Requires authorization and admin access
++ Request
+
+        {
+          "title": "sensei"
+        }
++ Response 200 (application/json)
+
+        {
+          "message": "Role was updated successfully",
+          "data": {
+            "id": 5,
+            "title": "sensei",
+            "createdAt": "2017-03-23T07:18:56.896Z",
+            "updatedAt": "2017-03-23T07:19:51.694Z"
+          }
+        }
+
+
+##### Delete Role [DELETE] `/api/roles/:id`
++ Requires authorization and admin access
++ Response 200 (application/json)
+
+        {
+          "message": "Role was successfully deleted"
+        }
+
+
+----
+
+## Users [`/api/users`]
+
+| Method     | Endpoint          | Description         |
+| :-------   | :---------        | :-------------      |
+|POST        |/api/users         |Create user          |
+|GET         |/api/users         |List users           |
+|POST        |/api/users/login   |Login user           |
+|GET         |/api/users/:id     |Get user             |
+|PUT         |/api/users/:id     |Update user          |
+|DELETE      |/api/users/:id     |Delete user          |
+|GET         |/api/users/:id     |Get user's documents |
+|POST        |/api/users/logout  |Logout user          |
+
+
+##### Create User [POST] `/api/users`
++ Requires authorization and admin access
++ Request
+
+        {
+          "title": "shifu"
+        }
+
++ Response 200 (application/json)
+
+        {
+          "message": "The role was created successfully",
+          "role": {
+            "id": 5,
+            "title": "shifu",
+            "updatedAt": "2017-03-23T08:25:58.538Z",
+            "createdAt": "2017-03-23T08:25:58.538Z"
+          }
+        }
+
+
+##### List All Users [GET] `/api/users`
++ Requires authorization
++ Response 200 (application/json)
+
+        {
+          "message": "Listing available users",
+            "data": [
+              {
+                "id": 1,
+                "fName": "Admin",
+                "lName": "Mwenyewe",
+                "email": "admin@example.com",
+                "username": "admin",
+                "roleId": 1,
+                "createdAt": "2017-03-21T09:03:23.911Z",
+                "updatedAt": "2017-03-21T09:03:23.911Z"
+              },
+              {
+                "id": 2,
+                "fName": "Jane",
+                "lName": "Doe",
+                "email": "jk@example.com",
+                "username": "janedoe",
+                "roleId": 2,
+                "createdAt": "2017-03-21T09:03:24.125Z",
+                "updatedAt": "2017-03-21T18:29:34.765Z"
+              }
+            ]
+        }
