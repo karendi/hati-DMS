@@ -1,4 +1,4 @@
-import faker from 'faker';
+const faker = require('faker');
 
 const legitUsers = [
   {
@@ -86,7 +86,7 @@ const invalidUsers = [
   }
 ];
 
-export {
+module.exports = {
   legitUsers,
   invalidUsers
 };

@@ -1,6 +1,6 @@
-import express from 'express';
-import UserController from '../controllers/UserController';
-import Authentication from '../middleware/Authentication';
+const express = require('express');
+const UserController = require('../controllers/UserController');
+const Authentication = require('../middleware/Authentication');
 
 const userRouter = express.Router();
 
@@ -22,4 +22,4 @@ userRouter.route('/:id')
 userRouter.route('/:id/documents')
   .get(Authentication.verifyUser, UserController.listUserDocuments);
 
-export default userRouter;
+module.exports = userRouter;

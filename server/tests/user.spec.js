@@ -1,7 +1,7 @@
-import chai from 'chai';
-import chaiHttp from 'chai-http';
-import app from '../routes/Index.js';
-import seeds from '../db/seeds/Index.js';
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const app = require('../routes/Index.js');
+const seeds = require('../db/seeds/Index.js');
 
 const should = chai.should();
 const users = seeds.legitUsers;
@@ -186,7 +186,7 @@ describe('User API Spec', () => {
   describe('User Documents', () => {
   });
 
-  describe('User Updating', () => {
+  describe('Update User', () => {
     it('should allow a user to update their data', (done) => {
       chai.request(app)
         .put('/api/users/4')
@@ -201,9 +201,34 @@ describe('User API Spec', () => {
           done();
         });
     });
+    it('should not allow a user to update another user\'s information', (done) => {
+      chai.request(app)
+        .put('/api/users/5')
+        .set('authorization', regUserToken)
+        .send({
+          email: 'jk@example.com'
+        })
+        .end((err, res) => {
+          res.body.message.should.equal('Request not allowed');
+          done();
+        });
+    });
+    it('should fail if the user doesn\'t exist', (done) => {
+      chai.request(app)
+        .put('/api/users/53345')
+        .set('authorization', regUserToken)
+        .send({
+          email: 'jk@example.com'
+        })
+        .end((err, res) => {
+          res.should.have.status(404);
+          res.body.message.should.equal('User was not found');
+          done();
+        });
+    });
   });
 
-  describe('User Deletion', () => {
+  describe('Delete User', () => {
     it('should allow an admin to delete a user\'s account', (done) => {
       chai.request(app)
         .delete('/api/users/5')
@@ -211,6 +236,16 @@ describe('User API Spec', () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.message.should.equal('User was deleted successfully');
+          done();
+        });
+    });
+    it('should fail if the user doesn\'t exist', (done) => {
+      chai.request(app)
+        .delete('/api/users/53345')
+        .set('authorization', adminUserToken)
+        .end((err, res) => {
+          res.should.have.status(403);
+          res.body.message.should.equal('User was not found');
           done();
         });
     });
@@ -233,6 +268,33 @@ describe('User API Spec', () => {
         .end((err, res) => {
           res.should.have.status(401);
           res.body.message.should.equal('Verification failed');
+          done();
+        });
+    });
+  });
+
+  // describe('Search User Documents', () => {
+  //   it('should return a user\'s documents', (done) => {
+  //     chai.request(app)
+  //       .get('/api/users/4/documents')
+  //       .set('authorization', regUserToken)
+  //       .end((err, res) => {
+  //         res.should.have.status(200);
+  //         res.body.message.should.equal('Documents found');
+  //         done();
+  //       });
+  //   });
+  // });
+
+  describe('Search Users', () => {
+    it('should search for a user by username', (done) => {
+      chai.request(app)
+        .get('/api/search/users/?q=dmuchemi')
+        .set('authorization', regUserToken)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.message.should.equal('User found!');
+          res.body.data[2].should.equal('dmuchemi');
           done();
         });
     });

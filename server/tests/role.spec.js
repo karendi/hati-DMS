@@ -1,7 +1,7 @@
-import chai from 'chai';
-import chaiHttp from 'chai-http';
-import app from '../routes/Index.js';
-import seeds from '../db/seeds/Index.js';
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const app = require('../routes/Index.js');
+const seeds = require('../db/seeds/Index.js');
 
 const should = chai.should();
 const users = seeds.legitUsers;
@@ -34,7 +34,7 @@ describe('Role API Spec', () => {
   });
 
   describe('Role Creation', () => {
-    it('should allow an admin to create roles', (done) => {
+    it('should allow an admin to create roles without including a role id', (done) => {
       chai.request(app)
         .post('/api/roles')
         .set('authorization', adminUserToken)
@@ -45,6 +45,22 @@ describe('Role API Spec', () => {
           res.should.have.status(200);
           res.body.message.should.equal('The role was created successfully');
           res.body.role.title.should.equal('sensei');
+          done();
+        });
+    });
+    it('should allow an admin to create roles with a role id', (done) => {
+      chai.request(app)
+        .post('/api/roles')
+        .set('authorization', adminUserToken)
+        .send({
+          title: 'dragonwarrior',
+          id: 5
+        })
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.message.should.equal('The role was created successfully');
+          res.body.role.title.should.equal('dragonwarrior');
+          res.body.role.id.should.equal(5);
           done();
         });
     });

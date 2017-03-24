@@ -1,6 +1,6 @@
-import express from 'express';
-import DocumentController from '../controllers/DocumentController';
-import Authentication from '../middleware/Authentication';
+const express = require('express');
+const DocumentController = require('../controllers/DocumentController');
+const Authentication = require('../middleware/Authentication');
 
 const documentRouter = express.Router();
 
@@ -13,4 +13,4 @@ documentRouter.route('/:id')
   .put(Authentication.verifyUser, DocumentController.updateDocument)
   .delete(Authentication.verifyUser, DocumentController.deleteDocument);
 
-export default documentRouter;
+module.exports = documentRouter;

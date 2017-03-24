@@ -1,6 +1,6 @@
-import express from 'express';
-import RoleController from '../controllers/RoleController';
-import Authentication from '../middleware/Authentication';
+const express = require('express');
+const RoleController = require('../controllers/RoleController');
+const Authentication = require('../middleware/Authentication');
 
 const roleRouter = express.Router();
 
@@ -13,4 +13,4 @@ roleRouter.route('/:id')
   .delete(Authentication.verifyUser, Authentication.verifyAdmin, RoleController.deleteRole)
   .get(Authentication.verifyUser, Authentication.verifyAdmin, RoleController.getSpecificRole);
 
-export default roleRouter;
+module.exports = roleRouter;

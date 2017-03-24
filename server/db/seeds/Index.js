@@ -1,8 +1,8 @@
-import * as role from './RoleSeed';
-import * as user from './UserSeed';
-import * as doc from './DocumentSeed';
+const role = require('./RoleSeed');
+const user = require('./UserSeed');
+const doc = require('./DocumentSeed');
 
-export default {
+module.exports = {
   legitRoles: role.legitRoles,
   invalidRoles: role.invalidRoles,
 
