@@ -24,6 +24,6 @@ app.listen(port, (error) => {
   if (error) {
     console.log(error);
   }
-  // console.log(`App listening on port ${port}...`);
+  console.log(`App listening on port ${port}...`);
   open(`http://localhost:${port}`);
 });
