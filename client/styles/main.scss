@@ -1,0 +1,51 @@
+$primary-color-dark: #edc7b7;
+$primary-color: #eee2dc;
+$primary-color-text: #123c69;
+$accent-color: #bab2b5;
+$primary-text-color: #212121;
+$secondary-text-color: #ac3b61;
+$divider-color: #bdbdbd;
+$black: #000000;
+$white: #ffffff;
+
+body {
+	background: $white;
+	color: $black;
+}
+
+.nav-edge {
+  float: right;
+  margin-right: 15px;
+}
+
+.navbar {
+	background: $secondary-text-color;
+}
+
+.btn-custom {
+	background: $secondary-text-color;
+	color: $primary-color;
+}
+
+.login,
+.reg-form {
+ margin-right: auto;
+ margin-left: auto;
+ text-align: center;
+}
+
+/* Document Editor */
+
+.document-form {
+  text-align: center;
+}
+
+
+/* Profile */
+
+.profile {
+  position: fixed;
+  left: 4%;
+  margin-top: 60px;
+  color: #fff;
+}
