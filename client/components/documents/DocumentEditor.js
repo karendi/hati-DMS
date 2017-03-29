@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
- class Editor extends React.Component {
+ class DocumentEditor extends React.Component {
   //  location.reload();
   constructor(props) {
     super(props);
@@ -25,15 +25,16 @@ import React, { PropTypes } from 'react';
   }
   render() {
     return (
-      <form className="document-form" onSubmit={this.handleSubmit}>
-        <textarea name="editor" cols="100" rows="6" defaultValue={this.props.value}></textarea>
-        <div className="buttonHolder">
-          <input type="submit" className="button tick" />
-          <a href="#" className="button cross"></a>
-          <a href="#" className="button heart"></a>
-          <a href="#" className="button flower"></a>
-        </div>
-      </form>
+      <div className="doc-edit">
+        <form className="document-form" onSubmit={this.handleSubmit}>
+          <textarea name="editor" cols="100" rows="6" defaultValue={this.props.value}></textarea>
+          <div className="doc-submit">
+            <button type="submit" className="waves-effect waves-light btn-custom" name="action">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
     );
   }
   componentDidMount() {
@@ -52,7 +53,7 @@ import React, { PropTypes } from 'react';
     }.bind(this));
   }
 }
-export default Editor;
+export default DocumentEditor;
 
 
           // <input type="submit" className="button tick" value="Submit" />
