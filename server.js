@@ -4,6 +4,10 @@ const app = require('./server/routes/Index.js');
 
 const port = process.env.PORT || 8080;
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, './hati.apib'));
+});
+
 app.listen(port, (error) => {
   if (error) {
     console.log('error');
