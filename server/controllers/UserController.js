@@ -62,7 +62,7 @@ class UserController {
           .catch((err) => {
             res.status(400).send({
               message: 'There was a problem creating the user',
-              err
+              err: err
             });
           });
       });
@@ -109,7 +109,7 @@ class UserController {
       .catch((err) => {
         res.status(401).send({
           message: 'Invalid login credentials',
-          err
+          err: err
         });
       });
   }
@@ -155,7 +155,7 @@ class UserController {
       .catch((err) => {
         res.status(404).send({
           message: `User ${req.params.id} was not found`,
-          err
+          err: err
         });
       });
   }
@@ -199,7 +199,7 @@ class UserController {
       .catch((err) => {
         res.status(404).send({
           message: 'There was a problem getting all users',
-          err
+          err: err
         });
       });
   }
@@ -330,7 +330,7 @@ class UserController {
       .catch((err) => {
         res.status(404).send({
           message: 'There was a problem getting user',
-          err
+          err: err
         });
       });
   }
