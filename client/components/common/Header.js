@@ -3,8 +3,9 @@ import { Link, IndexLink } from 'react-router';
 
 const Header = () => {
   return (
-    <nav className="navbar navbar-light">
+    <nav className="navbar nav-extended">
       <div className="navbar-wrapper">
+        <Link to="/" className="brand-logo center">HATI</Link>
         <IndexLink to="/" activeClassName="active">Home</IndexLink>
         {' | '}
         <Link to="/dashboard" activeClassName="active">Dashboard</Link>
@@ -25,4 +26,3 @@ const Header = () => {
 };
 
 export default Header;
-/* <div id="wrapper"> */
