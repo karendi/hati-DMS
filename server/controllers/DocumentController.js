@@ -218,11 +218,12 @@ class DocumentController {
 
     const query = {
       where: {
+        access: 'public',
         $or: [
         // { access: 'public' },
         { title: { $iLike: `%${req.query.q}%` } },
-        { content: { $iLike: `%${req.query.q}%` } },
-        { access: { $in: ['public'] } }
+        { content: { $iLike: `%${req.query.q}%` } }
+        // { access: { $in: ['public'] } }
         // { userId: req.decodedToken.userId }
         ]
       }
