@@ -272,31 +272,4 @@ describe('User API Spec', () => {
         });
     });
   });
-
-  // describe('Search User Documents', () => {
-  //   it('should return a user\'s documents', (done) => {
-  //     chai.request(app)
-  //       .get('/api/users/4/documents')
-  //       .set('authorization', regUserToken)
-  //       .end((err, res) => {
-  //         res.should.have.status(200);
-  //         res.body.message.should.equal('Documents found');
-  //         done();
-  //       });
-  //   });
-  // });
-
-  describe('Search Users', () => {
-    it('should search for a user by username', (done) => {
-      chai.request(app)
-        .get('/api/search/users/?q=dmuchemi')
-        .set('authorization', regUserToken)
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.message.should.equal('User found!');
-          res.body.data[2].should.equal('dmuchemi');
-          done();
-        });
-    });
-  });
 });

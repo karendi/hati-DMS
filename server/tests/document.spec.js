@@ -3,11 +3,10 @@ const chaiHttp = require('chai-http');
 const app = require('../routes/Index.js');
 const seeds = require('../db/seeds/Index.js');
 
-process.env.NODE_ENV = 'test';
-
 const should = chai.should();
 const users = seeds.legitUsers;
 const docs = seeds.legitDocs;
+
 chai.use(chaiHttp);
 
 describe('Document API Spec', () => {
