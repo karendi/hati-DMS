@@ -44,7 +44,7 @@ class UserController {
             message: 'Email or username already exists'
           });
         }
-        return db.User
+        db.User
           .create(req.body)
           .then((user) => {
             const payload = {
@@ -53,7 +53,7 @@ class UserController {
             };
             const token = jwt.sign(payload, secret, { expiresIn: '24h' });
             user.password = null;
-            return res.status(201).send({
+            res.status(201).send({
               message: 'User was successfully created',
               token,
               data: user
