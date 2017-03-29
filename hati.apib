@@ -1,5 +1,4 @@
 FORMAT: 1A
-HOST: https://hati-api-pr-19.herokuapp.com
 
 # Hati
 
@@ -13,7 +12,7 @@ API V1 https://github.com/andela-jmacharia/hati-DMS
 This is a RESTful API. Authentication is required for all requests apart from ```[POST] /api/users/login``` and ```[POST] /api/users```. Authorization is set by passing the token in the ```x-access-token``` header.
 
 
-## Roles [`/api/roles`]
+### Roles [`/api/roles`]
 
 ##### Create Role [POST] `/api/roles`
 + Requires authorization and admin access
@@ -109,7 +108,7 @@ This is a RESTful API. Authentication is required for all requests apart from ``
         }
 
 
-## Users [`/api/users`]
+### Users [`/api/users`]
 
 ##### Create User [POST] `/api/users`
 + Request
@@ -276,7 +275,7 @@ This is a RESTful API. Authentication is required for all requests apart from ``
         }
 
 
-## Documents [`/api/documents`]
+### Documents [`/api/documents`]
 
 ##### Create Document [POST] `/api/documents`
 + Requires authorization
@@ -398,7 +397,7 @@ This is a RESTful API. Authentication is required for all requests apart from ``
 
 
 
-## Search [`/api/search`]
+### Search [`/api/search`]
 
 ##### Search Users [GET] `/api/search/users/?q=dmuchemi`
 + Requires authorization
