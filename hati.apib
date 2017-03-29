@@ -1,37 +1,19 @@
 FORMAT: 1A
+HOST: https://hati-api.herokuapp.com/
 
 # Hati
 
-Hati is a document management API that allows for consumption by different client-side frameworks.
+Hati is a document management API that allows for CRUD operations on the system.
 
 
-## Endpoints:
+API V1 https://github.com/andela-jmacharia/hati-DMS
 
-| Roles      | Users               | Documents      | Search         |
-| :-------   | :----------------   | :------------- | :----------    |
-|Create role |Create user          |Create document |Search user     |
-|List roles  |List users           |List documents  |Search document |
-|Get role    |Login user           |Get document    |                |
-|Update role |Get user             |Update document |                |
-|Delete role |Update user          |Delete document |                |
-|            |Delete user          |                |                |
-|            |Get user's documents |                |                |
-|            |Logout user          |                |                |
+# Guidelines:
 
+This is a RESTful API. Authentication is required for all requests apart from ```[POST] /api/users/login``` and ```[POST] /api/users```. Authorization is set by passing the token in the ```x-access-token``` header.
 
-----
 
 ## Roles [`/api/roles`]
-
-| Method     | Endpoint       | Description    |
-| :-------   | :---------     | :------------- |
-|POST        |/api/roles      |Create role     |
-|GET         |/api/roles      |List roles      |
-|GET         |/api/roles/:id  |Get role        |
-|PUT         |/api/roles/:id  |Update role     |
-|DELETE      |/api/roles/:id  |Delete role     |
-
-
 
 ##### Create Role [POST] `/api/roles`
 + Requires authorization and admin access
@@ -46,7 +28,7 @@ Hati is a document management API that allows for consumption by different clien
         {
           "message": "The role was created successfully",
           "role": {
-            "id": 5,
+            "id": 3,
             "title": "shifu",
             "updatedAt": "2017-03-23T08:25:58.538Z",
             "createdAt": "2017-03-23T08:25:58.538Z"
@@ -75,7 +57,7 @@ Hati is a document management API that allows for consumption by different clien
               "updatedAt": "2017-03-21T09:03:23.679Z"
             },
             {
-              "id": 5,
+              "id": 3,
               "title": "shifu",
               "createdAt": "2017-03-23T07:18:56.896Z",
               "updatedAt": "2017-03-23T07:18:56.896Z"
@@ -84,21 +66,21 @@ Hati is a document management API that allows for consumption by different clien
         }
 
 
-##### Get Role [GET] `/api/roles/:id`
+##### Get Role [GET] `/api/roles/3`
 + Requires authorization and admin access
 + Response 200 (application/json)
 
         {
           "message": "Role found!",
           "data": {
-            "id": 5,
+            "id": 3,
             "title": "shifu",
             "createdAt": "2017-03-23T07:18:56.896Z",
             "updatedAt": "2017-03-23T07:18:56.896Z"
           }
         }
 
-##### Update Role [PUT] `/api/roles/:id`
+##### Update Role [PUT] `/api/roles/3`
 + Requires authorization and admin access
 + Request
 
@@ -110,7 +92,7 @@ Hati is a document management API that allows for consumption by different clien
         {
           "message": "Role was updated successfully",
           "data": {
-            "id": 5,
+            "id": 3,
             "title": "sensei",
             "createdAt": "2017-03-23T07:18:56.896Z",
             "updatedAt": "2017-03-23T07:19:51.694Z"
@@ -118,7 +100,7 @@ Hati is a document management API that allows for consumption by different clien
         }
 
 
-##### Delete Role [DELETE] `/api/roles/:id`
+##### Delete Role [DELETE] `/api/roles/3`
 + Requires authorization and admin access
 + Response 200 (application/json)
 
@@ -127,39 +109,34 @@ Hati is a document management API that allows for consumption by different clien
         }
 
 
-----
-
 ## Users [`/api/users`]
 
-| Method     | Endpoint          | Description         |
-| :-------   | :---------        | :-------------      |
-|POST        |/api/users         |Create user          |
-|GET         |/api/users         |List users           |
-|POST        |/api/users/login   |Login user           |
-|GET         |/api/users/:id     |Get user             |
-|PUT         |/api/users/:id     |Update user          |
-|DELETE      |/api/users/:id     |Delete user          |
-|GET         |/api/users/:id     |Get user's documents |
-|POST        |/api/users/logout  |Logout user          |
-
-
 ##### Create User [POST] `/api/users`
-+ Requires authorization and admin access
 + Request
 
         {
-          "title": "shifu"
+          "fName": "Jax",
+          "lName": "Wangui",
+          "username": "koi",
+          "email": : "koi@example.com",
+          "password": "iwillnotrememberthis"
         }
 
 + Response 200 (application/json)
 
         {
-          "message": "The role was created successfully",
-          "role": {
-            "id": 5,
-            "title": "shifu",
-            "updatedAt": "2017-03-23T08:25:58.538Z",
-            "createdAt": "2017-03-23T08:25:58.538Z"
+          "message": "User was successfully created",
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsInJvbGVJZCI6MiwiaWF0IjoxNDkwNzg5MTA3LCJleHAiOjE0OTA4NzU1MDd9.y5j2p_0kjHrQr7AulUiHrAi71rcNuR7z6Ci5veY-lM4",
+          "data": {
+          "roleId": 2,
+          "id": 6,
+          "fName": "Jax",
+          "lName": "Wangui",
+          "username": "koi",
+          "email": "koi@example.com",
+          "password": null,
+          "updatedAt": "2017-03-29T12:05:06.917Z",
+          "createdAt": "2017-03-29T12:05:06.917Z"
           }
         }
 
@@ -192,4 +169,264 @@ Hati is a document management API that allows for consumption by different clien
                 "updatedAt": "2017-03-21T18:29:34.765Z"
               }
             ]
+        }
+
+
+##### Login User [POST] `/api/users/login`
++ Request
+
+        {
+          "email": : "koi@example.com",
+          "password": "iwillnotrememberthis"
+        }
+
++ Response 200 (application/json)
+        {
+          "message": "You were successfully logged in",
+          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGVJZCI6MSwiaWF0IjoxNDkwNzg2MjQ3LCJleHAiOjE0OTA4NzI2NDd9.6IgsjmdWaCN1Zlpm9wBM0qzKKdm6B4Sgw6ERDAT9syM",
+          "expiresIn": "24h"
+        }
+
+
+##### Get User [GET] `/api/users/6`
++ Requires authorization
++ Response 200 (application/json)
+        {
+          "message": "User found!",
+          "data": {
+            "id": 6,
+            "fName": "Jax",
+            "lName": "Wangui",
+            "email": "koi@example.com",
+            "username": "koi",
+            "Role": {
+              "id": 2,
+              "title": "user"
+              },
+            "password": null
+            }
+        }
+
+##### Update User [PUT] `/api/users/6`
++ Requires authorization
++ Request
+        {
+          "lName": "Koi",
+          "email": "jax@example.com"
+        }
+
++ Response 200 (application/json)
+        {
+          "message": "User found!",
+          "data": {
+            "id": 6,
+            "fName": "Jax",
+            "lName": "Koi",
+            "email": "jax@example.com",
+            "username": "koi",
+            "password": null,
+            "roleId": 2,
+            "createdAt": "2017-03-29T12:05:06.917Z",
+            "updatedAt": "2017-03-29T12:30:18.568Z"
+            }
+        }
+
+
+##### Delete User [DELETE] `/api/users/6`
++ Requires authorization and admin access
++ Response 200 (application/json)
+        {
+          "message": "User was deleted successfully"
+        }
+
+
+##### Get User's Documents [GET] `/api/users/1/documents`
++ Requires authorization
++ Response 200 (application/json)
+        {
+          "message": "Documents Found",
+          "data": [
+            {
+              "id": 6,
+              "title": "This is a Document",
+              "content": "Told ya this was a document",
+              "userId": 1
+            },
+            {
+              "id": 7,
+              "title": "This is a Another Document",
+              "content": "Told ya this was another document",
+              "userId": 1
+            }
+          ]
+        }
+
+
+##### Logout User [POST] `/api/users/logout`
++ Requires authorization
++ Response 200 (application/json)
+        {
+          "message": "You were logged out successfully"
+        }
+
+
+## Documents [`/api/documents`]
+
+##### Create Document [POST] `/api/documents`
++ Requires authorization
++ Request
+
+        {
+          "title": "A New Document",
+          "content": "I knew this was going to be a cool document"
+        }
+
++ Response 200 (application/json)
+        {
+          "message": "Document created successfully",
+          "data": {
+            "id": 9,
+            "title": "A New Document",
+            "content": "I knew this was going to be a cool document",
+            "access": "public",
+            "userId": 1,
+            "userRoleId": "1",
+            "updatedAt": "2017-03-29T15:46:25.479Z",
+            "createdAt": "2017-03-29T15:46:25.479Z"
+          }
+        }
+
+##### List Documents [GET] `/api/documents`
++ Requires authorization
++ Response 200 (application/json)
+
+        {
+          "message": "Listing public documents",
+          "data": [
+            {
+              "id": 6,
+              "userId": 1,
+              "title": "This is a Document",
+              "content": "Told ya this was a document",
+              "access": "public",
+              "userRoleId": "1",
+              "createdAt": "2017-03-29T12:45:55.068Z",
+              "updatedAt": "2017-03-29T12:45:55.068Z"
+            },
+            {
+              "id": 7,
+              "userId": 1,
+              "title": "This is a Another Document",
+              "content": "Told ya this was another document",
+              "access": "public",
+              "userRoleId": "1",
+              "createdAt": "2017-03-29T12:46:12.332Z",
+              "updatedAt": "2017-03-29T12:46:12.332Z"
+            },
+            {
+              "id": 9,
+              "userId": 1,
+              "title": "Another Document",
+              "content": "Another new document",
+              "access": "public",
+              "userRoleId": "1",
+              "createdAt": "2017-03-29T15:46:25.479Z",
+              "updatedAt": "2017-03-29T15:46:25.479Z"
+            }
+          ]
+        }
+
+
+##### Get Document [GET] `/api/documents/9`
++ Requires authorization
++ Response 200 (application/json)
+        {
+          "message": "Document found!",
+          "data": {
+            "id": 9,
+            "userId": 1,
+            "title": "Another Document",
+            "content": "Another new document",
+            "access": "public",
+            "userRoleId": "1",
+            "createdAt": "2017-03-29T15:46:25.479Z",
+            "updatedAt": "2017-03-29T15:46:25.479Z"
+          }
+        }
+
+
+##### Update Document [PUT] `/api/documents/9`
++ Requires authorization
++ Request
+
+        {
+          "title": "This is an Updated Document"
+        }
+
++ Response 200 (application/json)
+        {
+          "message": "The document was updated successfully",
+          "data": {
+            "id": 9,
+            "userId": 1,
+            "title": "'This is an Updated Document",
+            "content": "Another new document",
+            "access": "public",
+            "userRoleId": "1",
+            "createdAt": "2017-03-29T15:46:25.479Z",
+            "updatedAt": "2017-03-29T16:42:19.410Z"
+          }
+        }
+
+
+##### Delete Document [DELETE] `/api/documents/9`
++ Requires authorization
++ Response 200 (application/json)
+        {
+          "message": "The document was deleted successfully"
+        }
+
+
+
+## Search [`/api/search`]
+
+##### Search Users [GET] `/api/search/users/?q=dmuchemi`
++ Requires authorization
++ Response 200 (application/json)
+        {
+          "message": "User found!",
+          "data": [
+            "Dylan",
+            "Muchemi",
+            "dmuchemi"
+          ]
+        }
+
+##### Search Documents [GET] `/api/search/documents/?q=document`
++ Requires authorization
++ Response 200 (application/json)
+        {
+          "message": "Search results from public documents",
+          "data": [
+            {
+              "id": 6,
+              "userId": 1,
+              "title": "This is a Document",
+              "content": "Told ya this was a document",
+              "access": "public",
+              "userRoleId": "1",
+              "createdAt": "2017-03-29T12:45:55.068Z",
+              "updatedAt": "2017-03-29T12:45:55.068Z"
+            },
+            {
+              "id": 7,
+              "userId": 1,
+              "title": "This is a Another Document",
+              "content": "Told ya this was another document",
+              "access": "public",
+              "userRoleId": "1",
+              "createdAt": "2017-03-29T12:46:12.332Z",
+              "updatedAt": "2017-03-29T12:46:12.332Z"
+            }
+          ]
         }
