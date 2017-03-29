@@ -3,13 +3,12 @@ import React from 'react';
 class LoginPage extends React.Component {
   render() {
     return (
-      <div className="jumbotron text-center">
+      <div className="text-center">
         <main>
           <center>
-            <img className="responsive-img" src="http://i.imgur.com/ax0NCsK.gif" alt="" />
             <div className="section" />
 
-            <h5 className="white-text">Logininto your account</h5>
+            <h5 className="black-text">Login into your account</h5>
             <div className="section"></div>
 
             <div className="container">
@@ -20,7 +19,6 @@ class LoginPage extends React.Component {
                     <div className="col s12">
                     </div>
                   </div>
-
                   <div className="row">
                     <div className="input-field col s12">
                       <input className="validate" type="email" name="email" id="email" />
@@ -49,7 +47,7 @@ class LoginPage extends React.Component {
                 </form>
               </div>
             </div>
-            <a className="white-text create-account" href="/signup">Create account</a>
+            <a className="black-text create-account" href="/signup">Create account</a>
           </center>
           <div className="section" />
           <div className="section" />
