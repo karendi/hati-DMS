@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: https://hati-api.herokuapp.com/
+HOST: https://hati-api-pr-19.herokuapp.com
 
 # Hati
 
@@ -181,6 +181,7 @@ This is a RESTful API. Authentication is required for all requests apart from ``
         }
 
 + Response 200 (application/json)
+
         {
           "message": "You were successfully logged in",
           "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInJvbGVJZCI6MSwiaWF0IjoxNDkwNzg2MjQ3LCJleHAiOjE0OTA4NzI2NDd9.6IgsjmdWaCN1Zlpm9wBM0qzKKdm6B4Sgw6ERDAT9syM",
@@ -191,6 +192,7 @@ This is a RESTful API. Authentication is required for all requests apart from ``
 ##### Get User [GET] `/api/users/6`
 + Requires authorization
 + Response 200 (application/json)
+
         {
           "message": "User found!",
           "data": {
@@ -216,6 +218,7 @@ This is a RESTful API. Authentication is required for all requests apart from ``
         }
 
 + Response 200 (application/json)
+
         {
           "message": "User found!",
           "data": {
@@ -235,6 +238,7 @@ This is a RESTful API. Authentication is required for all requests apart from ``
 ##### Delete User [DELETE] `/api/users/6`
 + Requires authorization and admin access
 + Response 200 (application/json)
+
         {
           "message": "User was deleted successfully"
         }
@@ -243,6 +247,7 @@ This is a RESTful API. Authentication is required for all requests apart from ``
 ##### Get User's Documents [GET] `/api/users/1/documents`
 + Requires authorization
 + Response 200 (application/json)
+
         {
           "message": "Documents Found",
           "data": [
@@ -265,6 +270,7 @@ This is a RESTful API. Authentication is required for all requests apart from ``
 ##### Logout User [POST] `/api/users/logout`
 + Requires authorization
 + Response 200 (application/json)
+
         {
           "message": "You were logged out successfully"
         }
@@ -282,6 +288,7 @@ This is a RESTful API. Authentication is required for all requests apart from ``
         }
 
 + Response 200 (application/json)
+
         {
           "message": "Document created successfully",
           "data": {
@@ -340,6 +347,7 @@ This is a RESTful API. Authentication is required for all requests apart from ``
 ##### Get Document [GET] `/api/documents/9`
 + Requires authorization
 + Response 200 (application/json)
+
         {
           "message": "Document found!",
           "data": {
@@ -364,6 +372,7 @@ This is a RESTful API. Authentication is required for all requests apart from ``
         }
 
 + Response 200 (application/json)
+
         {
           "message": "The document was updated successfully",
           "data": {
@@ -382,6 +391,7 @@ This is a RESTful API. Authentication is required for all requests apart from ``
 ##### Delete Document [DELETE] `/api/documents/9`
 + Requires authorization
 + Response 200 (application/json)
+
         {
           "message": "The document was deleted successfully"
         }
@@ -393,6 +403,7 @@ This is a RESTful API. Authentication is required for all requests apart from ``
 ##### Search Users [GET] `/api/search/users/?q=dmuchemi`
 + Requires authorization
 + Response 200 (application/json)
+
         {
           "message": "User found!",
           "data": [
@@ -405,6 +416,7 @@ This is a RESTful API. Authentication is required for all requests apart from ``
 ##### Search Documents [GET] `/api/search/documents/?q=document`
 + Requires authorization
 + Response 200 (application/json)
+
         {
           "message": "Search results from public documents",
           "data": [
