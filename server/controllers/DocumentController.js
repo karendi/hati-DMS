@@ -19,11 +19,11 @@ class DocumentController {
     if (!req.body.title && !req.body.content) {
       return res.status(400).send({ message: 'Required fields cannot be blank' });
     }
-    if (!req.body.title) {
-      return res.status(400).send({ message: 'Title field cannot be blank' });
+    if (!req.body.title || (req.body.title).split(' ').length < 1) {
+      return res.status(400).send({ message: 'Title field should have atleast 1 word' });
     }
-    if (!req.body.content) {
-      return res.status(400).send({ message: 'Content field cannot be blank' });
+    if (!req.body.content || (req.body.content).split(' ').length < 3) {
+      return res.status(400).send({ message: 'Content field should have atleast 3 words' });
     }
     db.Document
       .create({
@@ -41,7 +41,7 @@ class DocumentController {
      })
      .catch((err) => {
        res.status(400).send({
-         message: 'There was an error while creating the document', err
+         error: 'There was an error while creating the document', err
        });
      });
   }
@@ -137,7 +137,6 @@ class DocumentController {
         }
       };
     }
-
     query.attributes = docAttributes.doc;
     query.limit = req.query.limit || null;
     query.offset = req.query.offset || null;
@@ -190,41 +189,12 @@ class DocumentController {
     if (!req.query.q) {
       return res.send({ message: 'Search cannot be empty' });
     }
-    // const query = {
-    //   where: {
-    //     $and: [
-    //       {
-    //         $or: [
-    //           { access: 'public' },
-    //           { userId: req.decodedToken.userId },
-    //           { $and: [
-    //             { access: 'role' },
-    //             { userRoleId: req.decodedToken.roleId }
-    //           ] }
-    //         ]
-    //       },
-    //       {
-    //         $or: [
-    //           { title: { $iLike: `%${req.query.q}%` } },
-    //           { content: { $iLike: `%${req.query.q}%` } }
-    //         ]
-    //       }
-    //     ]
-    //   },
-    //   limit: req.query.limit || null,
-    //   offset: req.query.offset || null,
-    //   order: [['createdAt', 'DESC']]
-    // };
-
     const query = {
       where: {
         access: 'public',
         $or: [
-        // { access: 'public' },
         { title: { $iLike: `%${req.query.q}%` } },
         { content: { $iLike: `%${req.query.q}%` } }
-        // { access: { $in: ['public'] } }
-        // { userId: req.decodedToken.userId }
         ]
       }
     };

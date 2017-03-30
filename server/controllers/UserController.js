@@ -61,8 +61,8 @@ class UserController {
           })
           .catch((err) => {
             res.status(400).send({
-              message: 'There was a problem creating the user',
-              err: err
+              error: 'There was a problem creating the user',
+              err
             });
           });
       });
@@ -108,8 +108,8 @@ class UserController {
       })
       .catch((err) => {
         res.status(401).send({
-          message: 'Invalid login credentials',
-          err: err
+          error: 'Invalid login credentials',
+          err
         });
       });
   }
@@ -154,8 +154,8 @@ class UserController {
       })
       .catch((err) => {
         res.status(404).send({
-          message: `User ${req.params.id} was not found`,
-          err: err
+          error: `User ${req.params.id} was not found`,
+          err
         });
       });
   }
@@ -198,8 +198,8 @@ class UserController {
       })
       .catch((err) => {
         res.status(404).send({
-          message: 'There was a problem getting all users',
-          err: err
+          error: 'There was a problem getting all users',
+          err
         });
       });
   }
@@ -329,8 +329,8 @@ class UserController {
       })
       .catch((err) => {
         res.status(404).send({
-          message: 'There was a problem getting user',
-          err: err
+          error: 'There was a problem getting user',
+          err
         });
       });
   }
