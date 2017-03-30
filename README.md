@@ -28,6 +28,8 @@ A RESTful API for Hati-DMS
 * Set a secret key in a .env file `SECRET=iwillnotrememberthis`
 * Run the app `npm run start:dev`
 
+### Run in Postman
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/98eb9280ef881e207715)
 
 ### Available Endpoints
 
