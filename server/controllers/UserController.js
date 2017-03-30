@@ -187,7 +187,7 @@ class UserController {
     query.offset = req.query.offset || null;
     query.order = [['createdAt', 'DESC']];
     db.User
-      .findAll({ query: query, limit: query.limit, offset: query.offset })
+      .findAll({ query, limit: query.limit, offset: query.offset })
       .then((allUsers) => {
         if (allUsers) {
           res.status(200).send({
@@ -255,7 +255,6 @@ class UserController {
       .findById(req.params.id)
       .then((user) => {
         if (user) {
-          // TODO: Allow user to delete themselves
           user.destroy()
           .then(() => {
             res.status(200).send({
