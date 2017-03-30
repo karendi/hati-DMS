@@ -95,7 +95,7 @@ describe('User API Spec', () => {
         })
         .end((err, res) => {
           res.should.have.status(401);
-          res.body.message.should.equal('Invalid login credentials');
+          res.body.error.should.equal('Invalid login credentials');
           done();
         });
     });

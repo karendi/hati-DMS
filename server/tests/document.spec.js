@@ -66,7 +66,7 @@ describe('Document API Spec', () => {
         })
         .end((err, res) => {
           res.should.have.status(400);
-          res.body.message.should.equal('Title field cannot be blank');
+          res.body.message.should.equal('Title field should have atleast 1 word');
           done();
         });
     });
@@ -80,7 +80,7 @@ describe('Document API Spec', () => {
         })
         .end((err, res) => {
           res.should.have.status(400);
-          res.body.message.should.equal('Content field cannot be blank');
+          res.body.message.should.equal('Content field should have atleast 3 words');
           done();
         });
     });
