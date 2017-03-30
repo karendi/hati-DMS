@@ -50,27 +50,29 @@ Host: https://hati-api-pr-19.herokuapp.com
 
 ## Users [`/api/users`]
 
-| Method     | Endpoint                | Description         |
-| :-------   | :---------------------  | :-------------      |
-|POST        |/api/users               |Create user          |
-|GET         |/api/users               |List users           |
-|POST        |/api/users/login         |Login user           |
-|GET         |/api/users/:id           |Get user             |
-|PUT         |/api/users/:id           |Update user          |
-|DELETE      |/api/users/:id           |Delete user          |
-|GET         |/api/users/:id/documents |Get user's documents |
-|POST        |/api/users/logout        |Logout user          |
+| Method     | Endpoint                                 | Description         |
+| :-------   | :--------------------------------------  | :-------------      |
+|POST        |/api/users                                |Create user          |
+|GET         |/api/users                                |List users           |
+|GET         | /users/?limit={integer}&offset={integer} |Paginated users      |
+|POST        |/api/users/login                          |Login user           |
+|GET         |/api/users/:id                            |Get user             |
+|PUT         |/api/users/:id                            |Update user          |
+|DELETE      |/api/users/:id                            |Delete user          |
+|GET         |/api/users/:id/documents                  |Get user's documents |
+|POST        |/api/users/logout                         |Logout user          |
 
 
 ## Documents [`/api/documents`]
 
-| Method     | Endpoint                | Description         |
-| :-------   | :---------------------  | :-------------      |
-|POST        |/api/documents           |Create document      |
-|GET         |/api/documents           |List documents       |
-|GET         |/api/documents/:id       |Get document         |
-|PUT         |/api/documents/:id       |Update document      |
-|DELETE      |/api/documents/:id       |Delete document      |
+| Method     | Endpoint                                        | Description         |
+| :-------   | :--------------------------------------------   | :-------------      |
+|POST        |/api/documents                                   |Create document      |
+|GET         |/api/documents                                   |List documents       |
+|GET         |/api/documents/?limit={integer}&offset={integer} |Paginated documents  |
+|GET         |/api/documents/:id                               |Get document         |
+|PUT         |/api/documents/:id                               |Update document      |
+|DELETE      |/api/documents/:id                               |Delete document      |
 
 
 ## Search [`/api/search`]
