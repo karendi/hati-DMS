@@ -39,9 +39,9 @@ class DocumentController {
          data: document
        });
      })
-     .catch((err) => {
+     .catch(() => {
        res.status(400).send({
-         error: 'There was an error while creating the document', err
+         error: 'There was an error while creating the document'
        });
      });
   }
@@ -79,7 +79,7 @@ class DocumentController {
             });
           });
         } else {
-          res.status(401).send({ message: 'Permission denied' });
+          res.status(401).send({ message: 'Updating a different user\'s documents is not allowed' });
         }
       });
   }
@@ -107,8 +107,8 @@ class DocumentController {
             });
           });
         } else {
-          res.status(401).send({
-            message: 'Permission denied'
+          res.status(405).send({
+            message: 'Deleting other users\' documents is not allowed.'
           });
         }
       });
@@ -142,7 +142,7 @@ class DocumentController {
     query.offset = req.query.offset || null;
     query.order = [['createdAt', 'DESC']];
     db.Document
-      .findAll({ where: query.where, limit: query.limit, offset: query.offset })
+      .findAll({ where: query.where, order: query.order, limit: query.limit, offset: query.offset })
       .then((docs) => {
         if (req.decodedToken.roleId === 1) {
           res.status(200).send({ message: 'Listing all documents', data: docs });
@@ -186,21 +186,28 @@ class DocumentController {
    * @returns {void}
    */
   static searchDocument(req, res) {
-    if (!req.query.q) {
-      return res.send({ message: 'Search cannot be empty' });
+    const searchTerm = req.query.q;
+    if (!Object.keys(req.query).length || !searchTerm) {
+      return res.status(400).send({ message: 'Input a valid search term' });
     }
     const query = {
+      attributes: ['title', 'content'],
       where: {
         access: 'public',
         $or: [
-        { title: { $iLike: `%${req.query.q}%` } },
-        { content: { $iLike: `%${req.query.q}%` } }
+        { title: { $iLike: `%${searchTerm}%` } },
+        { content: { $iLike: `%${searchTerm}%` } }
         ]
       }
     };
     db.Document
       .findAll(query)
       .then((queriedDoc) => {
+        if (queriedDoc.length === 0) {
+          return res.status(404).send({
+            message: 'No results were found'
+          });
+        }
         if (req.decodedToken.roleId === 1) {
           res.status(200).send({
             message: 'Search results from all documents',
