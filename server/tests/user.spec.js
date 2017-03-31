@@ -128,10 +128,10 @@ describe('User API Spec', () => {
   });
 
   describe('Get Users', () => {
-    it('should get a list of all users', (done) => {
+    it('should get a the admin list of all users', (done) => {
       chai.request(app)
         .get('/api/users')
-        .set('authorization', regUserToken)
+        .set('authorization', adminUserToken)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.message.should.equal('Listing available users');
@@ -143,7 +143,7 @@ describe('User API Spec', () => {
         .get('/api/users')
         .end((err, res) => {
           res.should.have.status(401);
-          res.body.message.should.equal('Verification failed');
+          res.body.message.should.equal('No token provided');
           done();
         });
     });
@@ -180,12 +180,6 @@ describe('User API Spec', () => {
     });
   });
 
-  describe('User Search', () => {
-  });
-
-  describe('User Documents', () => {
-  });
-
   describe('Update User', () => {
     it('should allow a user to update their data', (done) => {
       chai.request(app)
@@ -209,7 +203,8 @@ describe('User API Spec', () => {
           email: 'jk@example.com'
         })
         .end((err, res) => {
-          res.body.message.should.equal('Request not allowed');
+          res.should.have.status(403);
+          res.body.message.should.equal('Updating a different user\'s account is not allowed');
           done();
         });
     });
@@ -267,7 +262,7 @@ describe('User API Spec', () => {
         .post('/api/users/logout')
         .end((err, res) => {
           res.should.have.status(401);
-          res.body.message.should.equal('Verification failed');
+          res.body.message.should.equal('No token provided');
           done();
         });
     });
