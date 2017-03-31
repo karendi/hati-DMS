@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 const db = require('../models/Index.js');
-const auth = require('../middleware/Authentication');
 
 const secret = process.env.SECRET;
 
@@ -285,7 +284,7 @@ class UserController {
   static listUserDocuments(req, res) {
     const userDetails = {
       user: ['id', 'fName', 'lName', 'email', 'username'],
-      doc: ['id', 'title', 'content', 'userId']
+      doc: ['title', 'content']
     };
     const decodedRole = req.decodedToken.roleId;
     const decodedUser = req.decodedToken.userId;
