@@ -73,7 +73,7 @@ describe('Role API Spec', () => {
         })
         .end((err, res) => {
           res.should.have.status(403);
-          res.body.message.should.equal('Permission denied, admin only');
+          res.body.message.should.equal('Permission denied, admin access only');
           done();
         });
     });
@@ -123,7 +123,7 @@ describe('Role API Spec', () => {
         .set('authorization', regUserToken)
         .end((err, res) => {
           res.should.have.status(403);
-          res.body.message.should.equal('Permission denied, admin only');
+          res.body.message.should.equal('Permission denied, admin access only');
           done();
         });
     });
@@ -144,7 +144,7 @@ describe('Role API Spec', () => {
         .set('authorization', regUserToken)
         .end((err, res) => {
           res.should.have.status(403);
-          res.body.message.should.equal('Permission denied, admin only');
+          res.body.message.should.equal('Permission denied, admin access only');
           done();
         });
     });
@@ -183,7 +183,7 @@ describe('Role API Spec', () => {
         })
         .end((err, res) => {
           res.should.have.status(403);
-          res.body.message.should.equal('Permission denied, admin only');
+          res.body.message.should.equal('Permission denied, admin access only');
           done();
         });
     });
@@ -232,7 +232,7 @@ describe('Role API Spec', () => {
         .set('authorization', regUserToken)
         .end((err, res) => {
           res.should.have.status(403);
-          res.body.message.should.equal('Permission denied, admin only');
+          res.body.message.should.equal('Permission denied, admin access only');
           done();
         });
     });
