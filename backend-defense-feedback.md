@@ -14,7 +14,7 @@ Get specific user documents - returns other people's private docs - _rectified_
 
 Search: return a descriptive message if doesn't exist, and have object values instead of an array returned - _done_
 
-Same user shouldn't have duplicate docs - _pending_
+Same user shouldn't have duplicate docs - _done_
 
 Change status code on trying to delete documents a user doesn't own - _done_
 
