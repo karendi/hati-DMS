@@ -25,25 +25,39 @@ class DocumentController {
     if (!req.body.content || (req.body.content).split(' ').length < 3) {
       return res.status(400).send({ message: 'Content field should have atleast 3 words' });
     }
+    const title = req.body.title;
+    const content = req.body.content;
     db.Document
-      .create({
-        title: req.body.title,
-        content: req.body.content,
-        access: req.body.access || 'public',
-        userId: req.decodedToken.userId,
-        userRoleId: req.decodedToken.roleId
+      .findOne({
+        where: { title, content }
       })
-     .then((document) => {
-       res.status(201).send({
-         message: 'Document created successfully',
-         data: document
-       });
-     })
-     .catch(() => {
-       res.status(400).send({
-         error: 'There was an error while creating the document'
-       });
-     });
+      .then((result) => {
+        if (result) {
+          return res.status(409).send({
+            success: false,
+            message: 'Document already exists'
+          });
+        }
+        return db.Document
+          .create({
+            title: req.body.title,
+            content: req.body.content,
+            access: req.body.access || 'public',
+            userId: req.decodedToken.userId,
+            userRoleId: req.decodedToken.roleId
+          })
+         .then((document) => {
+           res.status(201).send({
+             message: 'Document created successfully',
+             data: document
+           });
+         })
+         .catch(() => {
+           res.status(400).send({
+             error: 'There was an error while creating the document'
+           });
+         });
+      });
   }
 
   /**
