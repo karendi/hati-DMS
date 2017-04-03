@@ -3,11 +3,10 @@ const chaiHttp = require('chai-http');
 const app = require('../routes/Index.js');
 const seeds = require('../db/seeds/Index.js');
 
-process.env.NODE_ENV = 'test';
-
 const should = chai.should();
 const users = seeds.legitUsers;
 const docs = seeds.legitDocs;
+
 chai.use(chaiHttp);
 
 describe('Document API Spec', () => {
@@ -53,7 +52,7 @@ describe('Document API Spec', () => {
         .send(docs[0])
         .end((err, res) => {
           res.should.have.status(401);
-          res.body.message.should.equal('Verification failed');
+          res.body.message.should.equal('No token provided');
           done();
         });
     });
@@ -67,7 +66,7 @@ describe('Document API Spec', () => {
         })
         .end((err, res) => {
           res.should.have.status(400);
-          res.body.message.should.equal('Title field cannot be blank');
+          res.body.message.should.equal('Title field should have atleast 1 word');
           done();
         });
     });
@@ -81,7 +80,7 @@ describe('Document API Spec', () => {
         })
         .end((err, res) => {
           res.should.have.status(400);
-          res.body.message.should.equal('Content field cannot be blank');
+          res.body.message.should.equal('Content field should have atleast 3 words');
           done();
         });
     });
@@ -145,6 +144,19 @@ describe('Document API Spec', () => {
           done();
         });
     });
+    it('should not allow a user to update another user\'s documents', (done) => {
+      chai.request(app)
+        .put('/api/documents/5')
+        .set('authorization', regUserToken)
+        .send({
+          title: 'Missed The Bus?'
+        })
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.message.should.equal('Updating a different user\'s documents is not allowed');
+          done();
+        });
+    });
   });
 
   describe('Delete Documents', () => {
@@ -163,7 +175,7 @@ describe('Document API Spec', () => {
         .delete('/api/documents/5')
         .end((err, res) => {
           res.should.have.status(401);
-          res.body.message.should.equal('Verification failed');
+          res.body.message.should.equal('No token provided');
           done();
         });
     });
@@ -174,6 +186,16 @@ describe('Document API Spec', () => {
         .end((err, res) => {
           res.should.have.status(404);
           res.body.message.should.equal('The document was not found');
+          done();
+        });
+    });
+    it('should not allow to delete documents they do not own', (done) => {
+      chai.request(app)
+        .delete('/api/documents/5')
+        .set('authorization', regUserToken)
+        .end((err, res) => {
+          res.should.have.status(405);
+          res.body.message.should.equal('Deleting other users\' documents is not allowed.');
           done();
         });
     });
@@ -237,38 +259,6 @@ describe('Document API Spec', () => {
         .end((err, res) => {
           res.should.have.status(404);
           res.body.message.should.equal('The document was not found');
-          done();
-        });
-    });
-  });
-
-  describe('Search Documents', () => {
-    it('should show a regular user search results from public documents', (done) => {
-      chai.request(app)
-        .get('/api/search/documents/?q=book')
-        .set('authorization', regUserToken)
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.message.should.equal('Search results from public documents');
-          done();
-        });
-    });
-    it('should show an admin search results from all documents', (done) => {
-      chai.request(app)
-        .get('/api/search/documents/?q=book')
-        .set('authorization', adminUserToken)
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.message.should.equal('Search results from all documents');
-          done();
-        });
-    });
-    it('should ensure the search query is not blank', (done) => {
-      chai.request(app)
-        .get('/api/search/documents/?q')
-        .set('authorization', regUserToken)
-        .end((err, res) => {
-          res.body.message.should.equal('Search cannot be empty');
           done();
         });
     });

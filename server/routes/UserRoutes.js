@@ -5,7 +5,7 @@ const Authentication = require('../middleware/Authentication');
 const userRouter = express.Router();
 
 userRouter.route('/')
-  .get(Authentication.verifyUser, UserController.listAllUsers)
+  .get(Authentication.verifyUser, Authentication.verifyAdmin, UserController.listAllUsers)
   .post(UserController.createNewUser);
 
 userRouter.route('/login')

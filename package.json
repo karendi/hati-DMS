@@ -9,6 +9,10 @@
     "start:dev": "nodemon --exec babel-node server.js",
     "test": "NODE_ENV=test && sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all && node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha ./server/tests/*.js --recursive && cat ./coverage/lcov.info | codecov"
   },
+  "engines": {
+    "node": "7.2.1",
+    "npm": "4.0.3" 
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/andela-jmacharia/hati-DMS.git"

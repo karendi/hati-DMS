@@ -23,7 +23,7 @@ class Authentication {
   static verifyUser(req, res, next) {
     const token = req.body.token || req.query.token || req.headers.authorization || req.headers['x-access-token'];
     if (!token) {
-      return res.status(401).send({ message: 'Verification failed' });
+      return res.status(401).send({ message: 'No token provided' });
     }
     jwt.verify(token, secret, (err, decoded) => {
       if (err) {
@@ -51,7 +51,7 @@ class Authentication {
         if (role.title === 'admin' || role.id === 1) {
           next();
         } else {
-          return res.status(403).send({ message: 'Permission denied, admin only' });
+          return res.status(403).send({ message: 'Permission denied, admin access only' });
         }
       });
   }
