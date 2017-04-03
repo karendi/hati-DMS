@@ -1,2 +1,4 @@
 webpack.config.dev.js
 server/models/Index.js
+node_modules/
+server/db/
