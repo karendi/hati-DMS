@@ -25,17 +25,22 @@ A RESTful API for Hati-DMS
 * Navigate to the project folder `cd hati-DMS`
 * Install API `npm install` or `yarn`
 * Set database variables in `server/config/Config.json`
-* Set a secret key in a .env file `SECRET=iwillnotrememberthis`
+* Set a secret key in a .env file eg `SECRET=iwillnotrememberthis`
 * Run the app `npm run start:dev`
 
+
+
+# API
+
+
 ### Run in Postman
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/0ad87b24274ed8371b3f)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/9407c209ea79d5e10425)
 
 ### Available Endpoints
 
-The API Documentation is available [here](https://hati-api-pr-19.herokuapp.com)
+The API Documentation is available [here](https://hatidms.herokuapp.com/api/documentation)
 
-Host: https://hati-api-pr-22.herokuapp.com
+Host: https://hatidms.herokuapp.com
 
 ## Roles [`/api/roles`]
 
