@@ -60,7 +60,17 @@ describe('Search Spec', () => {
         .get('/api/search/documents/?q')
         .set('authorization', regUserToken)
         .end((err, res) => {
-          res.body.message.should.equal('Search cannot be empty');
+          res.body.message.should.equal('Input a valid search term');
+          done();
+        });
+    });
+    it('should ensure a message if no results were found', (done) => {
+      chai.request(app)
+        .get('/api/search/documents/?q=ehbssbhf')
+        .set('authorization', regUserToken)
+        .end((err, res) => {
+          res.should.have.status(404);
+          res.body.message.should.equal('No results were found');
           done();
         });
     });
@@ -73,8 +83,28 @@ describe('Search Spec', () => {
         .set('authorization', regUserToken)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.message.should.equal('User found!');
-          res.body.data[2].should.equal('dmuchemi');
+          res.body.message.should.equal('Search Results!');
+          res.body.data.result[0].username.should.equal('dmuchemi');
+          done();
+        });
+    });
+    it('should return a message if the search query is invalid or empty', (done) => {
+      chai.request(app)
+        .get('/api/search/users/?q=')
+        .set('authorization', regUserToken)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.message.should.equal('Input a valid search term');
+          done();
+        });
+    });
+    it('should ensure a message if no results were found', (done) => {
+      chai.request(app)
+        .get('/api/search/users/?q=hfgsbs')
+        .set('authorization', regUserToken)
+        .end((err, res) => {
+          res.should.have.status(404);
+          res.body.message.should.equal('No results were found');
           done();
         });
     });

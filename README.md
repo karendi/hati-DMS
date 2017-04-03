@@ -29,13 +29,13 @@ A RESTful API for Hati-DMS
 * Run the app `npm run start:dev`
 
 ### Run in Postman
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/98eb9280ef881e207715)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/0ad87b24274ed8371b3f)
 
 ### Available Endpoints
 
 The API Documentation is available [here](https://hati-api-pr-19.herokuapp.com)
 
-Host: https://hati-api-pr-19.herokuapp.com
+Host: https://hati-api-pr-22.herokuapp.com
 
 ## Roles [`/api/roles`]
 

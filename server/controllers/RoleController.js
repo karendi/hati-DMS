@@ -42,8 +42,8 @@ class RoleController {
           .then((role) => {
             res.status(200).send({ message: 'The role was created successfully', role });
           })
-          .catch((err) => {
-            res.status(400).send({ error: 'There was a problem creating the role', err });
+          .catch(() => {
+            res.status(400).send({ error: 'There was a problem creating the role' });
           });
       });
   }
@@ -114,8 +114,8 @@ class RoleController {
       .then((allRoles) => {
         res.status(200).send({ message: 'Listing available roles', data: allRoles });
       })
-      .catch((err) => {
-        res.status(404).send({ error: 'A problem was encountered while getting roles', err });
+      .catch(() => {
+        res.status(404).send({ error: 'A problem was encountered while getting roles' });
       });
   }
 
