@@ -19,31 +19,45 @@ class DocumentController {
     if (!req.body.title && !req.body.content) {
       return res.status(400).send({ message: 'Required fields cannot be blank' });
     }
-    if (!req.body.title) {
-      return res.status(400).send({ message: 'Title field cannot be blank' });
+    if (!req.body.title || (req.body.title).split(' ').length < 1) {
+      return res.status(400).send({ message: 'Title field should have atleast 1 word' });
     }
-    if (!req.body.content) {
-      return res.status(400).send({ message: 'Content field cannot be blank' });
+    if (!req.body.content || (req.body.content).split(' ').length < 3) {
+      return res.status(400).send({ message: 'Content field should have atleast 3 words' });
     }
+    const title = req.body.title;
+    const content = req.body.content;
     db.Document
-      .create({
-        title: req.body.title,
-        content: req.body.content,
-        access: req.body.access || 'public',
-        userId: req.decodedToken.userId,
-        userRoleId: req.decodedToken.roleId
+      .findOne({
+        where: { title, content }
       })
-     .then((document) => {
-       res.status(201).send({
-         message: 'Document created successfully',
-         data: document
-       });
-     })
-     .catch((err) => {
-       res.status(400).send({
-         message: 'There was an error while creating the document', err
-       });
-     });
+      .then((result) => {
+        if (result) {
+          return res.status(409).send({
+            success: false,
+            message: 'Document already exists'
+          });
+        }
+        return db.Document
+          .create({
+            title: req.body.title,
+            content: req.body.content,
+            access: req.body.access || 'public',
+            userId: req.decodedToken.userId,
+            userRoleId: req.decodedToken.roleId
+          })
+         .then((document) => {
+           res.status(201).send({
+             message: 'Document created successfully',
+             data: document
+           });
+         })
+         .catch(() => {
+           res.status(400).send({
+             error: 'There was an error while creating the document'
+           });
+         });
+      });
   }
 
   /**
@@ -79,7 +93,7 @@ class DocumentController {
             });
           });
         } else {
-          res.status(401).send({ message: 'Permission denied' });
+          res.status(401).send({ message: 'Updating a different user\'s documents is not allowed' });
         }
       });
   }
@@ -107,8 +121,8 @@ class DocumentController {
             });
           });
         } else {
-          res.status(401).send({
-            message: 'Permission denied'
+          res.status(405).send({
+            message: 'Deleting other users\' documents is not allowed.'
           });
         }
       });
@@ -137,13 +151,12 @@ class DocumentController {
         }
       };
     }
-
     query.attributes = docAttributes.doc;
     query.limit = req.query.limit || null;
     query.offset = req.query.offset || null;
     query.order = [['createdAt', 'DESC']];
     db.Document
-      .findAll({ where: query.where, limit: query.limit, offset: query.offset })
+      .findAll({ where: query.where, order: query.order, limit: query.limit, offset: query.offset })
       .then((docs) => {
         if (req.decodedToken.roleId === 1) {
           res.status(200).send({ message: 'Listing all documents', data: docs });
@@ -187,49 +200,28 @@ class DocumentController {
    * @returns {void}
    */
   static searchDocument(req, res) {
-    if (!req.query.q) {
-      return res.send({ message: 'Search cannot be empty' });
+    const searchTerm = req.query.q;
+    if (!Object.keys(req.query).length || !searchTerm) {
+      return res.status(400).send({ message: 'Input a valid search term' });
     }
-    // const query = {
-    //   where: {
-    //     $and: [
-    //       {
-    //         $or: [
-    //           { access: 'public' },
-    //           { userId: req.decodedToken.userId },
-    //           { $and: [
-    //             { access: 'role' },
-    //             { userRoleId: req.decodedToken.roleId }
-    //           ] }
-    //         ]
-    //       },
-    //       {
-    //         $or: [
-    //           { title: { $iLike: `%${req.query.q}%` } },
-    //           { content: { $iLike: `%${req.query.q}%` } }
-    //         ]
-    //       }
-    //     ]
-    //   },
-    //   limit: req.query.limit || null,
-    //   offset: req.query.offset || null,
-    //   order: [['createdAt', 'DESC']]
-    // };
-
     const query = {
+      attributes: ['title', 'content'],
       where: {
+        access: 'public',
         $or: [
-        // { access: 'public' },
-        { title: { $iLike: `%${req.query.q}%` } },
-        { content: { $iLike: `%${req.query.q}%` } },
-        { access: { $in: ['public'] } }
-        // { userId: req.decodedToken.userId }
+        { title: { $iLike: `%${searchTerm}%` } },
+        { content: { $iLike: `%${searchTerm}%` } }
         ]
       }
     };
     db.Document
       .findAll(query)
       .then((queriedDoc) => {
+        if (queriedDoc.length === 0) {
+          return res.status(404).send({
+            message: 'No results were found'
+          });
+        }
         if (req.decodedToken.roleId === 1) {
           res.status(200).send({
             message: 'Search results from all documents',

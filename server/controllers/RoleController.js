@@ -19,7 +19,9 @@ class RoleController {
     let roleInfo = {};
     if (req.body.id) {
       roleInfo = { title: req.body.title, id: req.body.id };
-    } else { roleInfo = { title: req.body.title }; }
+    } else {
+      roleInfo = { title: req.body.title };
+    }
     if (!req.body.title) {
       return res.status(400).send({ message: 'Title cannot be blank' });
     }
@@ -40,8 +42,8 @@ class RoleController {
           .then((role) => {
             res.status(200).send({ message: 'The role was created successfully', role });
           })
-          .catch((err) => {
-            res.status(400).send({ message: 'There was a problem creating the role', err });
+          .catch(() => {
+            res.status(400).send({ error: 'There was a problem creating the role' });
           });
       });
   }
@@ -112,8 +114,8 @@ class RoleController {
       .then((allRoles) => {
         res.status(200).send({ message: 'Listing available roles', data: allRoles });
       })
-      .catch((err) => {
-        res.status(404).send({ message: 'A problem was encountered while getting roles', err });
+      .catch(() => {
+        res.status(404).send({ error: 'A problem was encountered while getting roles' });
       });
   }
 
