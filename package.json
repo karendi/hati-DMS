@@ -80,7 +80,7 @@
     "webpack-hot-middleware": "^2.16.1"
   },
   "devDependencies": {
-    "babel-cli": "^6.22.2",
+    "babel-cli": "^6.24.0",
     "babel-core": "^6.22.1",
     "babel-loader": "^6.2.10",
     "babel-plugin-react-display-name": "^2.0.0",
