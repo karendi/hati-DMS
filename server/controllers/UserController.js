@@ -59,10 +59,9 @@ class UserController {
               data: user
             });
           })
-          .catch((err) => {
+          .catch(() => {
             res.status(400).send({
-              error: 'There was a problem creating the user',
-              err
+              error: 'There was a problem creating the user'
             });
           });
       });
@@ -106,10 +105,9 @@ class UserController {
           });
         }
       })
-      .catch((err) => {
+      .catch(() => {
         res.status(401).send({
-          error: 'Invalid login credentials',
-          err
+          error: 'Invalid login credentials'
         });
       });
   }
@@ -124,10 +122,19 @@ class UserController {
    */
   static findUserById(req, res) {
     const userDetails = {
-      user: ['id', 'fName', 'lName', 'email', 'username'],
-      role: ['id', 'title']
+      user: ['fName', 'lName', 'username'],
+      role: ['title']
     };
-    const query = {
+    const query = req.decodedToken.roleId === 1 ? {
+      where: {
+        id: req.params.id
+      },
+      include: [
+        {
+          model: db.Role
+        }
+      ]
+    } : {
       where: {
         id: req.params.id
       },
@@ -148,14 +155,12 @@ class UserController {
           });
         }
         if (user) {
-          user.password = null;
           return res.status(200).send({ message: 'User found!', data: user });
         }
       })
-      .catch((err) => {
+      .catch(() => {
         res.status(404).send({
-          error: `User ${req.params.id} was not found`,
-          err
+          error: `User ${req.params.id} was not found`
         });
       });
   }
@@ -169,25 +174,25 @@ class UserController {
    * @returns {void}
    */
   static listAllUsers(req, res) {
-    const userDetails = {
-      user: ['id', 'fName', 'lName', 'email', 'username'],
-      role: ['id', 'title']
-    };
-    const query = {
-      attributes: userDetails.user,
+    const query = req.decodedToken.roleId === 1 ? {
+      include: [
+        {
+          model: db.Role
+        }
+      ]
+    } : {
       include: [
         {
           model: db.Role,
-          attributes: userDetails.role
+          attributes: ['title']
         }
       ]
     };
-    query.attributes = userDetails.user;
     query.limit = req.query.limit || null;
     query.offset = req.query.offset || null;
-    query.order = [['createdAt', 'DESC']];
+    query.order = [['createdAt', 'ASC']];
     db.User
-      .findAll({ query, limit: query.limit, offset: query.offset })
+      .findAll({ query, order: query.order, limit: query.limit, offset: query.offset })
       .then((allUsers) => {
         if (allUsers) {
           res.status(200).send({
@@ -196,10 +201,9 @@ class UserController {
           });
         }
       })
-      .catch((err) => {
+      .catch(() => {
         res.status(404).send({
-          error: 'There was a problem getting all users',
-          err
+          error: 'There was a problem getting all users'
         });
       });
   }
@@ -218,7 +222,7 @@ class UserController {
       .then((user) => {
         if (user) {
           if (String(req.decodedToken.userId) !== String(req.params.id)) {
-            return res.send({ message: 'Request not allowed' });
+            return res.status(403).send({ message: 'Updating a different user\'s account is not allowed' });
           }
           user.update({
             fName: req.body.fName || user.fName,
@@ -280,15 +284,23 @@ class UserController {
   static listUserDocuments(req, res) {
     const userDetails = {
       user: ['id', 'fName', 'lName', 'email', 'username'],
-      doc: ['id', 'title', 'content', 'userId']
+      doc: ['title', 'content']
+    };
+    const decodedRole = req.decodedToken.roleId;
+    const decodedUser = req.decodedToken.userId;
+    const query = decodedRole === 1 || decodedUser === parseInt(req.params.id, 10) ? {
+      where: { id: req.params.id },
+      include: [{
+        model: db.Document, attributes: userDetails.doc
+      }]
+    } : {
+      where: { id: req.params.id },
+      include: [{
+        model: db.Document, attributes: userDetails.doc, where: { access: 'public' }
+      }]
     };
     db.User
-      .findAll({
-        where: { id: req.params.id },
-        include: [{
-          model: db.Document, attributes: userDetails.doc
-        }]
-      })
+      .findAll(query)
       .then((user) => {
         if (!user) {
           res.status(404).send({ message: 'User was not found' });
@@ -307,29 +319,44 @@ class UserController {
    * @returns {void}
    */
   static searchUser(req, res) {
+    const searchTerm = req.query.q;
+    if (!Object.keys(req.query).length || !searchTerm) {
+      return res.status(400).send({ message: 'Input a valid search term' });
+    }
+    const query = req.decodedToken.roleId === 1 ? {
+      where: {
+        $or: {
+          username: { $iLike: `%${searchTerm}%` },
+          fName: { $iLike: `%${searchTerm}%` },
+          lName: { $iLike: `%${searchTerm}%` },
+        }
+      }
+    } : {
+      attributes: ['fName', 'lName', 'username'],
+      where: {
+        $or: {
+          username: { $iLike: `%${searchTerm}%` },
+          fName: { $iLike: `%${searchTerm}%` },
+          lName: { $iLike: `%${searchTerm}%` },
+        }
+      }
+    };
     db.User
-      .findAll({
-        where: {
-          username: { $iLike: `%${req.query.q}%` }
-        }
-      })
-      .then((user) => {
-        if (!user) {
+      .findAll(query)
+      .then((result) => {
+        if (result.length === 0) {
           return res.status(404).send({
-            message: 'The user was not found'
+            message: 'No results were found'
           });
         }
-        if (user) {
-          return res.status(200).send({
-            message: 'User found!',
-            data: [user[0].fName, user[0].lName, user[0].username]
-          });
-        }
+        return res.status(200).send({
+          message: 'Search Results!',
+          data: { result }
+        });
       })
-      .catch((err) => {
+      .catch(() => {
         res.status(404).send({
-          error: 'There was a problem getting user',
-          err
+          error: 'There user was not found'
         });
       });
   }
