@@ -6,8 +6,8 @@ const path = require('path');
 const port = process.env.PORT || 8080;
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, './hati.html'));
-});
+  res.sendFile(path.join(__dirname, './client/index.html'));
+})
 
 app.listen(port, (error) => {
   if (error) {

@@ -18,4 +18,9 @@ app.use('/api/documents', documentRouter);
 app.use('/api/roles', roleRouter);
 app.use('/api/search', searchRouter);
 
+
+app.get('/api/documentation', (req, res) => {
+  res.sendFile(path.join(__dirname, './hati.html'));
+});
+
 module.exports = app;
