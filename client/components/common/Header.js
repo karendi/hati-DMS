@@ -10,7 +10,7 @@ const Header = ({ isAuthenticated, logout }) => {
         <Link to="/" className="brand-logo center">HATI</Link>
         <IndexLink to="/" activeClassName="active">Home</IndexLink>
         {' | '}
-        <Link to="/dashboard" activeClassName="active">Dashboard</Link>
+        <Link to="/home" activeClassName="active">Dashboard</Link>
         {' | '}
         <Link to="/documents" activeClassName="active">Documents</Link>
         {' | '}

@@ -16,6 +16,10 @@ app.use(require('webpack-dev-middleware')(compiler, {
 
 app.use(require('webpack-hot-middleware')(compiler));
 
+app.get('/api/documentation', (req, res) => {
+  res.sendFile(path.join(__dirname, './hati.html'));
+});
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, './client/index.html'));
 });
