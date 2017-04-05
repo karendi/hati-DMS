@@ -40,7 +40,7 @@ A RESTful API for Hati-DMS
 
 The API Documentation is available [here](https://hatidms-staging.herokuapp.com/api/documentation)
 
-Host: https://hatidms.herokuapp.com
+Host: https://hatidms-staging.herokuapp.com
 
 ## Roles [`/api/roles`]
 
