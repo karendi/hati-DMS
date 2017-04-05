@@ -40,7 +40,7 @@ class SignUpForm extends React.Component {
       this.props.userSignupRequest(this.state)
       .then(
         () => {
-          this.context.router.push('/dashboard');
+          this.context.router.push('/home');
         },
         err => this.setState({ errors: err.response.data, isLoading: false })
       );
