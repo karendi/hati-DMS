@@ -20,6 +20,10 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, './client/index.html'));
 });
 
+app.get('/documentation', (req, res) => {
+  res.sendFile(path.join(__dirname, './hati.html'));
+});
+
 app.listen(port, (error) => {
   if (error) {
     console.log(error);
