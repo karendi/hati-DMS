@@ -38,7 +38,7 @@ A RESTful API for Hati-DMS
 
 ### Available Endpoints
 
-The API Documentation is available [here](https://hatidms.herokuapp.com/api/documentation)
+The API Documentation is available [here](https://hatidms-staging.herokuapp.com/api/documentation)
 
 Host: https://hatidms.herokuapp.com
 

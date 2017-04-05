@@ -6,7 +6,7 @@ const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
   template: __dirname + '/client/index.html',
   filename: 'index.html',
   inject: 'body'
-})
+});
 
 module.exports = {
   // debug: true,
@@ -33,12 +33,8 @@ module.exports = {
   ],
   module: {
     loaders: [
-      {test: /\.js$/, include: path.join(__dirname, 'client'), loaders: ['babel-loader']},
-      {test: /(\.css)$/, loaders: ['style', 'css']},
-      {test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file"},
-      {test: /\.(woff|woff2)$/, loader: "url?prefix=font/&limit=5000"},
-      {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream"},
-      {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=image/svg+xml"}
+      { test: /\.js$/, include: path.join(__dirname, 'client'), loader: ['babel-loader'] },
+      { test: /\.scss$/, loader: "style-loader!css-loader!sass-loader" }
     ]
   },
   watch: true

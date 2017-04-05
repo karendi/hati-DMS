@@ -1,15 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { Card, CardTitle } from 'material-ui/Card';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Paper from 'material-ui/Paper';
+import LoginPage from '../auth/login/LoginPage';
+import Header from '../common/Header';
 
-class HomePage extends React.Component {
-  render() {
-    return (
-      <div className="jumbotron text-center">
-        <h1>Document Management</h1>
-        <p>React front end rendering</p>
-        <Link to="about" className="btn btn-primary btn-lg">Learn More</Link>
-      </div>
-    );
-  }
-}
+const HomePage = () => {
+  return (
+    <center>
+      <LoginPage />
+    </center>
+  );
+};
 export default HomePage;
