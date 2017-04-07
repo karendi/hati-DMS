@@ -1,99 +1,40 @@
 import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
-// import { bindActionCreators } from 'redux';
-// import * as documentActions from '../../actions/documentActions';
-import DocumentEditor from './DocumentEditor';
+import Chip from 'material-ui/Chip';
+import Gravatar from 'react-gravatar';
+import md5 from 'blueimp-md5';
+import {GridList, GridTile} from 'material-ui/GridList';
+import IconButton from 'material-ui/IconButton';
+import Subheader from 'material-ui/Subheader';
+import StarBorder from 'material-ui/svg-icons/toggle/star-border';
+import Header from '../common/Header';
 
-/**
- * 
- */
-class DocumentView extends React.Component {
-  /**
-   * 
-   */
-  constructor(props, context) {
-    super(props, context);
+const styles = {
+  titleStyle: {
+    color: '#ffffff'
+  }
+};
 
-    this.state = {
-      document: { title: '' }
-    };
-    this.onTitleChange = this.onTitleChange.bind(this);
-    this.onClickSave = this.onClickSave.bind(this);
-  }
-  /**
-   * 
-   */
-  onTitleChange(event) {
-    const document = this.state.document;
-    // console.log(document);
-    document.title = event.target.value;
-    this.setState({ document: document });
-  }
-  /**
-   * 
-   */
-  onClickSave() {
-    // console.log(documentActions.createDocuments(this.state.document));
-    this.props.actions.createDocuments(this.state.document);
-  }
-  documentRow(document, index) {
-    console.log(document.title);
-    return <div key={index}>{document.title}</div>;
-  }
-  /**
-   * 
-   */
-  render() {
-    // console.log(this.props.dispatch);
-    return (
-      <div className="create-document">
-        <h1>Documents</h1>
-        {this.props.documents.map(this.documentRow)}
-        <h2>Add Document</h2>
-        <div className="document-title">
-          <input
-            type="text"
-            placeholder="title"
-            onChange={this.onTitleChange}
-            value={this.state.document.title}
-          />
-          <div className="row">
-            <label>Access Level</label>
-            <select>
-              <option value="" disabled>Access Level</option>
-              <option value="1">Public</option>
-              <option value="2">Private</option>
-              <option value="3">Role</option>
-            </select>
-          </div>
-        </div>
-        <input
-          type="submit"
-          value="save"
-          onClick={this.onClickSave}
-        />
-        <script src="//cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
-        <Editor />
-      </div>
-    );
-  }
-}
+// TODO Time
+const owner =  window.localStorage.getItem('userName')
+
+const DocumentView = props => (
+  <div>
+    <GridList
+      cellHeight={180} cols={1}>
+        <GridTile
+          title={`Title: ${props.document.title}`}
+          titleStyle={styles.titleStyle}
+          titleBackground="linear-gradient(to right, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
+        >
+          <h5>{props.document.title}</h5><Chip backgroundColor="#123c69" labelColor="#ffffff"> {props.document.access} </Chip> <br />
+          {props.document.content}
+        </GridTile>
+    </GridList>
+  </div>
+  );
+
 DocumentView.PropTypes = {
-  documents: PropTypes.array.isRequired,
-  createDocuments: PropTypes.func.isRequired
+  document: PropTypes.object.isRequired
 };
-/**
- * 
- */
- const  mapStateToProps = (state, ownProps) => {
-  return {
-    documents: state.documents // from the reducer.
-  };
-}
-const mapDispatchToProps = (dispatch) => {
-  return {
-    actions: bindActionCreators(documentActions, dispatch) // document => dispatch(documentActions.createDocuments(document))
-  };
-};
-// const connectStateAndProps = connect(mapStateToProps);
-export default connect(mapStateToProps, mapDispatchToProps)(DocumentView);
+
+export default DocumentView;
