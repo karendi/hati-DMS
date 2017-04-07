@@ -47,10 +47,8 @@ class DocumentController {
             userRoleId: req.decodedToken.roleId
           })
          .then((document) => {
-           res.status(201).send({
-             message: 'Document created successfully',
-             data: document
-           });
+           res.status(201).send(document
+           );
          })
          .catch(() => {
            res.status(400).send({
@@ -159,9 +157,9 @@ class DocumentController {
       .findAll({ where: query.where, order: query.order, limit: query.limit, offset: query.offset })
       .then((docs) => {
         if (req.decodedToken.roleId === 1) {
-          res.status(200).send({ message: 'Listing all documents', data: docs });
+          res.status(200).send( docs );
         } else {
-          res.status(200).send({ message: 'Listing public documents', data: docs });
+          res.status(200).send( docs );
         }
       });
   }
