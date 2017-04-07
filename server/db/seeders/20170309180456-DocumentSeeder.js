@@ -108,6 +108,15 @@ module.exports = {
         userRoleId: 2,
         createdAt: new Date(),
         updatedAt: new Date()
+      },
+      {
+        title: 'Ever heard of Nyumbani',
+        content: 'It is similar to Maskani',
+        access: 'public',
+        userId: 4,
+        userRoleId: 2,
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
     ], {});
   },
