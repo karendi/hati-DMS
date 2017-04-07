@@ -176,6 +176,9 @@ class UserController {
    * @returns {void}
    */
   static listAllUsers(req, res) {
+    const userDetails = {
+      user: ['id', 'fName', 'lName', 'email', 'username', 'roleId', 'createdAt', 'updatedAt']
+    };
     const query = req.decodedToken.roleId === 1 ? {
       include: [
         {
@@ -194,7 +197,13 @@ class UserController {
     query.offset = req.query.offset || null;
     query.order = [['createdAt', 'ASC']];
     db.User
-      .findAll({ query, order: query.order, limit: query.limit, offset: query.offset })
+      .findAll({
+        query,
+        attributes: userDetails.user,
+        order: query.order,
+        limit: query.limit,
+        offset: query.offset
+      })
       .then((allUsers) => {
         if (allUsers) {
           res.status(200).send({
@@ -288,26 +297,21 @@ class UserController {
       user: ['id', 'fName', 'lName', 'email', 'username'],
       doc: ['title', 'content']
     };
-    const decodedRole = req.decodedToken.roleId;
-    const decodedUser = req.decodedToken.userId;
-    const query = decodedRole === 1 || decodedUser === parseInt(req.params.id, 10) ? {
-      where: { id: req.params.id },
-      include: [{
-        model: db.Document, attributes: userDetails.doc
-      }]
-    } : {
-      where: { id: req.params.id },
-      include: [{
-        model: db.Document, attributes: userDetails.doc, where: { access: 'public' }
-      }]
-    };
-    db.User
-      .findAll(query)
+
+    return db.User
+      .findById(req.params.id, {
+        include: [{
+          model: db.Document,
+          as: 'documents',
+          where: { access: 'public' },
+          attributes: userDetails.doc
+        }],
+      })
       .then((user) => {
         if (!user) {
           res.status(404).send({ message: 'User was not found' });
         } else {
-          res.status(200).send({ message: 'Documents Found', data: user[0].Documents });
+          res.status(200).send(user.documents);
         }
       });
   }

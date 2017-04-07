@@ -138,6 +138,16 @@ describe('User API Spec', () => {
           done();
         });
     });
+    it('should not allow a regular user access to a list of all users', (done) => {
+      chai.request(app)
+        .get('/api/users')
+        .set('authorization', regUserToken)
+        .end((err, res) => {
+          res.should.have.status(403);
+          res.body.message.should.equal('Permission denied, admin access only');
+          done();
+        });
+    });
     it('should require a token before listing available users', (done) => {
       chai.request(app)
         .get('/api/users')
@@ -231,6 +241,16 @@ describe('User API Spec', () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.message.should.equal('User was deleted successfully');
+          done();
+        });
+    });
+    it('should prevent a user from deleting another user', (done) => {
+      chai.request(app)
+        .delete('/api/users/2')
+        .set('authorization', regUserToken)
+        .end((err, res) => {
+          res.should.have.status(403);
+          res.body.message.should.equal('Permission denied, admin access only');
           done();
         });
     });

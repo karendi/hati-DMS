@@ -14,7 +14,7 @@ describe('Document API Spec', () => {
   let regUserToken;
   before((done) => {
     chai.request(app)
-    .post('/api/users/login')
+      .post('/api/users/login')
       .send({
         email: users[0].email,
         password: users[0].password
@@ -23,7 +23,7 @@ describe('Document API Spec', () => {
         adminUserToken = response.body.token;
       });
     chai.request(app)
-    .post('/api/users/login')
+      .post('/api/users/login')
       .send({
         email: users[1].email,
         password: users[1].password
@@ -43,6 +43,17 @@ describe('Document API Spec', () => {
         .end((err, res) => {
           res.should.have.status(201);
           res.body.title.should.equal('Grab a Book Already! - Snippet');
+          done();
+        });
+    });
+    it('should not allow a user to have duplicate documents', (done) => {
+      chai.request(app)
+        .post('/api/documents')
+        .set('authorization', adminUserToken)
+        .send(docs[0])
+        .end((err, res) => {
+          res.should.have.status(409);
+          res.body.message.should.equal('Document already exists');
           done();
         });
     });
