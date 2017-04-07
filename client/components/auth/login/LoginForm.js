@@ -7,6 +7,7 @@ import TextField from 'material-ui/TextField';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import loginValidate from '../../../utils/loginValidation';
 import { login } from '../../../actions/authActions';
+import { listDocuments } from '../../../actions/documentActions';
 
 
 class LoginForm extends React.Component {
@@ -31,15 +32,13 @@ class LoginForm extends React.Component {
     e.preventDefault();
     if (this.isValid()) {
       this.setState({ errors: {}, isLoading: true });
-      this.props.login(this.state).then(
-        res => this.context.router.push('/home'),
-        err => this.setState({ errors: err.response.data.errors, isLoading: false })
-      );
+      this.props.login(this.state).then(res => {
+        this.context.router.push('/dashboard')})
+        .catch(err => this.setState({ errors: err, isLoading: false }));
     }
   }
 
   isValid() {
-    console.log(this.state, 'HERE');
     const { errors, isValid } = loginValidate(this.state);
     if (!isValid) {
       this.setState({ errors });

@@ -1,18 +1,16 @@
-const getAuthToken = () => {
+export const getAuthToken = () => {
   return window.localStorage.getItem('token');
 };
 
-const setAuthToken = (token) => {
+export const setAuthToken = (token) => {
   return window.localStorage.setItem('token', token);
 };
 
-const removeAuthToken = () => {
+export const removeAuthToken = () => {
   return window.localStorage.removeItem('token');
 };
 
-const getUserFromToken = () => {
+export const getUserFromToken = () => {
   const token = getAuthToken();
   return token ? JSON.parse(window.atob(token.split('.')[0])) : null;
 };
-
-export { getAuthToken, setAuthToken, removeAuthToken, getUserFromToken };

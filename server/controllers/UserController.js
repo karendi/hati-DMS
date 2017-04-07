@@ -49,7 +49,8 @@ class UserController {
           .then((user) => {
             const payload = {
               userId: user.id,
-              roleId: user.roleId
+              roleId: user.roleId,
+              userName: user.username
             };
             const token = jwt.sign(payload, secret, { expiresIn: '24h' });
             user.password = null;
@@ -91,7 +92,8 @@ class UserController {
         if (user && user.validatePassword(req.body.password)) {
           const payload = {
             userId: user.id,
-            roleId: user.roleId
+            roleId: user.roleId,
+            userName: user.username
           };
           const token = jwt.sign(payload, secret, { expiresIn: '24h' });
           res.status(200).send({

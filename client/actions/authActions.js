@@ -1,27 +1,36 @@
 import request from 'superagent';
-import jwtDecode from 'jwt-decode';
 import * as tokenUtils from '../utils/tokenUtils';
 import * as types from './types';
 
-const signUpUser = (user) => {
+export const signUpUser = (user) => {
   return { type: types.SIGNUP_USER, user};
 };
 
-const logoutUser = (user) => {
-  return { type: types.LOGOUT_USER, user};
+export const logoutUser = () => {
+  return { type: types.LOGOUT_USER};
 };
 
-const loginSuccessful = (user) => {
+export const logoutSuccess = () => {
+  return {
+    type: types.LOGOUT_SUCCESS
+  };
+};
+
+export const logoutFailure = (message) => {
+  return { type: types.LOGOUT_FAILURE, message};
+};
+
+export const loginSuccessful = (user) => {
   return {
     type: types.LOGIN_SUCCESS,
     isFetching: false,
-    isAuthenticated: user.success,
+    isAuthenticated: true,
     token: user.token,
     user
   };
-}
+};
 
-const loginFailed = (message) => {
+export const loginFailed = (message) => {
   return {
     type: types.LOGIN_FAILURE,
     isFetching: false,
@@ -29,39 +38,34 @@ const loginFailed = (message) => {
     message: JSON.parse(message.text)
 
   };
-}
+};
 
-
-
-// const checkIfUserExists = (identifier) => {
+// export const checkIfUserExists = (identifier) => {
 //   return dispatch => {
 //     return request.get(`/api/users/${identifier}`);
 //   };
 // };
 
-const setCurrentUser = (user) => {
+export const setCurrentUser = (user) => {
   return {
     type: types.SET_CURRENT_USER,
     user
   };
 };
 
-const LoginUser = (user) => {
+export const LoginUser = (user) => {
   return { type: types.LOGIN_USER, user};
 }
 
-const userSignupRequest = (userData) => {
-  console.log(userData, "HERE");
+export const userSignupRequest = (userData) => {
   return (dispatch) => {
     dispatch(signUpUser(userData));
-    console.log("HERE HERE HERE");
     return (
      request
       .post('/api/users')
       .send(userData)
       .then((response) => {
-        console.log(response, response.body);
-        tokenUtils.setAuthToken(response.body.token);
+        window.localStorage.setItem('token', response.body.token);
         dispatch(loginSuccessful(response.body));
       })
       .catch((error) => {
@@ -71,34 +75,46 @@ const userSignupRequest = (userData) => {
   };
 };
 
-const login = (userData) => {
-  console.log(userData, "HERE");
+export const login = (userData) => {
   return (dispatch) => {
     dispatch(LoginUser(userData));
-    console.log("HERE HERE HERE");
     return (
      request
       .post('/api/users/login')
       .send(userData)
       .then((response) => {
-        console.log(response, response.body, response.body.token);
-        tokenUtils.setAuthToken(response.body.token);
+        window.localStorage.setItem('token', response.body.token);
         dispatch(loginSuccessful(response.body));
       })
       .catch((error) => {
-        console.log(error.response, error);
         dispatch(loginFailed(error.response));
       })
     );
   };
 };
 
-const logout = () => {
+
+export const logout = () => {
   return dispatch => {
-    tokenUtils.removeAuthToken();
+    window.localStorage.removeItem('token');
     dispatch(logoutUser());
   };
 };
 
-
-export { setCurrentUser, logout, login, signUpUser, loginSuccessful, loginFailed, userSignupRequest, logoutUser };
+// export const logout = () => {
+//   return dispatch => {
+//     dispatch(logoutUser());
+//     return (
+//       request
+//       .post('/api/users/logout')
+//       .then(() => {
+//         tokenUtils.removeAuthToken();
+//         dispatch(logoutSuccess());
+//       })
+//       .catch((error) => {
+//         console.log(error.response, error);
+//         dispatch(logoutFailure(error.response));
+//       })
+//     );
+//   };
+// };

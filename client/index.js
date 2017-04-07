@@ -12,8 +12,10 @@ import './styles/main.scss';
 
 injectTapEventPlugin();
 
+const store = Store();
+
 render(
-  <Provider store={Store}>
+  <Provider store={store}>
     <MuiThemeProvider muiTheme={getMuiTheme()}>
       <Router history={browserHistory} routes={routes} />
     </MuiThemeProvider>

@@ -1,59 +1,43 @@
 import React, { PropTypes } from 'react';
+import TextField from 'material-ui/TextField';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import DocumentView from './DocumentView';
 
- class DocumentEditor extends React.Component {
-  //  location.reload();
-  constructor(props) {
-    super(props);
-    this.componentDidMount = this.componentDidMount.bind(this);
-    this.state = {
-      value: 'Please write an essay about your favorite DOM element.'
-    };
+const DocumentEditor = props => (
+  <div>
+    <TextField
+      name="title"
+      hintText="Title"
+      type="text"
+      onChange={props.onTitleChange}
+      defaultValue={props.doc.title}
+      fullWidth
+    /> <br /><br />
 
-    // this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+    <TextField
+      className="content"
+      name="content"
+      type="text"
+      onChange={props.onContentChange}
+      defaultValue={props.doc.content}
+      fullWidth
+      hintText="Content"
+      multiLine
+      rows={2}
+      rowsMax={10}
+    /><br /> <br />
 
-  // handleChange(event) {
-  //   this.setState({value: content });
-  // }
+    <SelectField
+      floatingLabelText="Access"
+      value={props.doc.access}
+      onChange={props.onSetAccess}
+    >
+      <MenuItem value={'public'} primaryText="Public" />
+      <MenuItem value={'private'} primaryText="Private" />
 
-  handleSubmit(event) {
-    // this.state.value = document.getElementById('editor1').value;
-    event.preventDefault();
-    alert('An essay was submitted: ' + this.state.value);
-    
-  }
-  render() {
-    return (
-      <div className="doc-edit">
-        <form className="document-form" onSubmit={this.handleSubmit}>
-          <textarea name="editor" cols="100" rows="6" defaultValue={this.props.value}></textarea>
-          <div className="doc-submit">
-            <button type="submit" className="waves-effect waves-light btn-custom" name="action">
-              Submit
-            </button>
-          </div>
-        </form>
-      </div>
-    );
-  }
-  componentDidMount() {
-    $(document).ready(function() {
-    $('select').material_select();
-    });
-    const configuration = {
-      toolbar: "Standard"
-    };
-    CKEDITOR.replace("editor", configuration);
-    CKEDITOR.instances.editor.on('change', function () {
-      let data = CKEDITOR.instances.editor.getData();
-      // this.props.onChange(data);
-      this.setState({ value: data });
-      console.log(this);
-    }.bind(this));
-  }
-}
+    </SelectField>
+  </div>
+);
+
 export default DocumentEditor;
-
-
-          // <input type="submit" className="button tick" value="Submit" />
