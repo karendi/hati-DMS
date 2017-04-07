@@ -4,13 +4,15 @@ import { Card, CardTitle } from 'material-ui/Card';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Paper from 'material-ui/Paper';
 import LoginPage from '../auth/login/LoginPage';
-import Header from '../common/Header';
+import AppBar from 'material-ui/AppBar';
 
 const HomePage = () => {
   return (
-    <center>
-      <LoginPage />
-    </center>
+  	<div>
+	    <center>
+	      <LoginPage />
+	    </center>
+    </div>
   );
 };
 export default HomePage;
