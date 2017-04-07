@@ -74,6 +74,26 @@ describe('Search Spec', () => {
           done();
         });
     });
+    // it('should search for a unique word in title', (done) => {
+    //   chai.request(app)
+    //     .get('/api/search/documents/?q=nyumbani')
+    //     .set('authorization', regUserToken)
+    //     .end((err, res) => {
+    //       res.should.have.status(200);
+    //       res.body.data.title.should.equal('Ever heard of Nyumbani');
+    //       done();
+    //     });
+    // });
+    // it('should search for a unique word in content', (done) => {
+    //   chai.request(app)
+    //     .get('/api/search/documents/?q=maskani')
+    //     .set('authorization', regUserToken)
+    //     .end((err, res) => {
+    //       res.should.have.status(200);
+    //       res.body.data.content.should.equal('It is similar to Maskani');
+    //       done();
+    //     });
+    // });
   });
 
   describe('Search Users', () => {
