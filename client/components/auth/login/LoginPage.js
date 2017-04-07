@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import LoginForm from './LoginForm';
-
+import AppBar from 'material-ui/AppBar';
 
 class LoginPage extends React.Component {
   /**
@@ -9,6 +9,13 @@ class LoginPage extends React.Component {
   render() {
     return (
       <div>
+        <center>
+          <AppBar
+            style={{background: '#ac3b61'}}
+            title="Hati"
+            showMenuIconButton={false}
+          />
+        </center>
         <LoginForm />
       </div>
     );
