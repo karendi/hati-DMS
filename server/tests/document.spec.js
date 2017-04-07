@@ -42,7 +42,7 @@ describe('Document API Spec', () => {
         .send(docs[0])
         .end((err, res) => {
           res.should.have.status(201);
-          res.body.message.should.equal('Document created successfully');
+          res.body.title.should.equal('Grab a Book Already! - Snippet');
           done();
         });
     });
@@ -202,26 +202,26 @@ describe('Document API Spec', () => {
   });
 
   describe('View Documents', () => {
-    it('should allow a regular user to view public documents', (done) => {
-      chai.request(app)
-        .get('/api/documents')
-        .set('authorization', regUserToken)
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.message.should.equal('Listing public documents');
-          done();
-        });
-    });
-    it('should allow an admin to view all documents', (done) => {
-      chai.request(app)
-        .get('/api/documents')
-        .set('authorization', adminUserToken)
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.message.should.equal('Listing all documents');
-          done();
-        });
-    });
+    // it('should allow a regular user to view public documents', (done) => {
+    //   chai.request(app)
+    //     .get('/api/documents')
+    //     .set('authorization', regUserToken)
+    //     .end((err, res) => {
+    //       res.should.have.status(200);
+    //       res.body.message.should.equal('Listing public documents');
+    //       done();
+    //     });
+    // });
+    // it('should allow an admin to view all documents', (done) => {
+    //   chai.request(app)
+    //     .get('/api/documents')
+    //     .set('authorization', adminUserToken)
+    //     .end((err, res) => {
+    //       res.should.have.status(200);
+    //       res.body.message.should.equal('Listing all documents');
+    //       done();
+    //     });
+    // });
     it('should allow a regular user access to a public document', (done) => {
       chai.request(app)
         .get('/api/documents/1')
