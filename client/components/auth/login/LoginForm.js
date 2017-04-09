@@ -92,7 +92,7 @@ class LoginForm extends React.Component {
   }
 }
 
-LoginForm.propTypes = {
+LoginForm.PropTypes = {
   login: React.PropTypes.func.isRequired
 };
 
