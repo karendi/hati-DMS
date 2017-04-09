@@ -94,27 +94,27 @@ export const login = (userData) => {
 };
 
 
-export const logout = () => {
-  return dispatch => {
-    window.localStorage.removeItem('token');
-    dispatch(logoutUser());
-  };
-};
-
 // export const logout = () => {
 //   return dispatch => {
+//     window.localStorage.removeItem('token');
 //     dispatch(logoutUser());
-//     return (
-//       request
-//       .post('/api/users/logout')
-//       .then(() => {
-//         tokenUtils.removeAuthToken();
-//         dispatch(logoutSuccess());
-//       })
-//       .catch((error) => {
-//         console.log(error.response, error);
-//         dispatch(logoutFailure(error.response));
-//       })
-//     );
 //   };
 // };
+
+export const logout = () => {
+  return dispatch => {
+    dispatch(logoutUser());
+    return (
+      request
+      .post('/api/users/logout')
+      .then(() => {
+        tokenUtils.removeAuthToken();
+        dispatch(logoutSuccess());
+      })
+      .catch((error) => {
+        console.log(error.response, error);
+        dispatch(logoutFailure(error.response));
+      })
+    );
+  };
+};
