@@ -14,8 +14,8 @@ const Header = (props) => {
         iconElementRight={
           <span>
             <FlatButton label="Profile" style={{color: 'white'}}/>
-            <FlatButton label="LOGOUT" onClick={props.logout}
-              style={{color: 'white'}}/>
+            <Link to={'/logout'}><FlatButton label="LOGOUT" onClick={props.logout}
+              style={{color: 'white'}}/></Link>
           </span>
         }
       />
