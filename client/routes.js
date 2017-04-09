@@ -14,11 +14,11 @@ export default (
     <IndexRoute component={HomePage} />
     <Route path="dashboard" component={Dashboard} />
     <Route path="profile" component={ProfilePage} />
+    <Route path="login" component={LoginPage} />
+    <Route path="signup" component={SignUpPage} />
     <Route path="logout" onEnter={(nextState, replace) => {
      logout();
      replace('/');
    }}/>
-    <Route path="login" component={LoginPage} />
-    <Route path="signup" component={SignUpPage} />
   </Route>
 );
