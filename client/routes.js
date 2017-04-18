@@ -7,12 +7,14 @@ import LoginPage from './components/auth/login/LoginPage';
 import SignUpPage from './components/auth/signup/SignUpPage';
 import Dashboard from './components/dashboard/Dashboard';
 import ProfilePage from './components/profile/ProfilePage';
+import EditDocumentPage from './containers/documents/EditDocumentContainer';
 import { logout } from './actions/authActions';
 
 export default (
   <Route path="/" component={App}>
     <IndexRoute component={HomePage} />
     <Route path="dashboard" component={Dashboard} />
+    <Route path="edit" component={EditDocumentPage} />
     <Route path="profile" component={ProfilePage} />
     <Route path="logout" onEnter={(nextState, replace) => {
      logout();
