@@ -162,12 +162,12 @@ export const createDocument = (docData) => {
   };
 };
 
-export const updateDocument = (documentId, docData) => {
+export const updateDocument = (docData) => {
   return dispatch => {
     dispatch(documentsUpdateRequest(docData));
     return (
       request
-      .put(`/api/documents/${documentId}`)
+      .put(`/api/documents/${docData.id}`)
       .set('authorization', window.localStorage.getItem('token'))
       .send(docData)
       .then((response) => {
