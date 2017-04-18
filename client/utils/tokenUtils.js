@@ -12,5 +12,5 @@ export const removeAuthToken = () => {
 
 export const getUserFromToken = () => {
   const token = getAuthToken();
-  return token ? JSON.parse(window.atob(token.split('.')[0])) : null;
+  return token ? JSON.parse(window.atob(token.split('.')[1])) : null;
 };

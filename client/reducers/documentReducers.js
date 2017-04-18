@@ -50,7 +50,7 @@ export const documentList = (state = DOCUMENT_LIST_INITIAL_STATE, action) => {
       return Object.assign({}, state, {
         documents: [action.document, ...state.documents],
       });
-    case types.DOCUMENT_DELETE_SUCCESS:
+    case types.DOCUMENTS_DELETE_SUCCESS:
       return Object.assign({}, state, {
         documents: state.documents.filter(id => id !== action.documentId),
       });
@@ -92,19 +92,19 @@ export const addDocument = (state = { error: null, loading: false, document: nul
 
 export const documentPage = (state = { document: null, error: null, loading: false }, action) => {
   switch (action.type) {
-    case types.DOCUMENT_GET_REQUEST:
+    case types.DOCUMENTS_GET_REQUEST:
       return {
         document: null,
         error: null,
         loading: true,
       };
-    case types.DOCUMENT_GET_SUCCESS:
+    case types.DOCUMENTS_GET_SUCCESS:
       return {
         document: action.response.result,
         error: null,
         loading: false,
       };
-    case types.DOCUMENT_GET_FAILURE:
+    case types.DOCUMENTS_GET_FAILURE:
       return {
         document: null,
         error: action.error,
@@ -117,17 +117,17 @@ export const documentPage = (state = { document: null, error: null, loading: fal
 
 export const editDocument = (state = { error: null, loading: false }, action) => {
   switch (action.type) {
-    case types.DOCUMENT_UPDATE_REQUEST:
+    case types.DOCUMENTS_UPDATE_REQUEST:
       return {
         error: null,
         loading: true,
       };
-    case types.DOCUMENT_UPDATE_SUCCESS:
+    case types.DOCUMENTS_UPDATE_SUCCESS:
       return {
         error: null,
         loading: false,
       };
-    case types.DOCUMENT_UPDATE_FAILURE:
+    case types.DOCUMENTS_UPDATE_FAILURE:
       return {
         error: action.error,
         loading: false,

@@ -5,3 +5,4 @@ git/
 npm-debug.log
 coverage/
 dist/
+.idea/

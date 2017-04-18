@@ -5,10 +5,11 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import { listDocuments, createDocument } from '../../actions/documentActions';
+import { listDocuments, createDocument, documentsUpdateRequest, updateDocument, deleteDocument } from '../../actions/documentActions';
 import DocumentView from '../../components/documents/DocumentView';
 import DocumentList from '../../components/documents/DocumentList';
 import DocumentEditor from '../../components/documents/DocumentEditor';
+import { browserHistory } from 'react-router';
 
 const style = {
   position: 'fixed',
@@ -60,6 +61,11 @@ class DocumentViewContainer extends React.Component {
     this.setState({ open: false });
   }
 
+  updateDoc(document) {
+    documentsUpdateRequest(document);
+    browserHistory.push('/edit');
+  }
+
   render() {
     console.log(this.props, "PROPS");
     const viewActions = [
@@ -69,7 +75,7 @@ class DocumentViewContainer extends React.Component {
         onTouchTap={this.handleClose}
       />,
       <FlatButton
-        label="Create Document"
+        label="Submit"
         primary
         keyboardFocused
         onTouchTap={(e) => {
@@ -84,7 +90,12 @@ class DocumentViewContainer extends React.Component {
       <div className="container">
         <div>
           {this.props.documentList.documents.map(document =>
-            <DocumentView key={document.id} document={document} />
+            <DocumentView key={document.id}
+                          document={document}
+                          onUpdate={this.updateDoc}
+                          deleteDocument={this.props.deleteDocument}
+                          listDocuments={this.props.listDocuments}
+            />
             )}
           <div>
             <FloatingActionButton onClick={this.handleOpen} backgroundColor="#123c69" style={style}>
@@ -115,17 +126,24 @@ class DocumentViewContainer extends React.Component {
 }
 DocumentViewContainer.PropTypes = {
   documentList: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired
+  deleteDocument: PropTypes.func.isRequired,
+  listDocuments: PropTypes.func.isRequired,
+  actions: PropTypes.object.isRequired,
+  router: PropTypes.object.isRequired
 };
+
+DocumentViewContainer.contextTypes = {
+  router: PropTypes.object.isRequired
+};
+
 function mapStateToProps(state) {
-  console.log(state.documentList, "STATE")
   return {
     documentList: state.documentList
   };
 }
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(listDocuments, createDocument, dispatch)
+    actions: bindActionCreators(listDocuments, createDocument, deleteDocument, dispatch)
   };
 }
-export default connect(mapStateToProps, {listDocuments, createDocument})(DocumentViewContainer);
+export default connect(mapStateToProps, {listDocuments, createDocument, deleteDocument})(DocumentViewContainer);
