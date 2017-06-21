@@ -23,6 +23,9 @@ module.exports = {
       userRoleId: {
         type: Sequelize.STRING
       },
+      docOwner: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

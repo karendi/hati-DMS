@@ -13,7 +13,7 @@ const Header = (props) => {
         titleStyle={{color: 'white'}}
         iconElementRight={
           <span>
-            <FlatButton label="Profile" style={{color: 'white'}}/>
+            <Link to={'/profile'}><FlatButton label="Profile" style={{color: 'white'}}/></Link>
             <FlatButton label="LOGOUT" onClick={props.logout}
               style={{color: 'white'}}/>
           </span>

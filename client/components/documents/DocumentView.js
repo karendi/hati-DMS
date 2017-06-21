@@ -18,7 +18,6 @@ const styles = {
 };
 
 // TODO Time
-const owner =  window.localStorage.getItem('userName')
 
 const DocumentView = props => (
   <div>
@@ -49,7 +48,7 @@ const DocumentView = props => (
           titleStyle={styles.titleStyle}
           titleBackground="linear-gradient(to right, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
         >
-          <h5>{props.document.title}</h5><Chip backgroundColor="#123c69" labelColor="#ffffff"> {props.document.access} </Chip> <br />
+          <h3>{props.document.title}</h3><br/><h5>{props.document.docOwner}</h5><br/><Chip backgroundColor="#123c69" labelColor="#ffffff"> {props.document.access} </Chip> <br />
           {props.document.content}
         </GridTile>
     </GridList>

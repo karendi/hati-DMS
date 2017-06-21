@@ -22,6 +22,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     userRoleId: {
       type: DataTypes.INTEGER
+    },
+    docOwner: {
+      type: DataTypes.STRING
     }
   }, {
     classMethods: {

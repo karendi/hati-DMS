@@ -28,6 +28,7 @@ const legitDocs = [
     access: 'public',
     userId: 1,
     userRoleId: 1,
+    docOwner: 'admin',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -37,6 +38,7 @@ const legitDocs = [
     access: 'private',
     userId: 2,
     userRoleId: 1,
+    docOwner: 'janedoe',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -64,6 +66,7 @@ const legitDocs = [
     access: 'public',
     userId: 3,
     userRoleId: 2,
+    docOwner: 'johndoe',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -73,6 +76,7 @@ const legitDocs = [
     access: 'private',
     userId: 4,
     userRoleId: 2,
+    docOwner: 'dmuchemi',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -106,6 +110,7 @@ const legitDocs = [
     access: 'public',
     userId: 5,
     userRoleId: 2,
+    docOwner: 'yulemsee',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -115,6 +120,7 @@ const legitDocs = [
     access: 'public',
     userId: 4,
     userRoleId: 2,
+    docOwner: 'dmuchemi',
     createdAt: new Date(),
     updatedAt: new Date()
   }
@@ -127,6 +133,7 @@ const invalidDocs = [
     access: 'private',
     userId: 4,
     userRoleId: 2,
+    docOwner: 'dmuchemi',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -136,6 +143,7 @@ const invalidDocs = [
     access: 'private',
     userId: 4,
     userRoleId: 2,
+    docOwner: 'dmuchemi',
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -145,6 +153,7 @@ const invalidDocs = [
     access: '',
     userId: 4,
     userRoleId: 2,
+    docOwner: 'dmuchemi',
     createdAt: new Date(),
     updatedAt: new Date()
   }

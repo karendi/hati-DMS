@@ -44,7 +44,8 @@ class DocumentController {
             content: req.body.content,
             access: req.body.access || 'public',
             userId: req.decodedToken.userId,
-            userRoleId: req.decodedToken.roleId
+            userRoleId: req.decodedToken.roleId,
+            docOwner: req.decodedToken.userName
           })
          .then((document) => {
            res.status(201).send(document

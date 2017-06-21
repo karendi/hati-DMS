@@ -177,7 +177,7 @@ class UserController {
    */
   static listAllUsers(req, res) {
     const userDetails = {
-      user: ['id', 'fName', 'lName', 'email', 'username', 'roleId', 'createdAt', 'updatedAt']
+      user: ['fName', 'lName', 'username']
     };
     const query = req.decodedToken.roleId === 1 ? {
       include: [
@@ -195,7 +195,7 @@ class UserController {
     };
     query.limit = req.query.limit || null;
     query.offset = req.query.offset || null;
-    query.order = [['createdAt', 'ASC']];
+    query.order = [['username', 'ASC']];
     db.User
       .findAll({
         query,
@@ -295,7 +295,7 @@ class UserController {
   static listUserDocuments(req, res) {
     const userDetails = {
       user: ['id', 'fName', 'lName', 'email', 'username'],
-      doc: ['title', 'content']
+      doc: ['title', 'content', 'docOwner']
     };
 
     return db.User

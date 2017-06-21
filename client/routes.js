@@ -6,7 +6,7 @@ import DocumentView from './containers/documents/DocumentViewContainer';
 import LoginPage from './components/auth/login/LoginPage';
 import SignUpPage from './components/auth/signup/SignUpPage';
 import Dashboard from './components/dashboard/Dashboard';
-import ProfilePage from './components/profile/ProfilePage';
+import ProfilePage from './components/users/ProfilePage';
 import EditDocumentPage from './containers/documents/EditDocumentContainer';
 import { logout } from './actions/authActions';
 
